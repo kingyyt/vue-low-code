@@ -1,0 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 覆盖ant icon样式 */
+svg {
+  vertical-align: initial;
+}
