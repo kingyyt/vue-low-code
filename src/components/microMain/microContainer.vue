@@ -10,11 +10,11 @@ interface BaseComponent extends DefineComponent {
 interface list {
   name: string
   id: string
+  comName?: object
 }
 
 const list2 = ref<list[]>([])
 let components = shallowRef<BaseComponent[]>([])
-let componentList = ref<BaseComponent[]>([])
 const componentModules = import.meta.glob(`@/packages/*/*/index.vue`)
 
 // 获取所有组件
@@ -25,12 +25,12 @@ const importComponents = async () => {
     components.value.push(module.value.default)
   }
 }
-
+// 遍历获取对应组件
 const jsonComponents = () => {
   list2.value.forEach((i) => {
     components.value.forEach((j) => {
       if (i.id.split('-')[0] == j.id) {
-        componentList.value.push(j)
+        i.comName = shallowRef(j)
       }
     })
   })
@@ -42,6 +42,12 @@ const onSort = () => {
   })
   jsonComponents()
 }
+
+// 传参
+const propsList = {
+  data: 1
+}
+
 // 初始化
 const init = () => {
   importComponents()
@@ -63,15 +69,12 @@ onMounted(async () => {
         class="flex flex-col gap-2 w-80 max-h-350px m-auto rounded overflow-auto border-solid border-2 border-gray-100 dark:border-gray-800"
         style="height: 700px"
       >
-        <!-- <div
-        222
-          v-for="item in list2"
-          :key="item.id"
-          class="cursor-move h-50px bg-gray-500/5 rounded p-3 min-w-10 min-h-14"
-        >
-          {{ item.name }}
-        </div> -->
-        <component v-for="(component, path) in componentList" :key="path" :is="component" />
+        <component
+          :propsList="propsList"
+          v-for="(component, path) in list2"
+          :key="path"
+          :is="component.comName"
+        />
       </VueDraggable>
     </div>
   </div>

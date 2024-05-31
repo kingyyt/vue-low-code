@@ -1,26 +1,22 @@
 <script lang="ts">
 export default {
   name: '按钮',
-  id: 'button',
-  type: 'success'
+  id: 'button'
 }
 </script>
 <script setup lang="ts">
-// import { onMounted } from 'vue'
+import { defineProps } from 'vue'
 
-// 初始化
-// const init = () => {}
-// onMounted(async () => {
-//   init()
-// })
-const type = 'success'
-// defineExpose({
-//   name: '按钮',
-//   id: 'button',
-//   type: 'success'
-// });
+const props = defineProps<{
+  propsList: Number
+}>()
+console.log(props.propsList)
+console.log(props.propsList)
+console.log(props.propsList)
+console.log(props.propsList)
+console.log(props.propsList)
 </script>
 
 <template>
-  <a-button :type="type">按钮</a-button>
+  <van-button type="danger">按钮</van-button>
 </template>

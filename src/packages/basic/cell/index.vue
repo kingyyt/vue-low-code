@@ -15,5 +15,5 @@ export default {
 </script>
 
 <template>
-  <a-button>单元格</a-button>
+  <van-button type="success">单元格</van-button>
 </template>

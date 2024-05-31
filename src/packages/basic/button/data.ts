@@ -1,12 +1,8 @@
+import type { VisualEditorComponent } from '@/packages/index'
+
 const prop = {
-  name: 'prop',
-  data() {
-    return {
-      prop: {
-        name: 'prop',
-        age: 18
-      }
-    }
-  }
-}
+  name: '按钮',
+  id: 'button'
+} as VisualEditorComponent
+
 export default prop
