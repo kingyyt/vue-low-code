@@ -17,6 +17,23 @@ const list2 = ref<list[]>([])
 let components = shallowRef<BaseComponent[]>([])
 const componentModules = import.meta.glob(`@/packages/*/*/index.vue`)
 
+// 父组件数据处理
+const props = defineProps<{
+  jsonString: string
+}>()
+const jsonToList = () => {
+  list2.value = JSON.parse(props.jsonString)
+  onSort()
+}
+defineExpose({ jsonToList })
+
+// 处理后的json数据 发送到父组件
+const sendListToParent = () => {
+  emit('send-list', JSON.stringify(list2.value))
+}
+
+const emit = defineEmits(['send-list'])
+
 // 获取所有组件
 const importComponents = async () => {
   const module = shallowRef<{ default: BaseComponent }>()
@@ -28,13 +45,17 @@ const importComponents = async () => {
 // 遍历获取对应组件
 const jsonComponents = () => {
   list2.value.forEach((i) => {
-    components.value.forEach((j) => {
-      if (i.id.split('-')[0] == j.id) {
-        i.comName = shallowRef(j)
-      }
-    })
+    if (!Object.prototype.hasOwnProperty.call(i, 'comName')) {
+      components.value.forEach((j) => {
+        if (i.id.split('-')[0] == j.id) {
+          i.comName = shallowRef(j)
+        }
+      })
+    }
   })
+  sendListToParent()
 }
+// 为list2 添加唯一id
 const onSort = () => {
   list2.value.map((item, index) => {
     item.id = item.id.split('-')[0]
@@ -42,7 +63,6 @@ const onSort = () => {
   })
   jsonComponents()
 }
-
 // 传参
 const propsList = {
   data: 1
@@ -58,7 +78,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-full w-full checkered stripes flex justify-center items-center">
+  <div class="h-full w-full min-w-96 checkered stripes flex justify-center items-center">
     <div class="flex flex-col content-center bg-white dark:bg-slate-50" style="height: 700px">
       <VueDraggable
         @sort="onSort"

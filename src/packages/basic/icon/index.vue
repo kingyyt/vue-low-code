@@ -15,5 +15,5 @@ export default {
 </script>
 
 <template>
-  <a-button>图标</a-button>
+  <div><a-button>图标</a-button></div>
 </template>

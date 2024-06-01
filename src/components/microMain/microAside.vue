@@ -68,12 +68,7 @@ onMounted(async () => {
 
 <template>
   <div class="w-72 min-w-72">
-    <a-tabs
-      @change="changeAnchor"
-      class="pl-2 pb-2 dark:text-white"
-      size="large"
-      v-model:activeKey="activeKey"
-    >
+    <a-tabs @change="changeAnchor" class="pl-2 pb-2 dark:text-white" v-model:activeKey="activeKey">
       <a-tab-pane key="1" tab="基础组件"></a-tab-pane>
       <a-tab-pane key="2" tab="业务组件"></a-tab-pane>
       <a-tab-pane key="3" tab="表单组件"></a-tab-pane>
