@@ -67,7 +67,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="w-72">
+  <div class="w-72 min-w-72">
     <a-tabs
       @change="changeAnchor"
       class="pl-2 pb-2 dark:text-white"

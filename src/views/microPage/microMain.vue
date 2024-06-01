@@ -1,5 +1,5 @@
 <template>
-  <div class="flex dark:text-gray-100" style="height: calc(100vh - 3rem)">
+  <div class="flex justify-between dark:text-gray-100" style="height: calc(100vh - 3rem)">
     <microAside />
     <microContainer />
     <microEditor />

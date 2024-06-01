@@ -58,15 +58,15 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div class="h-full">
-    <div class="w-96 h-full flex flex-col content-center">
+  <div class="h-full w-full checkered stripes flex justify-center items-center">
+    <div class="flex flex-col content-center bg-white dark:bg-slate-50" style="height: 700px">
       <VueDraggable
         @sort="onSort"
         v-model="list2"
         :animation="150"
         group="people"
         ghostClass="ghost"
-        class="flex flex-col gap-2 w-80 max-h-350px m-auto rounded overflow-auto border-solid border-2 border-gray-100 dark:border-gray-800"
+        class="flex flex-col gap-2 w-80 max-h-350px m-auto rounded overflow-auto border-solid border-2 shadow-md border-gray-100"
         style="height: 700px"
       >
         <component
@@ -79,3 +79,24 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
+<style lang="less">
+.stripes {
+  height: 100%;
+  width: 100%;
+  float: left;
+  background-size: 30px 30px; /* 控制条纹的大小 */
+}
+.checkered {
+  background-image: linear-gradient(45deg, #f7f7f7 25%, transparent 25%, transparent),
+    linear-gradient(-45deg, #f7f7f7 25%, transparent 25%, transparent),
+    linear-gradient(45deg, transparent 75%, #f7f7f7 75%),
+    linear-gradient(-45deg, transparent 75%, #f7f7f7 75%);
+}
+.dark .checkered {
+  background-image: linear-gradient(45deg, #6e7b8b 25%, transparent 25%, transparent),
+    linear-gradient(-45deg, #6e7b8b 25%, transparent 25%, transparent),
+    linear-gradient(45deg, transparent 75%, #6e7b8b 75%),
+    linear-gradient(-45deg, transparent 75%, #6e7b8b 75%);
+}
+</style>
