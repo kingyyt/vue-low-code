@@ -30,6 +30,6 @@ defineExpose({ jsonToList })
 
 <template>
   <div class="w-80 min-w-80 h-full shadow-md p-4">
-    <editComponents />
+    <editComponents input-value="123" />
   </div>
 </template>

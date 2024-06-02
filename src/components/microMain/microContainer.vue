@@ -57,12 +57,22 @@ const jsonComponents = () => {
 }
 // 为list2 添加唯一id
 const onSort = () => {
-  list2.value.map((item, index) => {
-    item.id = item.id.split('-')[0]
-    item.id = item.id + `-${index}`
+  list2.value.map((item) => {
+    if (!item.id.includes('-')) {
+      item.id = item.id.split('-')[0]
+      item.id = item.id + `-${list2.value.length}`
+    }
   })
   jsonComponents()
 }
+
+// 点击组件
+const currentComponentId = ref('')
+const getEditor = (component: string) => {
+  currentComponentId.value = component
+  console.log('点击组件', component)
+}
+
 // 传参
 const propsList = {
   data: 1
@@ -79,22 +89,27 @@ onMounted(async () => {
 
 <template>
   <div class="h-full w-full min-w-96 checkered stripes flex justify-center items-center">
-    <div class="flex flex-col content-center bg-white dark:bg-slate-50" style="height: 700px">
+    <div
+      class="flex flex-col content-center bg-white dark:bg-slate-50 rounded"
+      style="height: 700px"
+    >
       <VueDraggable
         @sort="onSort"
         v-model="list2"
         :animation="150"
         group="people"
         ghostClass="ghost"
-        class="flex flex-col gap-2 w-80 max-h-350px m-auto rounded overflow-auto border-solid border-2 shadow-md border-gray-100"
+        class="flex flex-col w-80 max-h-350px m-auto rounded overflow-auto shadow-md"
         style="height: 700px"
       >
-        <component
-          :propsList="propsList"
-          v-for="(component, path) in list2"
-          :key="path"
-          :is="component.comName"
-        />
+        <div class="container" v-for="(component, path) in list2" :key="path">
+          <div
+            class="overlay"
+            :class="currentComponentId === component.id ? 'active' : ''"
+            @click="getEditor(component.id)"
+          ></div>
+          <component class="content" :propsList="propsList" :is="component.comName" />
+        </div>
       </VueDraggable>
     </div>
   </div>
@@ -118,5 +133,23 @@ onMounted(async () => {
     linear-gradient(-45deg, #6e7b8b 25%, transparent 25%, transparent),
     linear-gradient(45deg, transparent 75%, #6e7b8b 75%),
     linear-gradient(-45deg, transparent 75%, #6e7b8b 75%);
+}
+.container {
+  position: relative;
+  .content {
+    position: relative;
+    z-index: 1;
+  }
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999; /* 将遮罩置于内容之上 */
+  }
+  .active {
+    background-color: rgba(64, 158, 255, 0.5);
+  }
 }
 </style>
