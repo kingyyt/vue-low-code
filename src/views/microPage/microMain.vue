@@ -27,7 +27,7 @@ const jsonString = ref('')
 // const jsonString = ref(
 //   '[{"id":"icon","name":"图标"},{"id":"button","name":"按钮"},{"id":"button","name":"按钮"}]'
 // )
-// 调用内容组件数据处理 json参数生成列表方法
+// 调用内容组件数据处理 《json参数生成列表方法》
 const microContainerRef = ref<InstanceType<typeof microContainer> | null>(null)
 const callContainerChildMethod = () => {
   if (microContainerRef.value) {
@@ -37,18 +37,18 @@ const callContainerChildMethod = () => {
   callEditChildMethod()
 }
 // 接受内容参数
-const handleListReceived = (list: string) => {
+const handleListReceived = (list: string, currentComponentId?: string) => {
   jsonString.value = list
   console.log('-------父---------')
   console.log(JSON.parse(list), 'list[]')
-  callEditChildMethod()
+  callEditChildMethod(currentComponentId)
 }
 // 调用编辑组件 传递json参数
 const microEditorRef = ref<InstanceType<typeof microEditor> | null>(null)
 
-const callEditChildMethod = () => {
+const callEditChildMethod = (currentComponentId?: string) => {
   if (microEditorRef.value) {
-    microEditorRef.value.jsonToList()
+    microEditorRef.value.jsonToList(currentComponentId)
   }
 }
 </script>

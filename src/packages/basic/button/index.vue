@@ -5,15 +5,16 @@ export default {
 }
 </script>
 <script setup lang="ts">
-const props = defineProps<{
-  propsList: Number
-}>()
-console.log(props.propsList)
-console.log(props.propsList)
+import { defineExpose } from 'vue'
+import { editorPropsData } from './data'
+
+defineExpose({
+  editorPropsData: editorPropsData().value
+})
 </script>
 
 <template>
   <div>
-    <van-button type="danger">按钮</van-button>
+    <van-button type="danger">{{ editorPropsData().value.text }}</van-button>
   </div>
 </template>

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, ref, reactive } from 'vue'
 import { darkMode, lightMode } from '@/utils/public/dark'
+import { useLoginStore } from '@/stores/modules/user'
 import {
   AlertFilled,
   CloseOutlined,
@@ -10,11 +11,15 @@ import {
 // import { defineEmits } from 'vue'
 
 // 夜间模式开关
+const store = useLoginStore()
 const darkChecked = ref<boolean>(true)
+darkChecked.value = store.theme
 const switchDark = () => {
   if (darkChecked.value) {
+    store.setTheme(true)
     lightMode()
   } else {
+    store.setTheme(false)
     darkMode()
   }
 }

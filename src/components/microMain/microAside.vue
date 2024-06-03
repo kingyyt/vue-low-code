@@ -3,13 +3,10 @@ import { onMounted, ref, shallowRef } from 'vue'
 import type { DefineComponent } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import { PlusCircleOutlined } from '@ant-design/icons-vue'
+import type { list } from '@/components/microMain/editorPropsInterface'
 // const components = import.meta.glob('@/packages/basic/*/index.vue')
 // 使用 import.meta.glob 动态导入 components 文件夹下的所有 .vue 文件
 interface BaseComponent extends DefineComponent {
-  name: string
-  id: string
-}
-interface list {
   name: string
   id: string
 }

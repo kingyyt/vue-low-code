@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { onMounted, ref, shallowRef } from 'vue'
+import { onMounted, ref, shallowRef, nextTick } from 'vue'
 import type { DefineComponent } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
+import type { list } from '@/components/microMain/editorPropsInterface'
 
 interface BaseComponent extends DefineComponent {
   name: string
   id: string
-}
-interface list {
-  name: string
-  id: string
-  comName?: object
 }
 
 const list2 = ref<list[]>([])
@@ -29,7 +25,7 @@ defineExpose({ jsonToList })
 
 // 处理后的json数据 发送到父组件
 const sendListToParent = () => {
-  emit('send-list', JSON.stringify(list2.value))
+  emit('send-list', JSON.stringify(list2.value), currentComponentId.value)
 }
 
 const emit = defineEmits(['send-list'])
@@ -43,16 +39,28 @@ const importComponents = async () => {
   }
 }
 // 遍历获取对应组件
-const jsonComponents = () => {
-  list2.value.forEach((i) => {
+
+const componentRef = ref<any>([])
+const setComponentRef = (index: number) => (el: any) => {
+  if (componentRef.value) {
+    componentRef.value[index] = el
+  }
+}
+const jsonComponents = async () => {
+  list2.value.forEach((i, index) => {
     if (!Object.prototype.hasOwnProperty.call(i, 'comName')) {
-      components.value.forEach((j) => {
+      components.value.forEach(async (j) => {
         if (i.id.split('-')[0] == j.id) {
           i.comName = shallowRef(j)
+          await nextTick()
+          if (componentRef.value) {
+            i.props = componentRef.value[index].editorPropsData
+          }
         }
       })
     }
   })
+  await nextTick()
   sendListToParent()
 }
 // 为list2 添加唯一id
@@ -70,12 +78,7 @@ const onSort = () => {
 const currentComponentId = ref('')
 const getEditor = (component: string) => {
   currentComponentId.value = component
-  console.log('点击组件', component)
-}
-
-// 传参
-const propsList = {
-  data: 1
+  sendListToParent()
 }
 
 // 初始化
@@ -108,7 +111,7 @@ onMounted(async () => {
             :class="currentComponentId === component.id ? 'active' : ''"
             @click="getEditor(component.id)"
           ></div>
-          <component class="content" :propsList="propsList" :is="component.comName" />
+          <component :ref="setComponentRef(path)" class="content" :is="component.comName" />
         </div>
       </VueDraggable>
     </div>
@@ -128,11 +131,13 @@ onMounted(async () => {
     linear-gradient(45deg, transparent 75%, #f7f7f7 75%),
     linear-gradient(-45deg, transparent 75%, #f7f7f7 75%);
 }
+// rgb(75 85 99
+
 .dark .checkered {
-  background-image: linear-gradient(45deg, #6e7b8b 25%, transparent 25%, transparent),
-    linear-gradient(-45deg, #6e7b8b 25%, transparent 25%, transparent),
-    linear-gradient(45deg, transparent 75%, #6e7b8b 75%),
-    linear-gradient(-45deg, transparent 75%, #6e7b8b 75%);
+  background-image: linear-gradient(45deg, rgb(75, 85, 99) 25%, transparent 25%, transparent),
+    linear-gradient(-45deg, rgb(75, 85, 99) 25%, transparent 25%, transparent),
+    linear-gradient(45deg, transparent 75%, rgb(75, 85, 99) 75%),
+    linear-gradient(-45deg, transparent 75%, rgb(75, 85, 99) 75%);
 }
 .container {
   position: relative;

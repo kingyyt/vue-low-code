@@ -5,13 +5,12 @@ export default {
 }
 </script>
 <script setup lang="ts">
-// import { onMounted } from 'vue'
+import { defineExpose } from 'vue'
+import { editorPropsData } from './data'
 
-// 初始化
-// const init = () => {}
-// onMounted(async () => {
-//   init()
-// })
+defineExpose({
+  editorPropsData: editorPropsData().value
+})
 </script>
 
 <template>

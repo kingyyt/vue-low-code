@@ -9,7 +9,7 @@ const editorProps = ref({
 })
 
 const componentsProps = ref({
-  text: '按钮1'
+  text: '按钮2'
 })
 
 export const editorPropsData = () => componentsProps
