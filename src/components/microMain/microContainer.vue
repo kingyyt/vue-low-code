@@ -15,17 +15,17 @@ const componentModules = import.meta.glob(`@/packages/*/*/index.vue`)
 
 // 父组件数据处理
 const props = defineProps<{
-  jsonString: string
+  mainList: any
 }>()
 const jsonToList = () => {
-  list2.value = JSON.parse(props.jsonString)
+  list2.value = props.mainList
   onSort()
 }
 defineExpose({ jsonToList })
 
 // 处理后的json数据 发送到父组件
-const sendListToParent = () => {
-  emit('send-list', JSON.stringify(list2.value), currentComponentId.value)
+const sendListToParent = (editorPropsData?: any) => {
+  emit('send-list', list2.value, currentComponentId.value, editorPropsData)
 }
 
 const emit = defineEmits(['send-list'])
@@ -53,7 +53,7 @@ const jsonComponents = async () => {
         if (i.id.split('-')[0] == j.id) {
           i.comName = shallowRef(j)
           await nextTick()
-          if (componentRef.value) {
+          if (componentRef.value && !Object.prototype.hasOwnProperty.call(i, 'props')) {
             i.props = componentRef.value[index].editorPropsData
           }
         }
@@ -77,8 +77,11 @@ const onSort = () => {
 // 点击组件
 const currentComponentId = ref('')
 const getEditor = (component: string) => {
+  list2.value = props.mainList
   currentComponentId.value = component
-  sendListToParent()
+  sendListToParent(
+    list2.value.find((item) => item.id === component)?.comName?.dataComponents || null
+  )
 }
 
 // 初始化

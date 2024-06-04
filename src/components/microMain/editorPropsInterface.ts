@@ -3,6 +3,7 @@ export interface list {
   id: string
   comName?: Record<string, any>
   props?: Record<string, any>
+  dataComponents?: Record<string, any>
 }
 
 export interface inputComponentProps {
@@ -10,4 +11,8 @@ export interface inputComponentProps {
   addonBefore: string
   placeholder?: string
   style?: Object
+}
+
+export interface basicButtonComponentProps {
+  defaultValue: string
 }

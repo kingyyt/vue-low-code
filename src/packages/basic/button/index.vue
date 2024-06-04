@@ -1,12 +1,12 @@
 <script lang="ts">
 export default {
   name: '按钮',
-  id: 'button'
+  id: 'button',
+  dataComponents: dataComponents
 }
 </script>
 <script setup lang="ts">
-import { defineExpose } from 'vue'
-import { editorPropsData } from './data'
+import dataComponents, { editorPropsData } from './data'
 
 defineExpose({
   editorPropsData: editorPropsData().value
@@ -15,6 +15,6 @@ defineExpose({
 
 <template>
   <div>
-    <van-button type="danger">{{ editorPropsData().value.text }}</van-button>
+    <van-button type="danger">{{ editorPropsData().value.defaultValue }}</van-button>
   </div>
 </template>

@@ -3,10 +3,10 @@
     <microAside />
     <microContainer
       ref="microContainerRef"
-      :jsonString="jsonString"
-      @send-list="handleListReceived"
+      :mainList="mainList"
+      @send-list="handleContainerListReceived"
     />
-    <microEditor ref="microEditorRef" :jsonString="jsonString" />
+    <microEditor ref="microEditorRef" :mainList="mainList" @send-list="handleEditListReceived" />
   </div>
 </template>
 
@@ -22,11 +22,8 @@ onMounted(async () => {
   init()
 })
 
-// 列表json字符串
-const jsonString = ref('')
-// const jsonString = ref(
-//   '[{"id":"icon","name":"图标"},{"id":"button","name":"按钮"},{"id":"button","name":"按钮"}]'
-// )
+const mainList = ref(null)
+
 // 调用内容组件数据处理 《json参数生成列表方法》
 const microContainerRef = ref<InstanceType<typeof microContainer> | null>(null)
 const callContainerChildMethod = () => {
@@ -37,18 +34,29 @@ const callContainerChildMethod = () => {
   callEditChildMethod()
 }
 // 接受内容参数
-const handleListReceived = (list: string, currentComponentId?: string) => {
-  jsonString.value = list
-  console.log('-------父---------')
-  console.log(JSON.parse(list), 'list[]')
-  callEditChildMethod(currentComponentId)
+const handleContainerListReceived = (
+  list: any,
+  currentComponentId?: string,
+  editorPropsData?: any
+) => {
+  mainList.value = list
+  callEditChildMethod(currentComponentId, editorPropsData)
+  console.log('内容->主')
+  console.log(mainList.value)
 }
 // 调用编辑组件 传递json参数
 const microEditorRef = ref<InstanceType<typeof microEditor> | null>(null)
 
-const callEditChildMethod = (currentComponentId?: string) => {
+const callEditChildMethod = (currentComponentId?: string, editorPropsData?: any) => {
   if (microEditorRef.value) {
-    microEditorRef.value.jsonToList(currentComponentId)
+    microEditorRef.value.jsonToList(currentComponentId, editorPropsData)
   }
+}
+
+// 接受编辑组件参数
+const handleEditListReceived = (list: any) => {
+  console.log('编辑->主')
+  console.log(mainList.value)
+  mainList.value = list
 }
 </script>
