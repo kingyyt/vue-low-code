@@ -34,7 +34,7 @@ watch(
 const props = defineProps<{
   mainList: any
 }>()
-const jsonToList = async (currentComponentId?: string, editorPropsData?: any) => {
+const editorPropsComPonent = async (currentComponentId?: string, editorPropsData?: any) => {
   await nextTick()
   list2.value = props.mainList
   if (currentComponentId) {
@@ -43,7 +43,7 @@ const jsonToList = async (currentComponentId?: string, editorPropsData?: any) =>
   editorPropsDataComponent.value = editorPropsData
 }
 
-defineExpose({ jsonToList })
+defineExpose({ editorPropsComPonent })
 </script>
 
 <template>

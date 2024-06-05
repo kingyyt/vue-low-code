@@ -74,6 +74,9 @@ onMounted(async () => {
       <a-tab-pane key="2" tab="业务组件"></a-tab-pane>
       <a-tab-pane key="3" tab="表单组件"></a-tab-pane>
     </a-tabs>
+    <div class="flex items-center justify-center">
+      <a-spin size="large" :spinning="!getComponents" />
+    </div>
     <VueDraggable
       v-if="getComponents"
       @onClone="onClone"

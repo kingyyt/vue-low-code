@@ -17,9 +17,10 @@ const componentModules = import.meta.glob(`@/packages/*/*/index.vue`)
 const props = defineProps<{
   mainList: any
 }>()
-const jsonToList = () => {
-  list2.value = props.mainList
-  onSort()
+const jsonToList = (e: any) => {
+  list2.value = JSON.parse(e)
+  console.log(list2.value)
+  onSort({ newIndex: 0 })
 }
 defineExpose({ jsonToList })
 
