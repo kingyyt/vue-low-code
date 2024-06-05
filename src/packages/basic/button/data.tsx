@@ -1,19 +1,17 @@
 import { h, ref } from 'vue'
 import { createEditorButtonProp, createEditorInputProp } from '@/components/microMain/editorProps'
+import type { inputComponentProps } from '@/components/microMain/editorPropsInterface'
 
-// 编辑器数据
-const editorProps = ref({
-  inputValue: {
-    defaultValue: '按钮',
-    addonBefore: '按钮文字'
-  }
-})
 // 控制的组件数据
-const componentsProps = ref({
-  defaultValue: '按钮1'
-})
+function componentsProps() {
+  return ref<inputComponentProps>({
+    defaultValue: '按钮',
+    addonBefore: '按钮文字',
+    placeholder: '请输入内容'
+  })
+}
 
-export const editorPropsData = () => componentsProps
+export const editorPropsData = componentsProps
 
 export default {
   props: {
@@ -24,7 +22,7 @@ export default {
   },
   setup(props: any) {
     return () =>
-      h(createEditorInputProp(editorProps.value.inputValue), {
+      h(createEditorInputProp(), {
         propsData: props.propsData
       })
   }

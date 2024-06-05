@@ -41,8 +41,6 @@ const jsonToList = async (currentComponentId?: string, editorPropsData?: any) =>
     currentEditComponent.value = list2.value.find((item) => item.id === currentComponentId) || null
   }
   editorPropsDataComponent.value = editorPropsData
-  console.log(currentEditComponent.value)
-  console.log(editorPropsData)
 }
 
 defineExpose({ jsonToList })

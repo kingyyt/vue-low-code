@@ -1,9 +1,5 @@
 import { h, ref } from 'vue'
 import { Button, Input } from 'ant-design-vue'
-import type {
-  inputComponentProps,
-  basicButtonComponentProps
-} from '@/components/microMain/editorPropsInterface'
 import { useLoginStore } from '@/stores/modules/user'
 // 按钮
 export function createEditorButtonProp() {
@@ -12,7 +8,7 @@ export function createEditorButtonProp() {
 }
 
 // 输入框
-export function createEditorInputProp(inputValue: inputComponentProps) {
+export function createEditorInputProp() {
   return {
     props: {
       propsData: {
@@ -20,14 +16,13 @@ export function createEditorInputProp(inputValue: inputComponentProps) {
         required: true
       }
     },
-    // setup(props: any, { emit }: SetupContext) {
     setup(props: any) {
       const store = useLoginStore()
       return () =>
         h(Input, {
           defaultValue: props.propsData.defaultValue,
-          addonBefore: inputValue.addonBefore,
-          placeholder: inputValue.placeholder ? inputValue.placeholder : '请输入',
+          addonBefore: props.propsData.addonBefore,
+          placeholder: props.propsData.placeholder ? props.propsData.placeholder : '请输入',
           style: {
             marginTop: '10px'
           },

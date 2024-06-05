@@ -46,32 +46,34 @@ const setComponentRef = (index: number) => (el: any) => {
     componentRef.value[index] = el
   }
 }
-const jsonComponents = async () => {
+const jsonComponents = async (id: string) => {
   list2.value.forEach((i, index) => {
     if (!Object.prototype.hasOwnProperty.call(i, 'comName')) {
       components.value.forEach(async (j) => {
         if (i.id.split('-')[0] == j.id) {
-          i.comName = shallowRef(j)
+          i.comName = shallowRef({ ...j, comId: id })
           await nextTick()
           if (componentRef.value && !Object.prototype.hasOwnProperty.call(i, 'props')) {
-            i.props = componentRef.value[index].editorPropsData
+            const prop = ref(componentRef.value[index].editorPropsData)
+            i.props = prop.value
           }
         }
       })
     }
   })
   await nextTick()
-  sendListToParent()
+  currentComponentId.value = id
+  sendListToParent(list2.value.find((item) => item.id === id)?.comName?.dataComponents || null)
 }
 // 为list2 添加唯一id
-const onSort = () => {
+const onSort = (e?: any) => {
   list2.value.map((item) => {
     if (!item.id.includes('-')) {
       item.id = item.id.split('-')[0]
       item.id = item.id + `-${list2.value.length}`
     }
   })
-  jsonComponents()
+  jsonComponents(list2.value[e.newIndex].id ? list2.value[e.newIndex].id : list2.value[0].id)
 }
 
 // 点击组件
@@ -114,7 +116,12 @@ onMounted(async () => {
             :class="currentComponentId === component.id ? 'active' : ''"
             @click="getEditor(component.id)"
           ></div>
-          <component :ref="setComponentRef(path)" class="content" :is="component.comName" />
+          <component
+            :ref="setComponentRef(path)"
+            :props="component.props"
+            class="content"
+            :is="component.comName"
+          />
         </div>
       </VueDraggable>
     </div>

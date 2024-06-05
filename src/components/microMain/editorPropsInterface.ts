@@ -12,7 +12,3 @@ export interface inputComponentProps {
   placeholder?: string
   style?: Object
 }
-
-export interface basicButtonComponentProps {
-  defaultValue: string
-}

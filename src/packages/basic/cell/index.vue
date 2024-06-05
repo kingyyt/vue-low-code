@@ -5,7 +5,6 @@ export default {
 }
 </script>
 <script setup lang="ts">
-import { defineExpose } from 'vue'
 import { editorPropsData } from './data'
 
 defineExpose({

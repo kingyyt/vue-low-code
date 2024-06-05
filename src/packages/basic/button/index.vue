@@ -7,14 +7,16 @@ export default {
 </script>
 <script setup lang="ts">
 import dataComponents, { editorPropsData } from './data'
-
 defineExpose({
-  editorPropsData: editorPropsData().value
+  editorPropsData: editorPropsData()
 })
+const props = defineProps<{
+  props: any
+}>()
 </script>
 
 <template>
   <div>
-    <van-button type="danger">{{ editorPropsData().value.defaultValue }}</van-button>
+    <van-button type="danger">{{ props.props?.defaultValue }}</van-button>
   </div>
 </template>
