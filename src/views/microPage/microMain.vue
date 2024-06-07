@@ -33,7 +33,7 @@ import type {
 const textDas = async () => {
   let params = {
     name: '333333'
-    // json: '{"key": "updated_value"}'
+    // json: '{"key": "updated_value"}',
   }
   let res = await DeleteJsonListDetail(11)
   console.log(res)
