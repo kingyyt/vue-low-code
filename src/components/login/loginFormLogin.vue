@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AccountLogin } from '@/api/account/model/accountModel'
 import { ApiLogin } from '@/api/account/account'
 import { useLoginStore } from '@/stores/modules/user'
 import { ref, reactive } from 'vue'
@@ -28,7 +27,7 @@ const onFinishFailed = (errorInfo: any) => {
 // 用户登录
 const Login = async () => {
   const store = useLoginStore()
-  let params: AccountLogin = {
+  let params = {
     username: formState.username,
     password: formState.password
   }

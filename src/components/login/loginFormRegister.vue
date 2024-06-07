@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import type { AccountLogin } from '@/api/account/model/accountModel'
 import { ApiRegister } from '@/api/account/account'
 import { ref, reactive } from 'vue'
 import type { Rule } from 'ant-design-vue/es/form'
@@ -25,7 +24,7 @@ const onFinishFailed = (errorInfo: any) => {
 
 // 用户注册
 const Register = async () => {
-  let params: AccountLogin = {
+  let params = {
     username: formState.username,
     password: formState.password
   }

@@ -7,7 +7,7 @@ import type {
 
 enum Api {
   ACCOUNT_LOGIN = '/api/login/',
-  ACCOUNT_REGISTER = 'api/register/'
+  ACCOUNT_REGISTER = '/api/register/'
 }
 
 export const ApiLogin = (params: AccountLogin) =>

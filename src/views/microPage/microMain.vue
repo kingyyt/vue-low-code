@@ -15,9 +15,35 @@ import { onMounted, ref } from 'vue'
 import microAside from '@/components/microMain/microAside.vue'
 import microContainer from '@/components/microMain/microContainer.vue'
 import microEditor from '@/components/microMain/microEditor.vue'
+import {
+  GetJsonList,
+  PostJsonList,
+  GetJsonListDetail,
+  PatchJsonListDetail,
+  DeleteJsonListDetail
+} from '@/api/microMain/microMain'
+import type {
+  JsonList,
+  editJsonList,
+  JsonListReturn,
+  JsonListData
+} from '@/api/microMain/model/microModel'
 
 // 初始化
-const init = () => {}
+const textDas = async () => {
+  let params = {
+    name: '333333'
+    // json: '{"key": "updated_value"}'
+  }
+  let res = await DeleteJsonListDetail(11)
+  console.log(res)
+  console.log(res)
+  console.log(res)
+}
+
+const init = () => {
+  textDas()
+}
 onMounted(async () => {
   init()
 })
