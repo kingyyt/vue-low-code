@@ -42,7 +42,7 @@ const textDas = async () => {
 }
 
 const init = () => {
-  textDas()
+  // textDas()
 }
 onMounted(async () => {
   init()
