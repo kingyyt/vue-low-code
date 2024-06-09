@@ -15,6 +15,7 @@ declare module 'vue' {
     MicroAside: typeof import('./src/components/microMain/microAside.vue')['default']
     MicroContainer: typeof import('./src/components/microMain/microContainer.vue')['default']
     MicroEditor: typeof import('./src/components/microMain/microEditor.vue')['default']
+    MicroMainBtn: typeof import('./src/components/home/barElement/microMainBtn.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']

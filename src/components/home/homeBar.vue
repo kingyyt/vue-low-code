@@ -9,6 +9,12 @@ import {
   MenuUnfoldOutlined
 } from '@ant-design/icons-vue'
 // import { defineEmits } from 'vue'
+import microMainBtn from "@/components/home/barElement/microMainBtn.vue"
+
+
+const props = defineProps({
+  pageName: String
+});
 
 // 夜间模式开关
 const store = useLoginStore()
@@ -49,7 +55,8 @@ const toggleCollapsed = () => {
         <MenuUnfoldOutlined v-if="state.collapsed" />
         <MenuFoldOutlined v-else />
       </a-button>
-      <div class="flex justify-end mr-4 ant-switch-handle:">
+      <microMainBtn v-if="props.pageName === 'microMain'" />
+      <div class="flex justify-end mr-4 ant-switch-handle">
         <a-space direction="vertical">
           <a-switch v-model:checked="darkChecked" @change="switchDark">
             <template #checkedChildren><AlertFilled /></template>
