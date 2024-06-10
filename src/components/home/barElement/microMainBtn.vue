@@ -16,6 +16,9 @@ import {
   // DeleteJsonListDetail
 } from '@/api/microMain/microMain'
 
+import { useMainListStore } from '@/stores/modules/microPage'
+
+
 // 初始化
 const init = () => {
   getJsonList()
@@ -23,6 +26,8 @@ const init = () => {
 onMounted(async () => {
   init()
 })
+// 获取mainListStore
+const store = useMainListStore()
 // 获取json列表
 interface JsonListData{
   id: number
@@ -50,12 +55,12 @@ const getJsonList = async ()=> {
           }
       }
     })
-    console.log(list.value)
   }
 }
 // 列表点击
-const openChange = (e:any)=>{
-  console.log(e)
+const openChange = (item:any)=>{
+  store.setMainList(item.json)
+  store.setPageName(item.name)
 }
 
 </script>
@@ -76,7 +81,7 @@ const openChange = (e:any)=>{
   </a-popover>
   <a-popover >
     <template #content>
-      <p>打包</p>
+      <p>保存</p>
     </template>
     <SaveOutlined class="mr-4" />
   </a-popover>
@@ -89,13 +94,13 @@ const openChange = (e:any)=>{
 
   <a-dropdown >
     <a class="ant-dropdown-link text-sm" @click.prevent>
-      选择页面
+      {{ store.name ? store.name : '当前页面' }}
       <DownOutlined />
     </a>
     <template #overlay>
       <a-menu>
         <a-menu-item v-for="(item,index) in list" :key="index">
-          <div @click="openChange(item.json)">{{ item.name }}</div>
+          <div @click="openChange(item)">{{ item.name }} </div>
         </a-menu-item>
       </a-menu>
     </template>

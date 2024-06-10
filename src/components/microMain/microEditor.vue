@@ -1,16 +1,20 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick, shallowRef, watch } from 'vue'
+import { onMounted, ref, nextTick, shallowRef, watch,computed } from 'vue'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import { useLoginStore } from '@/stores/modules/user'
 import { Input } from 'ant-design-vue'
+import {useMainListStore} from '@/stores/modules/microPage'
 
+
+const store = useLoginStore()
+const storeMainList = useMainListStore()
+const mainPageName = computed(() => storeMainList.name);
 // 初始化
 const init = () => {}
 onMounted(async () => {
   init()
 })
 
-const store = useLoginStore()
 const list2 = ref<list[]>([])
 const currentEditComponent = ref<list | null>(null)
 let editorPropsDataComponent = shallowRef<any>(null)
@@ -51,7 +55,7 @@ defineExpose({ editorPropsComPonent })
 
 <template>
   <div class="w-80 min-w-80 h-full shadow-md p-4">
-    <Input placeholder="请输入页面名称" style="margin-top: 10px;" :class="!store.theme ? 'editor-props-input':''" addonBefore="页面名称" />
+    <Input v-model:value="mainPageName" placeholder="请输入页面名称" style="margin-top: 10px;" :class="!store.theme ? 'editor-props-input':''" addonBefore="页面名称" />
     <component :is="editorPropsDataComponent" :propsData="currentEditComponent?.props" />
   </div>
 </template>

@@ -18,8 +18,7 @@ const props = defineProps<{
   mainList: any
 }>()
 const jsonToList = (e: any) => {
-  list2.value = JSON.parse(e)
-  console.log(list2.value)
+  list2.value = e
   onSort({ newIndex: 0 })
 }
 defineExpose({ jsonToList })
@@ -63,7 +62,9 @@ const jsonComponents = async (id: string) => {
     }
   })
   await nextTick()
+
   currentComponentId.value = id
+
   sendListToParent(list2.value.find((item) => item.id === id)?.comName?.dataComponents || null)
 }
 // 为list2 添加唯一id

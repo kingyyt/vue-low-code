@@ -11,47 +11,35 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref,watch,computed } from 'vue'
 import microAside from '@/components/microMain/microAside.vue'
 import microContainer from '@/components/microMain/microContainer.vue'
 import microEditor from '@/components/microMain/microEditor.vue'
-import {
-  GetJsonList,
-  PostJsonList,
-  GetJsonListDetail,
-  PatchJsonListDetail,
-  DeleteJsonListDetail
-} from '@/api/microMain/microMain'
-import type {
-  JsonList,
-  editJsonList,
-  JsonListReturn,
-  JsonListData
-} from '@/api/microMain/model/microModel'
+import {useMainListStore} from '@/stores/modules/microPage'
 
-// 初始化
-const textDas = async () => {
-  let params = {
-    name: '333333'
-    // json: '{"key": "updated_value"}',
-  }
-  let res = await DeleteJsonListDetail(11)
-  console.log(res)
-  console.log(res)
-  console.log(res)
-}
+
+const store = useMainListStore()
 
 const init = () => {
-  // textDas()
+  store.removeMainList()
+  store.removeName()
 }
 onMounted(async () => {
   init()
 })
 
-const mainList = ref(null)
-const JSONS = ref(
-  '[{"name":"按钮","id":"button-1","props":{"defaultValue":"按钮","addonBefore":"按钮文字","placeholder":"请输入内容"}},{"name":"单元格","id":"cell-4","props":{"text":"按钮2"}},{"name":"按钮","id":"button-2","props":{"defaultValue":"按钮11","addonBefore":"按钮文字","placeholder":"请输入内容"}},{"name":"按钮","id":"button-3","props":{"defaultValue":"按钮","addonBefore":"按钮文字","placeholder":"请输入内容"}}]'
-)
+const mainList = ref<any[]>([])
+const JSONS = ref<any[]>([])
+// 监听列表数据变化
+const mainPageName = computed(() => store.name);
+watch(mainPageName, (newVal, oldVal) => {
+  if(!store.mainList.length) return
+  JSONS.value = store.mainList
+  callContainerChildMethod()
+  console.log('当前页面：',newVal)
+},{
+  deep: true
+})
 
 // 调用内容组件数据处理 《json参数生成列表方法》
 const microContainerRef = ref<InstanceType<typeof microContainer> | null>(null)
@@ -71,6 +59,7 @@ const handleContainerListReceived = (
   console.log('内容->主')
   console.log(mainList.value)
   console.log(listToJson())
+  
 }
 // 调用编辑组件 传递json参数
 const microEditorRef = ref<InstanceType<typeof microEditor> | null>(null)
@@ -87,6 +76,8 @@ const handleEditListReceived = (list: any) => {
   console.log(mainList.value)
   mainList.value = list
 }
+
+
 
 // 转化json数据
 const listToJson = () => {
