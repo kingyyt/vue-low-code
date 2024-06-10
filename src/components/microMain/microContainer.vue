@@ -162,7 +162,7 @@ onMounted(async () => {
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 9999; /* 将遮罩置于内容之上 */
+    z-index: 10; /* 将遮罩置于内容之上 */
   }
   .active {
     background-color: rgba(64, 158, 255, 0.5);

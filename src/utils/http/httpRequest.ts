@@ -37,6 +37,10 @@ service.interceptors.response.use(
     return
   },
   (error) => {
+    if(error.code =="ERR_NETWORK"){
+      message.error('网络错误')
+      return
+    }
     switch (error.response.status) {
       case 404:
         console.log('请求地址错误')

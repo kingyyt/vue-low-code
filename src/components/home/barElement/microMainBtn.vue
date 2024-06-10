@@ -1,21 +1,67 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { onMounted,ref } from 'vue'
+import type {Ref} from 'vue'
 import {
   PlayCircleOutlined,
   ReloadOutlined,
   SaveOutlined,
-  CloudDownloadOutlined
+  CloudDownloadOutlined,
+  DownOutlined
 } from '@ant-design/icons-vue'
+import {
+  GetJsonList,
+  // PostJsonList,
+  // GetJsonListDetail,
+  // PatchJsonListDetail,
+  // DeleteJsonListDetail
+} from '@/api/microMain/microMain'
 
 // 初始化
-const init = () => {}
+const init = () => {
+  getJsonList()
+}
 onMounted(async () => {
   init()
 })
+// 获取json列表
+interface JsonListData{
+  id: number
+  json:any
+  name: string
+  user_id: number
+}
+
+let list: Ref<JsonListData[]> = ref([])
+const getJsonList = async ()=> {
+  const res = await GetJsonList()
+  if(res && res.data){
+    list.value = res.data.map((item:JsonListData)=>{
+      try{
+        const parseData = JSON.parse(item.json)
+        return{
+          ...item,
+          json:parseData
+        }
+        }
+        catch(error){
+          return{
+            ...item,
+            json:[]
+          }
+      }
+    })
+    console.log(list.value)
+  }
+}
+// 列表点击
+const openChange = (e:any)=>{
+  console.log(e)
+}
+
 </script>
 
 <template>
-  <div class="text-white">
+  <div class="dark:text-white">
   <a-popover >
     <template #content>
       <p>预览</p>
@@ -40,5 +86,19 @@ onMounted(async () => {
     </template>
     <CloudDownloadOutlined class="mr-4" />
   </a-popover>
+
+  <a-dropdown >
+    <a class="ant-dropdown-link text-sm" @click.prevent>
+      选择页面
+      <DownOutlined />
+    </a>
+    <template #overlay>
+      <a-menu>
+        <a-menu-item v-for="(item,index) in list" :key="index">
+          <div @click="openChange(item.json)">{{ item.name }}</div>
+        </a-menu-item>
+      </a-menu>
+    </template>
+  </a-dropdown>
   </div>
 </template>
