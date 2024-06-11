@@ -8,7 +8,17 @@ import {useMainListStore} from '@/stores/modules/microPage'
 
 const store = useLoginStore()
 const storeMainList = useMainListStore()
+const pageName = ref('')
+// 更改页面名称
 const mainPageName = computed(() => storeMainList.name);
+watch(mainPageName, (newVal, oldVal) => {
+  pageName.value = newVal
+},{
+  deep: true
+})
+const changeInputName = ()=>{
+  storeMainList.setPageName(pageName.value)
+}
 // 初始化
 const init = () => {}
 onMounted(async () => {
@@ -55,7 +65,7 @@ defineExpose({ editorPropsComPonent })
 
 <template>
   <div class="w-80 min-w-80 h-full shadow-md p-4">
-    <Input v-model:value="mainPageName" placeholder="请输入页面名称" style="margin-top: 10px;" :class="!store.theme ? 'editor-props-input':''" addonBefore="页面名称" />
+    <Input @change="changeInputName" v-model:value="pageName" placeholder="请输入页面名称" style="margin-top: 10px;" :class="!store.theme ? 'editor-props-input':''" addonBefore="页面名称" />
     <component :is="editorPropsDataComponent" :propsData="currentEditComponent?.props" />
   </div>
 </template>

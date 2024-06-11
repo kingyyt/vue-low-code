@@ -2,7 +2,7 @@
   <div class="contents">
     <a-menu
       class="text-gray-400 bg-slate-800 h-screen overflow-x-auto"
-      :class="!state.collapsed ? 'max-w-48' : 'max-w-12'"
+      :class="!state.collapsed ? 'w-48 min-w-48' : 'max-w-12'"
       v-model:openKeys="state.openKeys"
       v-model:selectedKeys="state.selectedKeys"
       mode="inline"
@@ -46,8 +46,8 @@ const items = reactive([
       },
       {
         key: 'testMain',
-        label: '页面设计2',
-        title: '页面设计2'
+        label: '页面发布',
+        title: '页面发布'
       }
     ]
   }

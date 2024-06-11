@@ -4,6 +4,8 @@ import type { DefineComponent } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import type { list } from '@/components/microMain/editorPropsInterface'
 
+
+
 interface BaseComponent extends DefineComponent {
   name: string
   id: string
@@ -19,6 +21,7 @@ const props = defineProps<{
 }>()
 const jsonToList = (e: any) => {
   list2.value = e
+  if(!e.length) return
   onSort({ newIndex: 0 })
 }
 defineExpose({ jsonToList })

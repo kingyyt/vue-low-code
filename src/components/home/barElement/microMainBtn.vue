@@ -1,21 +1,23 @@
 <script setup lang="ts">
-import { onMounted,ref } from 'vue'
+import { nextTick, onMounted,ref } from 'vue'
 import type {Ref} from 'vue'
 import {
   PlayCircleOutlined,
   ReloadOutlined,
   SaveOutlined,
   CloudDownloadOutlined,
-  DownOutlined
+  DownOutlined,
+  InfoCircleOutlined,
+  PlusCircleOutlined
 } from '@ant-design/icons-vue'
 import {
   GetJsonList,
-  // PostJsonList,
+  PostJsonList,
   // GetJsonListDetail,
-  // PatchJsonListDetail,
+  PatchJsonListDetail,
   // DeleteJsonListDetail
 } from '@/api/microMain/microMain'
-
+import { message } from 'ant-design-vue';
 import { useMainListStore } from '@/stores/modules/microPage'
 
 
@@ -35,7 +37,6 @@ interface JsonListData{
   name: string
   user_id: number
 }
-
 let list: Ref<JsonListData[]> = ref([])
 const getJsonList = async ()=> {
   const res = await GetJsonList()
@@ -56,11 +57,70 @@ const getJsonList = async ()=> {
       }
     })
   }
+  console.log(list.value)
 }
 // 列表点击
+const currentPageList:Ref<JsonListData | null> = ref(null) 
 const openChange = (item:any)=>{
+  currentPageList.value = item
   store.setMainList(item.json)
   store.setPageName(item.name)
+  store.setUpdate(1)
+}
+// 保存页面
+const savePage = async ()=>{
+  if(currentPageList.value && currentPageList.value.id){
+    const res:any = await PatchJsonListDetail({json:listToJson(),name:store.name},currentPageList.value.id)
+    if(!res) return
+    message.success('编辑成功');
+    currentPageList.value = res
+    if(currentPageList.value && currentPageList.value.json){
+      currentPageList.value.json = JSON.parse(currentPageList.value?.json)
+    }
+  }else{
+    store.setUpdate(2)
+    await nextTick
+    const res:any = await PostJsonList({
+      json:listToJson(),
+      name:store.name
+    })
+    if(!res.data) return
+    message.success('保存成功');
+    currentPageList.value = res.data
+    if(currentPageList.value && currentPageList.value.json){
+      currentPageList.value.json = JSON.parse(currentPageList.value?.json)
+    }
+  }
+  init()
+}
+// 新建页面
+const newPage = async ()=>{
+  currentPageList.value = null
+  resetPage()
+}
+
+// 转化json数据
+const listToJson = () => {
+  // 使用JSON.parse()和JSON.stringify()进行深拷贝
+  const clonedList = JSON.parse(JSON.stringify(store.mainList))
+
+  // 删除comName对象
+  const jsonData = clonedList.map((item: any) => {
+    if (item.comName) {
+      delete item.comName
+    }
+    return item
+  })
+
+  return JSON.stringify(jsonData)
+}
+
+// 重置页面
+
+const resetPage = () =>{
+  store.removeMainList()
+  store.removeName()
+  store.setUpdate(3)
 }
 
 </script>
@@ -75,26 +135,32 @@ const openChange = (item:any)=>{
   </a-popover>
   <a-popover >
     <template #content>
+      <p>下载源码</p>
+    </template>
+    <CloudDownloadOutlined class="mr-4" />
+  </a-popover>
+  <a-popover >
+    <template #content>
       <p>重置</p>
     </template>
-    <ReloadOutlined class="mr-4" />
+    <ReloadOutlined @click="resetPage" class="mr-4" />
   </a-popover>
   <a-popover >
     <template #content>
       <p>保存</p>
     </template>
-    <SaveOutlined class="mr-4" />
+    <SaveOutlined @click="savePage" class="mr-4" />
   </a-popover>
   <a-popover >
     <template #content>
-      <p>下载源码</p>
+      <p>新增页面</p>
     </template>
-    <CloudDownloadOutlined class="mr-4" />
+    <PlusCircleOutlined @click="newPage"  class="mr-4" />
   </a-popover>
-
+  
   <a-dropdown >
     <a class="ant-dropdown-link text-sm" @click.prevent>
-      {{ store.name ? store.name : '当前页面' }}
+      选择页面
       <DownOutlined />
     </a>
     <template #overlay>
@@ -105,5 +171,6 @@ const openChange = (item:any)=>{
       </a-menu>
     </template>
   </a-dropdown>
+  <span class="ml-4 text-sm"><span class=" text-yellow-400"><InfoCircleOutlined /></span>  {{ currentPageList && currentPageList.id ? `当前编辑页面：${currentPageList.name}`  : '正在编辑新页面' }}</span>
   </div>
 </template>

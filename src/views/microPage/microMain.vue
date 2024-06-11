@@ -31,15 +31,38 @@ onMounted(async () => {
 const mainList = ref<any[]>([])
 const JSONS = ref<any[]>([])
 // 监听列表数据变化
-const mainPageName = computed(() => store.name);
-watch(mainPageName, (newVal, oldVal) => {
-  if(!store.mainList.length) return
-  JSONS.value = store.mainList
-  callContainerChildMethod()
-  console.log('当前页面：',newVal)
+const mainStatus = computed(() => store.update);
+watch(mainStatus, (newVal, oldVal) => {
+  if(store.update == 0) {
+    return
+  }else if(store.update == 1){
+    JSONS.value = store.mainList
+    callContainerChildMethod()
+  }else if(store.update == 2){
+    store.setMainList(mainList.value)
+  }else if(store.update == 3){
+    mainList.value=[]
+    JSONS.value=[]
+    callEditChildMethod()
+    callContainerChildMethod()
+  }
 },{
   deep: true
 })
+// const mainPageName = computed(() => store.name);
+// watch(mainPageName, (newVal, oldVal) => {
+//   if(!store.mainList.length && mainList.value){
+//     callEditChildMethod()
+//   }
+//   if(mainList.value){
+//     JSONS.value = mainList.value
+//   }else{
+//     JSONS.value = store.mainList
+//   }
+//   callContainerChildMethod(!mainList.value)
+// },{
+//   deep: true
+// })
 
 // 调用内容组件数据处理 《json参数生成列表方法》
 const microContainerRef = ref<InstanceType<typeof microContainer> | null>(null)
@@ -58,7 +81,6 @@ const handleContainerListReceived = (
   callEditChildMethod(currentComponentId, editorPropsData)
   console.log('内容->主')
   console.log(mainList.value)
-  console.log(listToJson())
   
 }
 // 调用编辑组件 传递json参数
@@ -79,19 +101,4 @@ const handleEditListReceived = (list: any) => {
 
 
 
-// 转化json数据
-const listToJson = () => {
-  // 使用JSON.parse()和JSON.stringify()进行深拷贝
-  const clonedList = JSON.parse(JSON.stringify(mainList.value))
-
-  // 删除comName对象
-  const jsonData = clonedList.map((item: any) => {
-    if (item.comName) {
-      delete item.comName
-    }
-    return item
-  })
-
-  return JSON.stringify(jsonData)
-}
 </script>
