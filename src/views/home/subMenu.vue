@@ -6,8 +6,37 @@ const init = () => {}
 onMounted(async () => {
   init()
 })
+const blockContent = `圣诞节随叫随到。`;
+
 </script>
 
 <template>
-  <div>page</div>
+  <div class=" p-4 sub-menu-page">
+    <a-typography>
+      <a-typography-title :level="2">介绍</a-typography-title>
+      <a-typography-paragraph>
+        专注开发包括前端h5、pc、小程序、表单、stm32、esp32在内的所有
+        <a-typography-text mark>『低码平台开发』</a-typography-text>
+      </a-typography-paragraph>
+      <a-typography-paragraph>
+        基于
+        <a-typography-text code>vue3/ts/ant-Design-vue/vant/uniapp/python</a-typography-text>
+        的开发，通过模块化的解决方案，降低冗余的生产成本，
+        <a-typography-text strong>获取更好的用户体验</a-typography-text>
+        。
+      </a-typography-paragraph>
+      <a-typography-paragraph>
+        <blockquote>{{ blockContent }}</blockquote>
+        <pre>{{ blockContent }}</pre>
+      </a-typography-paragraph>
+
+    </a-typography>
+    <div>
+      <a-badge dot>
+      <a-avatar dot :size="64" src="http://localhost:8080/src/assets/images/avatar.jpeg">
+      </a-avatar>
+    </a-badge>
+    </div>
+  </div>
 </template>
+

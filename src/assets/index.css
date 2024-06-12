@@ -6,3 +6,10 @@
 svg {
   vertical-align: initial;
 }
+@layer components{
+  .dark .sub-menu-page{
+    :where(.css-dev-only-do-not-override-16pw25h).ant-typography{
+        color: #a5a5a5!important;
+    }
+  }
+}
