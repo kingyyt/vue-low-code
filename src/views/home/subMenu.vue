@@ -11,7 +11,8 @@ const blockContent = `圣诞节随叫随到。`;
 </script>
 
 <template>
-  <div class=" p-4 sub-menu-page">
+  <div class=" p-4 sub-menu-page flex">
+    <div>
     <a-typography>
       <a-typography-title :level="2">介绍</a-typography-title>
       <a-typography-paragraph>
@@ -26,16 +27,46 @@ const blockContent = `圣诞节随叫随到。`;
         。
       </a-typography-paragraph>
       <a-typography-paragraph>
-        <blockquote>{{ blockContent }}</blockquote>
-        <pre>{{ blockContent }}</pre>
+        <blockquote>通过  
+          <a-typography-text strong>微页面->页面设计</a-typography-text>  
+          生成页面
+          <a-typography-text strong>微页面->页面发布</a-typography-text>  
+          发布生成页面
+        </blockquote>
+        <pre>支持私有、h5、各类小程序、及生成源码，亦可在线生成。</pre>
       </a-typography-paragraph>
-
+      <!-- <a-typography-paragraph>
+        后续将提供各类stm32、esp32等硬件开发。
+      </a-typography-paragraph> -->
     </a-typography>
-    <div>
-      <a-badge dot>
-      <a-avatar dot :size="64" src="http://localhost:8080/src/assets/images/avatar.jpeg">
-      </a-avatar>
-    </a-badge>
+    </div>
+    <div class="rounded-lg border border-gray-300 p-6  shadow-lg flex-col items-center justify-center ml-4">
+      <!-- <a-badge class="mt-4 mb-4" >
+        <a-avatar dot :size="64" src="http://localhost:8080/src/assets/images/avatar.jpeg">
+        </a-avatar>
+      </a-badge> -->
+      <a-qrcode
+        bgColor="#fff"
+        error-level="H"
+        value="https://github.com/kingyyt"
+        icon="http://localhost:8080/src/assets/images/avatar.jpeg"
+      />
+
+      <a-typography-paragraph class="mt-2">
+      <ul>
+        <li>
+          <a-typography-link  href="https://github.com/kingyyt">
+            <span class="dark:text-blue-500">github地址</span>
+          </a-typography-link>
+        </li>
+        <li>
+          欢迎加入
+        </li>
+        <li>
+          yeyiteng@163.com
+        </li>
+      </ul>
+    </a-typography-paragraph>
     </div>
   </div>
 </template>

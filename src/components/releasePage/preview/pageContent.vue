@@ -9,5 +9,5 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>test</div>
+  <div></div>
 </template>

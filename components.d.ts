@@ -16,8 +16,11 @@ declare module 'vue' {
     MicroContainer: typeof import('./src/components/microMain/microContainer.vue')['default']
     MicroEditor: typeof import('./src/components/microMain/microEditor.vue')['default']
     MicroMainBtn: typeof import('./src/components/home/barElement/microMainBtn.vue')['default']
+    PageContent: typeof import('./src/components/releasePage/preview/pageContent.vue')['default']
+    PreviewPage: typeof import('./src/components/releasePage/previewPage.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']
+    WXheader: typeof import('./src/components/releasePage/preview/WXheader.vue')['default']
   }
 }

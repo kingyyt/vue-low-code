@@ -45,7 +45,7 @@ const items = reactive([
         title: '页面设计'
       },
       {
-        key: 'testMain',
+        key: 'releasePage',
         label: '页面发布',
         title: '页面发布'
       }

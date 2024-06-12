@@ -3,7 +3,7 @@ import LoginFrom from '@/views/sys/login/LoginFrom.vue'
 import homePage from '@/views/home/homePage.vue'
 import errorPage from '@/views/sys/error/errorPage.vue'
 import microMain from '@/views/microPage/microMain.vue'
-import testMain from '@/views/microPage/testMain.vue'
+import releasePage from '@/views/microPage/releasePage.vue'
 import subMenu from '@/views/home/subMenu.vue'
 
 const routes = [
@@ -22,14 +22,18 @@ const routes = [
     component: homePage,
     children: [
       {
+        path: '', // 使用空路径作为默认子路由
+        redirect: '/subMenu' // 重定向到 `subMenu` 作为默认子路由
+      },
+      {
         path: '/microMain',
         name: 'microMain',
         component: microMain
       },
       {
-        path: '/testMain',
-        name: 'testMain',
-        component: testMain
+        path: '/releasePage',
+        name: 'releasePage',
+        component: releasePage
       },
       {
         path: '/subMenu',
