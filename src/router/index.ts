@@ -23,6 +23,7 @@ const routes = [
     children: [
       {
         path: '', // 使用空路径作为默认子路由
+        name: 'first',
         redirect: '/subMenu' // 重定向到 `subMenu` 作为默认子路由
       },
       {

@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    H5header: typeof import('./src/components/releasePage/preview/H5header.vue')['default']
     HomeBar: typeof import('./src/components/home/homeBar.vue')['default']
     HomeBreadCrumb: typeof import('./src/components/home/homeBreadCrumb.vue')['default']
     HomeNav: typeof import('./src/components/home/homeNav.vue')['default']
@@ -18,6 +19,9 @@ declare module 'vue' {
     MicroMainBtn: typeof import('./src/components/home/barElement/microMainBtn.vue')['default']
     PageContent: typeof import('./src/components/releasePage/preview/pageContent.vue')['default']
     PreviewPage: typeof import('./src/components/releasePage/previewPage.vue')['default']
+    ReleaseFun: typeof import('./src/components/releasePage/releaseFun.vue')['default']
+    ReleaseFunction: typeof import('./src/components/releasePage/releaseFunction.vue')['default']
+    ReleaseNav: typeof import('./src/components/releasePage/releaseNav.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     VanButton: typeof import('vant/es')['Button']

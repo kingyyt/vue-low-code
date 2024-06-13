@@ -6,10 +6,34 @@
 svg {
   vertical-align: initial;
 }
-@layer components{
-  .dark .sub-menu-page{
-    :where(.css-dev-only-do-not-override-16pw25h).ant-typography{
-        color: #a5a5a5!important;
+@layer components {
+  .dark .sub-menu-page {
+    :where(.css-dev-only-do-not-override-16pw25h).ant-typography {
+      color: #a5a5a5 !important;
+    }
+  }
+}
+
+/* 覆盖ant radio 样式 */
+
+@layer components {
+  .dark .ant-radio-group-dark {
+    :where(.css-dev-only-do-not-override-16pw25h).ant-radio-group {
+      color: #9ca3af;
+      background-color: #374151;
+    }
+    :where(.css-dev-only-do-not-override-16pw25h).ant-radio-button-wrapper-checked:not(
+        .ant-radio-button-wrapper-disabled
+      ):first-child {
+      background-color: rgb(75 85 99);
+    }
+    :where(.css-dev-only-do-not-override-16pw25h).ant-radio-button-wrapper:first-child {
+      background-color: rgb(75 85 99);
+      color: #9ca3af;
+    }
+    :where(.css-dev-only-do-not-override-16pw25h).ant-radio-button-wrapper:last-child {
+      background-color: rgb(75 85 99);
+      color: #9ca3af;
     }
   }
 }
