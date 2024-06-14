@@ -28,8 +28,6 @@ const setComponentRef = (index: number) => (el: any) => {
 }
 
 const jsonComponents = async () => {
-  console.log(props.releaseNavData.currentPage.json)
-  console.log(components.value)
   props.releaseNavData.currentPage.json.forEach((i: any, index: any) => {
     components.value.forEach(async (j) => {
       if (i.id.split('-')[0] == j.id) {
@@ -42,10 +40,6 @@ const jsonComponents = async () => {
       }
     })
   })
-
-  console.log(props.releaseNavData.currentPage.json)
-  console.log(props.releaseNavData.currentPage.json)
-  console.log(props.releaseNavData.currentPage.json)
 }
 
 const props = defineProps<{
