@@ -17,6 +17,7 @@ import {
   PatchJsonListDetail
   // DeleteJsonListDetail
 } from '@/api/microMain/microMain'
+import { buildCodeApi } from '@/api/buildCode/buildCode'
 import { message } from 'ant-design-vue'
 import { useMainListStore } from '@/stores/modules/microPage'
 
@@ -128,6 +129,7 @@ const downCode = async () => {
   store.setUpdate(2)
   await nextTick
 
+  await buildCodeApi({ json: listToJson() })
   console.log(listToJson())
 }
 </script>
