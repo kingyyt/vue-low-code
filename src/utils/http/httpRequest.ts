@@ -4,6 +4,7 @@ import { message } from 'ant-design-vue'
 import router from '@/router/index'
 
 const service = axios.create({
+  // baseURL: 'http://192.168.100.238:8000',
   baseURL: 'http://localhost:8000',
   timeout: 5000
 })
@@ -37,7 +38,7 @@ service.interceptors.response.use(
     return
   },
   (error) => {
-    if(error.code =="ERR_NETWORK"){
+    if (error.code == 'ERR_NETWORK') {
       message.error('网络错误')
       return
     }

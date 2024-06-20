@@ -5,11 +5,13 @@ export default {
 }
 </script>
 <script setup lang="ts">
+// IF EDITOR
 import { editorPropsData } from './data'
 
 defineExpose({
   editorPropsData: editorPropsData().value
 })
+// END EDITOR
 </script>
 
 <template>
