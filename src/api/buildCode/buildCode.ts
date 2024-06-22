@@ -1,8 +1,11 @@
 import Http from '@/utils/http/http'
-import type { buildCode } from '@/api/buildCode/model/buildCode'
+import type { buildCode, downBuildCode } from '@/api/buildCode/model/buildCode'
 
 enum Api {
-  BUILDCODE = '/api/buildCode/'
+  BUILDCODE = '/api/buildCode/',
+  DOWNUNIAPPZIP = 'api/downUniappZip/'
 }
 
 export const buildCodeApi = (params: buildCode) => Http.post<any>(Api.BUILDCODE, params)
+export const downbuildCodeApi = (params: downBuildCode) =>
+  Http.dowmloadPost<any>(Api.DOWNUNIAPPZIP, params)

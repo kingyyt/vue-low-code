@@ -5,7 +5,12 @@ export default {
   // IF EDITOR
   dataComponents: dataComponents,
   // END EDITOR
-  props: ['props']
+  props: {
+    props: {
+      type: Object,
+      default: () => ({})
+    }
+  }
 }
 </script>
 <script setup lang="ts">

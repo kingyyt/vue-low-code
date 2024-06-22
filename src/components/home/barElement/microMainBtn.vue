@@ -17,9 +17,10 @@ import {
   PatchJsonListDetail
   // DeleteJsonListDetail
 } from '@/api/microMain/microMain'
-import { buildCodeApi } from '@/api/buildCode/buildCode'
+import { buildCodeApi, downbuildCodeApi } from '@/api/buildCode/buildCode'
 import { message } from 'ant-design-vue'
 import { useMainListStore } from '@/stores/modules/microPage'
+import { DownloadBlob } from '@/utils/public/downDocument'
 
 // 初始化
 const init = () => {
@@ -128,9 +129,10 @@ const resetPage = () => {
 const downCode = async () => {
   store.setUpdate(2)
   await nextTick
-
-  await buildCodeApi({ json: listToJson() })
-  console.log(listToJson())
+  const filename = '26f4778ab1604d10a0214e81319c4e31_uni-app'
+  const responseBlob = await downbuildCodeApi({ filename })
+  if (!responseBlob) return
+  DownloadBlob(responseBlob, filename)
 }
 </script>
 

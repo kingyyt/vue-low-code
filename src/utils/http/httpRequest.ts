@@ -28,22 +28,36 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     if (response.status == 200) {
-      message.success(response.data.msg)
       return response.data
     }
     if (response.status == 204) {
       message.success('删除成功')
       return response.data
     }
+    if (response.status == 205) {
+      message.success('保存成功')
+      return response.data
+    }
+    if (response.status == 206) {
+      // message.success('下载成功')
+      return response.data
+    }
+    if (response.status == 207) {
+      message.success('打包成功')
+      return response.data
+    }
+
     message.error(response.data.error)
     return
   },
   (error) => {
-    if (error.code == 'ERR_NETWORK') {
-      message.error('网络错误')
-      return
-    }
     switch (error.response.status) {
+      case 401:
+        message.error('传入的文件名错误')
+        return
+      case 402:
+        message.error('文件不存在')
+        return
       case 404:
         console.log('请求地址错误')
         message.error(error.response.data.detail)
