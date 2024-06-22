@@ -5,4 +5,4 @@ enum Api {
   BUILDCODE = '/api/buildCode/'
 }
 
-export const buildCodeApi = (params: buildCode) => Http.get<any>(Api.BUILDCODE, params)
+export const buildCodeApi = (params: buildCode) => Http.post<any>(Api.BUILDCODE, params)

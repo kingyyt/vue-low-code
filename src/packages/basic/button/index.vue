@@ -3,8 +3,9 @@ export default {
   name: '按钮',
   id: 'button',
   // IF EDITOR
-  dataComponents: dataComponents
+  dataComponents: dataComponents,
   // END EDITOR
+  props: ['props']
 }
 </script>
 <script setup lang="ts">
@@ -14,13 +15,10 @@ defineExpose({
   editorPropsData: editorPropsData()
 })
 // END EDITOR
-const props = defineProps<{
-  props: any
-}>()
 </script>
 
 <template>
   <div>
-    <van-button type="danger">{{ props.props?.defaultValue }}</van-button>
+    <van-button type="danger">{{ props.defaultValue }}</van-button>
   </div>
 </template>

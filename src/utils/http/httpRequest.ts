@@ -28,6 +28,7 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     if (response.status == 200) {
+      message.success(response.data.msg)
       return response.data
     }
     if (response.status == 204) {
