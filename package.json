@@ -21,6 +21,7 @@
     "pinia-plugin-persistedstate": "^3.2.1",
     "querystring": "^0.2.1",
     "react-dnd-html5-backend": "^16.0.1",
+    "socket.io-client": "^4.7.5",
     "vant": "^4.9.0",
     "vue": "^3.4.21",
     "vue-draggable-plus": "^0.4.0",

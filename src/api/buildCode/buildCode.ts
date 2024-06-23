@@ -6,6 +6,7 @@ enum Api {
   DOWNUNIAPPZIP = 'api/downUniappZip/'
 }
 
-export const buildCodeApi = (params: buildCode) => Http.post<any>(Api.BUILDCODE, params)
+export const buildCodeApi = (params: buildCode, config: any) =>
+  Http.post<any>(Api.BUILDCODE, params, config)
 export const downbuildCodeApi = (params: downBuildCode) =>
   Http.dowmloadPost<any>(Api.DOWNUNIAPPZIP, params)

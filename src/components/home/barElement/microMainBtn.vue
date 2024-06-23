@@ -21,6 +21,7 @@ import { buildCodeApi, downbuildCodeApi } from '@/api/buildCode/buildCode'
 import { message } from 'ant-design-vue'
 import { useMainListStore } from '@/stores/modules/microPage'
 import { DownloadBlob } from '@/utils/public/downDocument'
+import downCodeBtn from './components/downCodeBtn.vue'
 
 // 初始化
 const init = () => {
@@ -93,8 +94,10 @@ const savePage = async () => {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
     }
   }
+  openChange(currentPageList.value)
   init()
 }
+
 // 新建页面
 const newPage = async () => {
   currentPageList.value = null
@@ -125,19 +128,24 @@ const resetPage = () => {
   store.setUpdate(3)
 }
 
+const downCodeBtnRef = ref<InstanceType<typeof downCodeBtn> | null>(null)
 // 下载源码
 const downCode = async () => {
+  await savePage()
   store.setUpdate(2)
-  await nextTick
-  const filename = '26f4778ab1604d10a0214e81319c4e31_uni-app'
-  const responseBlob = await downbuildCodeApi({ filename })
-  if (!responseBlob) return
-  DownloadBlob(responseBlob, filename)
+  downCodeBtnRef.value?.showModal(currentPageList.value)
+  // await buildCodeApi({ json: listToJson() })
+  // console.log(listToJson())
+  // const filename = '26f4778ab1604d10a0214e81319c4e31_uni-app'
+  // const responseBlob = await downbuildCodeApi({ filename })
+  // if (!responseBlob) return
+  // DownloadBlob(responseBlob, filename)
 }
 </script>
 
 <template>
   <div class="dark:text-white">
+    <downCodeBtn ref="downCodeBtnRef" />
     <a-popover>
       <template #content>
         <p>预览</p>

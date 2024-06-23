@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    DownCodeBtn: typeof import('./src/components/home/barElement/components/downCodeBtn.vue')['default']
     H5header: typeof import('./src/components/releasePage/preview/H5header.vue')['default']
     HomeBar: typeof import('./src/components/home/homeBar.vue')['default']
     HomeBreadCrumb: typeof import('./src/components/home/homeBreadCrumb.vue')['default']
