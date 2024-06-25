@@ -19,6 +19,7 @@ declare module 'vue' {
     MicroEditor: typeof import('./src/components/microMain/microEditor.vue')['default']
     MicroMainBtn: typeof import('./src/components/home/barElement/microMainBtn.vue')['default']
     PageContent: typeof import('./src/components/releasePage/preview/pageContent.vue')['default']
+    PageSetting: typeof import('./src/components/microMain/child/pageSetting.vue')['default']
     PreviewPage: typeof import('./src/components/releasePage/previewPage.vue')['default']
     ReleaseFun: typeof import('./src/components/releasePage/releaseFun.vue')['default']
     ReleaseFunction: typeof import('./src/components/releasePage/releaseFunction.vue')['default']

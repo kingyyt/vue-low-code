@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref, computed, watch } from 'vue'
 import type { Ref } from 'vue'
 import {
   PlayCircleOutlined,
@@ -17,10 +17,8 @@ import {
   PatchJsonListDetail
   // DeleteJsonListDetail
 } from '@/api/microMain/microMain'
-import { buildCodeApi, downbuildCodeApi } from '@/api/buildCode/buildCode'
 import { message } from 'ant-design-vue'
 import { useMainListStore } from '@/stores/modules/microPage'
-import { DownloadBlob } from '@/utils/public/downDocument'
 import downCodeBtn from './components/downCodeBtn.vue'
 
 // 初始化
@@ -66,6 +64,37 @@ const openChange = (item: any) => {
   store.setMainList(item.json)
   store.setPageName(item.name)
   store.setUpdate(1)
+}
+// 保存页面之前 进行form校验
+const isValiDate = ref(false)
+const mainStatus = computed(() => store.update)
+watch(
+  mainStatus,
+  async (newVal, oldVal) => {
+    console.log(newVal, oldVal)
+    if (store.update == 0) {
+      return
+    } else if (newVal == 5 && oldVal == 4) {
+      // 经校验后保存/编辑页面
+      savePage()
+      isValiDate.value = true
+    } else if (newVal == 4 && oldVal == 0) {
+      // 校验不通过
+      isValiDate.value = false
+    } else if (newVal == 6 && oldVal == 0) {
+      setTimeout(() => {
+        store.setUpdate(2)
+      }, 0)
+      downCodeBtnRef.value?.showModal(currentPageList.value)
+    }
+  },
+  {
+    deep: true
+  }
+)
+// 保存页面校验
+const savePageVaidate = async () => {
+  store.setUpdate(4)
 }
 // 保存页面
 const savePage = async () => {
@@ -129,17 +158,18 @@ const resetPage = () => {
 }
 
 const downCodeBtnRef = ref<InstanceType<typeof downCodeBtn> | null>(null)
+// 下载源码校验
+const downCodeVaidate = async () => {
+  savePageVaidate()
+  setTimeout(() => {
+    if (isValiDate.value) {
+      downCode()
+    }
+  }, 0)
+}
 // 下载源码
 const downCode = async () => {
-  await savePage()
-  store.setUpdate(2)
-  downCodeBtnRef.value?.showModal(currentPageList.value)
-  // await buildCodeApi({ json: listToJson() })
-  // console.log(listToJson())
-  // const filename = '26f4778ab1604d10a0214e81319c4e31_uni-app'
-  // const responseBlob = await downbuildCodeApi({ filename })
-  // if (!responseBlob) return
-  // DownloadBlob(responseBlob, filename)
+  store.setUpdate(6)
 }
 </script>
 
@@ -156,7 +186,7 @@ const downCode = async () => {
       <template #content>
         <p>下载源码</p>
       </template>
-      <CloudDownloadOutlined @click="downCode" class="mr-4" />
+      <CloudDownloadOutlined @click="downCodeVaidate" class="mr-4" />
     </a-popover>
     <a-popover>
       <template #content>
@@ -168,7 +198,7 @@ const downCode = async () => {
       <template #content>
         <p>保存</p>
       </template>
-      <SaveOutlined @click="savePage" class="mr-4" />
+      <SaveOutlined @click="savePageVaidate" class="mr-4" />
     </a-popover>
     <a-popover>
       <template #content>

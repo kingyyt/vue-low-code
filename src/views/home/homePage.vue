@@ -2,12 +2,12 @@
 import { onMounted, ref } from 'vue'
 import homeNav from '@/components/home/homeNav.vue'
 import homeBar from '@/components/home/homeBar.vue'
-import { useRoute } from 'vue-router';
+import { useRoute } from 'vue-router'
 
-const route = useRoute();
+const route = useRoute()
 
-const getCurrentRouteName =()=> {
-  return route.name?.toString();
+const getCurrentRouteName = () => {
+  return route.name?.toString()
 }
 
 const homeNavRef = ref<any>()
@@ -18,8 +18,7 @@ const toggleCollapsed = () => {
 }
 
 // 初始化
-const init = () => {
-}
+const init = () => {}
 onMounted(async () => {
   init()
 })

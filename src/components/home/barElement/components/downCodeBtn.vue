@@ -7,7 +7,7 @@
       @ok="handleOk"
       ok-text="下载"
       cancel-text="取消"
-      :ok-button-props="{ disabled: progress != 100 }"
+      :ok-button-props="{ disabled: progress != 100 && filename }"
     >
       <a-radio-group v-model:value="value">
         <a-radio :style="radioStyle" :value="1">完整代码（推荐）</a-radio>
@@ -27,27 +27,38 @@ import type { Ref } from 'vue'
 import io from 'socket.io-client'
 import type { JsonListData } from '@/api/microMain/model/microModel'
 import { buildCodeApi, downbuildCodeApi } from '@/api/buildCode/buildCode'
+import { DownloadBlob } from '@/utils/public/downDocument'
 
 // a-modal
 const modalText = ref<string>('Content of the modal')
 const open = ref<boolean>(false)
 const confirmLoading = ref<boolean>(false)
 const buildList: Ref<JsonListData | null> = ref(null)
+const filename = ref<string>('')
+
+const progress = ref(0)
+const socket = new WebSocket('ws://localhost:8000/ws/build_uniapp_file/')
+socket.onmessage = (event) => {
+  progress.value = JSON.parse(event.data).progress
+}
 
 const showModal = (currentPageList: JsonListData | null) => {
   buildList.value = currentPageList
-  console.log(currentPageList)
-  console.log(currentPageList)
   open.value = true
+  socket.addEventListener('open', (event) => {
+    console.log('WebSocket 连接已打开：', event)
+  })
 }
 
-const handleOk = () => {
-  modalText.value = 'The modal will be closed after two seconds'
+const handleOk = async () => {
+  const responseBlob = await downbuildCodeApi({ filename: filename.value })
+  if (!responseBlob) return
+  DownloadBlob(responseBlob, filename.value)
   confirmLoading.value = true
   setTimeout(() => {
     open.value = false
     confirmLoading.value = false
-  }, 2000)
+  }, 500)
 }
 
 // a-radio
@@ -58,18 +69,7 @@ const radioStyle = reactive({
   lineHeight: '30px'
 })
 
-const progress = ref(0)
-const socket = new WebSocket('ws://localhost:8000/ws/build_uniapp_file/')
-socket.addEventListener('open', (event) => {
-  console.log('WebSocket 连接已打开：', event)
-  // 在这里可以发送初始消息或者进行其他操作
-})
-socket.onmessage = (event) => {
-  progress.value = JSON.parse(event.data).progress
-}
-
 const startBuild = async () => {
-  socket.send('123')
   try {
     const response = await buildCodeApi(
       { json: JSON.stringify(buildList.value?.json) },
@@ -80,8 +80,7 @@ const startBuild = async () => {
       }
     )
     // 处理响应，例如获取工作ID
-    const workId = response
-    console.log(workId)
+    filename.value = response.name.id
     // 可以通过workId来标识特定的构建过程
     // 如果需要的话，可以将其发送到WebSocket服务器
   } catch (error) {

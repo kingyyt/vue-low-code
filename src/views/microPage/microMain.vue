@@ -11,12 +11,11 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref,watch,computed } from 'vue'
+import { onMounted, ref, watch, computed } from 'vue'
 import microAside from '@/components/microMain/microAside.vue'
 import microContainer from '@/components/microMain/microContainer.vue'
 import microEditor from '@/components/microMain/microEditor.vue'
-import {useMainListStore} from '@/stores/modules/microPage'
-
+import { useMainListStore } from '@/stores/modules/microPage'
 
 const store = useMainListStore()
 
@@ -31,24 +30,28 @@ onMounted(async () => {
 const mainList = ref<any[]>([])
 const JSONS = ref<any[]>([])
 // 监听列表数据变化
-const mainStatus = computed(() => store.update);
-watch(mainStatus, (newVal, oldVal) => {
-  if(store.update == 0) {
-    return
-  }else if(store.update == 1){
-    JSONS.value = store.mainList
-    callContainerChildMethod()
-  }else if(store.update == 2){
-    store.setMainList(mainList.value)
-  }else if(store.update == 3){
-    mainList.value=[]
-    JSONS.value=[]
-    callEditChildMethod()
-    callContainerChildMethod()
+const mainStatus = computed(() => store.update)
+watch(
+  mainStatus,
+  (newVal, oldVal) => {
+    if (store.update == 0) {
+      return
+    } else if (store.update == 1) {
+      JSONS.value = store.mainList
+      callContainerChildMethod()
+    } else if (store.update == 2) {
+      store.setMainList(mainList.value)
+    } else if (store.update == 3) {
+      mainList.value = []
+      JSONS.value = []
+      callEditChildMethod()
+      callContainerChildMethod()
+    }
+  },
+  {
+    deep: true
   }
-},{
-  deep: true
-})
+)
 // const mainPageName = computed(() => store.name);
 // watch(mainPageName, (newVal, oldVal) => {
 //   if(!store.mainList.length && mainList.value){
@@ -81,7 +84,6 @@ const handleContainerListReceived = (
   callEditChildMethod(currentComponentId, editorPropsData)
   console.log('内容->主')
   console.log(mainList.value)
-  
 }
 // 调用编辑组件 传递json参数
 const microEditorRef = ref<InstanceType<typeof microEditor> | null>(null)
@@ -98,7 +100,4 @@ const handleEditListReceived = (list: any) => {
   console.log(mainList.value)
   mainList.value = list
 }
-
-
-
 </script>
