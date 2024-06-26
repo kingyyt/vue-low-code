@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick, shallowRef, watch } from 'vue'
+import { onMounted, ref, nextTick, shallowRef, watch, reactive } from 'vue'
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import pageSetting from '@/components/microMain/child/pageSetting.vue'
@@ -25,8 +25,8 @@ const sendListToParent = () => {
 watch(
   () => currentEditComponent.value?.props,
   (newValue, oldValue) => {
-    if (currentEditComponent.value) {
-      currentEditComponent.value.props = newValue
+    if (currentEditComponent.value && newValue) {
+      currentEditComponent.value.props = newValue.formData.model
       sendListToParent()
     }
   },
@@ -34,6 +34,21 @@ watch(
     deep: true
   }
 )
+// 表单
+interface FormState {
+  btnText: string
+}
+
+const formState = reactive<FormState>({
+  btnText: ''
+})
+const onFinish = (values: any) => {
+  console.log('Success:', values)
+}
+
+const onFinishFailed = (errorInfo: any) => {
+  console.log('Failed:', errorInfo)
+}
 
 const props = defineProps<{
   mainList: any
@@ -69,7 +84,15 @@ defineExpose({ editorPropsComPonent })
             编辑组件
           </span>
         </template>
-        <component :is="editorPropsDataComponent" :propsData="currentEditComponent?.props" />
+        <a-form
+          :model="formState"
+          name="basic"
+          autocomplete="off"
+          @finish="onFinish"
+          @finishFailed="onFinishFailed"
+        >
+          <component :is="editorPropsDataComponent" :propsData="currentEditComponent?.props" />
+        </a-form>
       </a-tab-pane>
     </a-tabs>
   </div>
