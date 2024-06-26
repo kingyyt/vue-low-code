@@ -4,8 +4,6 @@ import type { DefineComponent } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import type { list } from '@/components/microMain/editorPropsInterface'
 
-
-
 interface BaseComponent extends DefineComponent {
   name: string
   id: string
@@ -21,7 +19,7 @@ const props = defineProps<{
 }>()
 const jsonToList = (e: any) => {
   list2.value = e
-  if(!e.length) return
+  if (!e.length) return
   onSort({ newIndex: 0 })
 }
 defineExpose({ jsonToList })
@@ -42,7 +40,6 @@ const importComponents = async () => {
   }
 }
 // 遍历获取对应组件
-
 const componentRef = ref<any>([])
 const setComponentRef = (index: number) => (el: any) => {
   if (componentRef.value) {
@@ -51,6 +48,7 @@ const setComponentRef = (index: number) => (el: any) => {
 }
 const jsonComponents = async (id: string) => {
   list2.value.forEach((i, index) => {
+    console.log('-----')
     if (!Object.prototype.hasOwnProperty.call(i, 'comName')) {
       components.value.forEach(async (j) => {
         if (i.id.split('-')[0] == j.id) {
@@ -123,7 +121,7 @@ onMounted(async () => {
           ></div>
           <component
             :ref="setComponentRef(path)"
-            :props="component.props"
+            :props="component.props?.formData.model"
             class="content"
             :is="component.comName"
           />

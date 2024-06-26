@@ -4,8 +4,6 @@ export interface list {
   comName?: Record<string, any>
   props?: Record<string, any>
   dataComponents?: Record<string, any>
-  model?: any
-  formData?: any
 }
 
 export interface inputComponentProps {

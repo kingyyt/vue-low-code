@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick, shallowRef, watch, reactive } from 'vue'
+import { onMounted, ref, nextTick, shallowRef, watch } from 'vue'
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import pageSetting from '@/components/microMain/child/pageSetting.vue'
@@ -26,7 +26,7 @@ watch(
   () => currentEditComponent.value?.props,
   (newValue, oldValue) => {
     if (currentEditComponent.value && newValue) {
-      currentEditComponent.value.props = newValue.formData.model
+      currentEditComponent.value.props = newValue
       sendListToParent()
     }
   },
@@ -34,21 +34,6 @@ watch(
     deep: true
   }
 )
-// 表单
-interface FormState {
-  btnText: string
-}
-
-const formState = reactive<FormState>({
-  btnText: ''
-})
-const onFinish = (values: any) => {
-  console.log('Success:', values)
-}
-
-const onFinishFailed = (errorInfo: any) => {
-  console.log('Failed:', errorInfo)
-}
 
 const props = defineProps<{
   mainList: any
@@ -62,11 +47,37 @@ const editorPropsComPonent = async (currentComponentId?: string, editorPropsData
   editorPropsDataComponent.value = editorPropsData
 }
 
+// 编辑组件校验
+
+const componentRefs = ref<any>([])
+const setComponentRef = () => (el: any) => {
+  if (el) {
+    componentRefs.value.push(el)
+    console.log(el.$refs)
+    console.log(el.$refs.value)
+    console.log(Object.keys(el.$refs))
+  }
+}
+
+const callValidateFields = () => {
+  componentRefs.value.forEach((componentRef: any) => {
+    componentRef.$refs['fff']
+      .validateFields()
+      .then(() => {
+        console.log('success')
+      })
+      .catch((error: any) => {
+        console.error('验证失败:', error)
+      })
+  })
+}
+
 defineExpose({ editorPropsComPonent })
 </script>
 
 <template>
   <div class="w-80 min-w-80 h-full shadow-md p-2">
+    <a-button @click="callValidateFields()"></a-button>
     <a-tabs v-model:activeKey="activeKey" class="pl-2 pb-2 dark:text-gray-400">
       <a-tab-pane key="1">
         <template #tab>
@@ -84,15 +95,11 @@ defineExpose({ editorPropsComPonent })
             编辑组件
           </span>
         </template>
-        <a-form
-          :model="formState"
-          name="basic"
-          autocomplete="off"
-          @finish="onFinish"
-          @finishFailed="onFinishFailed"
-        >
-          <component :is="editorPropsDataComponent" :propsData="currentEditComponent?.props" />
-        </a-form>
+        <component
+          :ref="setComponentRef()"
+          :is="editorPropsDataComponent"
+          :propsData="currentEditComponent?.props"
+        />
       </a-tab-pane>
     </a-tabs>
   </div>

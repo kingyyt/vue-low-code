@@ -8,8 +8,8 @@ function componentsProps() {
   return {
     formData: ref({
       model: {
-        color: '#333',
-        btnText: '按钮2'
+        btnText: '',
+        color: ''
       },
       data: [
         ref<inputComponentProps>({
@@ -19,8 +19,8 @@ function componentsProps() {
           rules: [{ required: true, message: '请输入按钮文字!' }]
         }),
         ref<inputComponentProps>({
-          addonBefore: '按钮文字1',
-          placeholder: '请输入内容1',
+          addonBefore: '按钮颜色',
+          placeholder: '请输入颜色',
           name: 'color',
           rules: [{ required: true, message: '请输入按钮颜色' }],
           color: '#333'
@@ -44,6 +44,7 @@ export default {
       h(
         Form,
         {
+          ref: 'fff',
           model: props.propsData.formData.model
         },
         () => [

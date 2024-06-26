@@ -6,9 +6,8 @@ export default {
   dataComponents: dataComponents,
   // END EDITOR
   props: {
-    propsData: {
-      type: Object,
-      default: () => ({})
+    props: {
+      type: Object
     }
   }
 }
@@ -24,7 +23,6 @@ defineExpose({
 
 <template>
   <div>
-    {{ propsData }}
-    <van-button :color="propsData.color">{{ propsData.btnText }}</van-button>
+    <van-button :color="props?.color">{{ props?.btnText }}</van-button>
   </div>
 </template>

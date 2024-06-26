@@ -77,7 +77,6 @@ onMounted(async () => {
       ref="formRef"
       :model="formState"
       name="basic"
-      :wrapper-col="{ span: 24 }"
       autocomplete="off"
       @finish="onFinish"
       @finishFailed="onFinishFailed"
@@ -87,7 +86,6 @@ onMounted(async () => {
           @change="changeInputName"
           v-model:value="formState.pageName"
           placeholder="请输入页面名称"
-          style="margin-top: 10px; width: 100%"
           :class="!store.theme ? 'editor-props-input' : ''"
           addonBefore="页面名称"
         />
