@@ -28,7 +28,7 @@ const sendListToParent = () => {
 // 监听 props 变化
 watch(
   () => currentEditComponent.value?.props,
-  (newValue, oldValue) => {
+  (newValue) => {
     if (currentEditComponent.value && newValue) {
       currentEditComponent.value.props = newValue
       sendListToParent()
@@ -56,7 +56,7 @@ const storeMainList = useMainListStore()
 const mainEditStatus = computed(() => storeMainList.update)
 watch(
   mainEditStatus,
-  (newVal, oldVal) => {
+  (newVal) => {
     if (storeMainList.update == 0) {
       return
     } else if (newVal == 7) {
@@ -67,32 +67,28 @@ watch(
     deep: true
   }
 )
-const componentRefs = ref<any>([])
-const setComponentRef = () => (el: any) => {
-  if (el) {
-    componentRefs.value.push(el)
+const componentRefs = ref<any>()
+const setComponentRef = (el: any) => {
+  if (el && el.nodeName !== '#comment') {
+    componentRefs.value = el
   }
 }
 
 const callValidateFields = () => {
-  componentRefs.value.forEach((componentRef: any) => {
-    if (Object.keys(componentRef)[0]) {
-      componentRef.$refs['FormRef']
-        .validateFields()
-        .then(() => {
-          storeMainList.setUpdate(8)
-        })
-        .catch(async (error: any) => {
-          if (activeKey.value != '2') {
-            sendActiveKey('2')
-            await nextTick()
-            callValidateFields()
-          }
-          sendActiveKey('2')
-          console.error('验证失败:', error)
-        })
-    }
-  })
+  componentRefs.value.$refs['FormRef']
+    .validateFields()
+    .then(() => {
+      storeMainList.setUpdate(8)
+    })
+    .catch(async (error: any) => {
+      if (activeKey.value != '2') {
+        sendActiveKey('2')
+        await nextTick()
+        callValidateFields()
+      }
+      sendActiveKey('2')
+      console.error('验证失败:', error)
+    })
 }
 
 defineExpose({ editorPropsComPonent })
@@ -118,7 +114,7 @@ defineExpose({ editorPropsComPonent })
           </span>
         </template>
         <component
-          :ref="setComponentRef()"
+          :ref="(el: any) => setComponentRef(el)"
           :is="editorPropsDataComponent"
           :propsData="currentEditComponent?.props"
         />
