@@ -71,15 +71,20 @@ const mainStatus = computed(() => store.update)
 watch(
   mainStatus,
   async (newVal, oldVal) => {
-    console.log(newVal, oldVal)
     if (store.update == 0) {
       return
     } else if (newVal == 5 && oldVal == 4) {
-      // 经校验后保存/编辑页面
+      // 页面设置校验通过
+      store.setUpdate(7)
+    } else if (newVal == 8 && oldVal == 7) {
+      // 编辑组件校验通过
       savePage()
       isValiDate.value = true
+    } else if (newVal == 7 && oldVal == 5) {
+      // 编辑组件校验不通过
+      isValiDate.value = false
     } else if (newVal == 4 && oldVal == 0) {
-      // 校验不通过
+      // 页面设置校验不通过
       isValiDate.value = false
     } else if (newVal == 6 && oldVal == 0) {
       setTimeout(() => {
@@ -98,6 +103,8 @@ const savePageVaidate = async () => {
 }
 // 保存页面
 const savePage = async () => {
+  store.setUpdate(2)
+  await nextTick
   if (currentPageList.value && currentPageList.value.id) {
     const res: any = await PatchJsonListDetail(
       { json: listToJson(), name: store.name },
@@ -136,16 +143,14 @@ const newPage = async () => {
 // 转化json数据
 const listToJson = () => {
   // 使用JSON.parse()和JSON.stringify()进行深拷贝
-  const clonedList = JSON.parse(JSON.stringify(store.mainList))
-
-  // 删除comName对象
-  const jsonData = clonedList.map((item: any) => {
-    if (item.comName) {
-      delete item.comName
-    }
-    return item
+  const jsonData: any[] = []
+  store.mainList.forEach((item: any) => {
+    jsonData.push({
+      id: item.id,
+      name: item.name,
+      model: item.props.formData.model
+    })
   })
-
   return JSON.stringify(jsonData)
 }
 

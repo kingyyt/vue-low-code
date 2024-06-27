@@ -2,6 +2,7 @@
 import { onMounted, watch, computed, reactive, ref } from 'vue'
 import { useMainListStore } from '@/stores/modules/microPage'
 import { useLoginStore } from '@/stores/modules/user'
+
 // 表单
 interface FormState {
   pageName: string
@@ -60,9 +61,15 @@ const validateFields = () => {
     })
     .catch((error: any) => {
       // 验证失败，可以处理错误信息
+      sendActiveKey()
       console.error('验证失败:', error)
     })
 }
+
+const sendActiveKey = () => {
+  emit('send-activeKey', '1')
+}
+const emit = defineEmits(['send-activeKey'])
 // 初始化
 const init = () => {}
 

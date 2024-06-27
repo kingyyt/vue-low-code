@@ -8,8 +8,8 @@ function componentsProps() {
   return {
     formData: ref({
       model: {
-        btnText: '',
-        color: ''
+        btnText: '按钮',
+        color: 'red'
       },
       data: [
         ref<inputComponentProps>({
@@ -44,7 +44,7 @@ export default {
       h(
         Form,
         {
-          ref: 'fff',
+          ref: 'FormRef',
           model: props.propsData.formData.model
         },
         () => [

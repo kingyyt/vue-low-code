@@ -48,15 +48,18 @@ const setComponentRef = (index: number) => (el: any) => {
 }
 const jsonComponents = async (id: string) => {
   list2.value.forEach((i, index) => {
-    console.log('-----')
     if (!Object.prototype.hasOwnProperty.call(i, 'comName')) {
       components.value.forEach(async (j) => {
         if (i.id.split('-')[0] == j.id) {
           i.comName = shallowRef({ ...j, comId: id })
           await nextTick()
           if (componentRef.value && !Object.prototype.hasOwnProperty.call(i, 'props')) {
+            // 若存在model 说明已经设置过属性 直接赋值 否则创建新的数据
             const prop = ref(componentRef.value[index].editorPropsData)
             i.props = prop.value
+            if (Object.prototype.hasOwnProperty.call(i, 'model') && i.props) {
+              i.props.formData.model = i.model
+            }
           }
         }
       })

@@ -1,11 +1,15 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick, shallowRef, watch } from 'vue'
+import { onMounted, ref, nextTick, shallowRef, watch, computed } from 'vue'
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import pageSetting from '@/components/microMain/child/pageSetting.vue'
+import { useMainListStore } from '@/stores/modules/microPage'
 
 const activeKey = ref('1')
 
+const sendActiveKey = (e: any) => {
+  activeKey.value = e
+}
 // 初始化
 const init = () => {}
 onMounted(async () => {
@@ -48,27 +52,46 @@ const editorPropsComPonent = async (currentComponentId?: string, editorPropsData
 }
 
 // 编辑组件校验
-
+const storeMainList = useMainListStore()
+const mainEditStatus = computed(() => storeMainList.update)
+watch(
+  mainEditStatus,
+  (newVal, oldVal) => {
+    if (storeMainList.update == 0) {
+      return
+    } else if (newVal == 7) {
+      callValidateFields()
+    }
+  },
+  {
+    deep: true
+  }
+)
 const componentRefs = ref<any>([])
 const setComponentRef = () => (el: any) => {
   if (el) {
     componentRefs.value.push(el)
-    console.log(el.$refs)
-    console.log(el.$refs.value)
-    console.log(Object.keys(el.$refs))
   }
 }
 
 const callValidateFields = () => {
   componentRefs.value.forEach((componentRef: any) => {
-    componentRef.$refs['fff']
-      .validateFields()
-      .then(() => {
-        console.log('success')
-      })
-      .catch((error: any) => {
-        console.error('验证失败:', error)
-      })
+    if (Object.keys(componentRef)[0]) {
+      componentRef.$refs['FormRef']
+        .validateFields()
+        .then(() => {
+          storeMainList.setUpdate(8)
+        })
+        .catch(async (error: any) => {
+          if (activeKey.value != '2') {
+            sendActiveKey('2')
+            await nextTick()
+            callValidateFields()
+          }
+          sendActiveKey('2')
+          console.error('验证失败:', error)
+        })
+    }
   })
 }
 
@@ -77,18 +100,17 @@ defineExpose({ editorPropsComPonent })
 
 <template>
   <div class="w-80 min-w-80 h-full shadow-md p-2">
-    <a-button @click="callValidateFields()"></a-button>
     <a-tabs v-model:activeKey="activeKey" class="pl-2 pb-2 dark:text-gray-400">
-      <a-tab-pane key="1">
+      <a-tab-pane :forceRender="true" key="1">
         <template #tab>
           <span>
             <appstore-outlined />
             页面设置
           </span>
         </template>
-        <pageSetting />
+        <pageSetting @send-activeKey="sendActiveKey" />
       </a-tab-pane>
-      <a-tab-pane key="2">
+      <a-tab-pane key="2" :forceRender="true">
         <template #tab>
           <span>
             <setting-outlined />

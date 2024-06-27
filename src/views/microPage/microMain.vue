@@ -52,20 +52,6 @@ watch(
     deep: true
   }
 )
-// const mainPageName = computed(() => store.name);
-// watch(mainPageName, (newVal, oldVal) => {
-//   if(!store.mainList.length && mainList.value){
-//     callEditChildMethod()
-//   }
-//   if(mainList.value){
-//     JSONS.value = mainList.value
-//   }else{
-//     JSONS.value = store.mainList
-//   }
-//   callContainerChildMethod(!mainList.value)
-// },{
-//   deep: true
-// })
 
 // 调用内容组件数据处理 《json参数生成列表方法》
 const microContainerRef = ref<InstanceType<typeof microContainer> | null>(null)
