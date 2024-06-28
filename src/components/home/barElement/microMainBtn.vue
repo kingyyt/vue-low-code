@@ -71,17 +71,18 @@ const mainStatus = computed(() => store.update)
 watch(
   mainStatus,
   async (newVal, oldVal) => {
+    console.log(newVal, oldVal)
     if (store.update == 0) {
       return
     } else if (newVal == 5 && oldVal == 4) {
       // 页面设置校验通过
       store.setUpdate(7)
-    } else if (newVal == 8 && oldVal == 7) {
+    } else if (newVal == 8 && oldVal == 0) {
       // 编辑组件校验通过
       savePage()
       isValiDate.value = true
     } else if (newVal == 7 && oldVal == 5) {
-      // 编辑组件校验不通过
+      // 编辑组件校验
       isValiDate.value = false
     } else if (newVal == 4 && oldVal == 0) {
       // 页面设置校验不通过
@@ -166,11 +167,13 @@ const downCodeBtnRef = ref<InstanceType<typeof downCodeBtn> | null>(null)
 // 下载源码校验
 const downCodeVaidate = async () => {
   savePageVaidate()
-  setTimeout(() => {
+  setTimeout(async () => {
+    console.log(isValiDate.value)
+    console.log(isValiDate.value)
     if (isValiDate.value) {
-      downCode()
+      await downCode()
     }
-  }, 0)
+  }, 100)
 }
 // 下载源码
 const downCode = async () => {

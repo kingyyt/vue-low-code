@@ -3,7 +3,7 @@ import { onMounted, ref, nextTick, shallowRef, watch, computed } from 'vue'
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import pageSetting from '@/components/microMain/child/pageSetting.vue'
-import { useMainListStore } from '@/stores/modules/microPage'
+// import { useMainListStore } from '@/stores/modules/microPage'
 
 const activeKey = ref('1')
 
@@ -21,7 +21,7 @@ const currentEditComponent = ref<list | null>(null)
 let editorPropsDataComponent = shallowRef<any>(null)
 
 // 处理后的json数据 发送到父组件
-const emit = defineEmits(['send-list'])
+const emit = defineEmits(['send-list', 'next-validate-fields'])
 const sendListToParent = () => {
   emit('send-list', list2.value)
 }
@@ -52,21 +52,6 @@ const editorPropsComPonent = async (currentComponentId?: string, editorPropsData
 }
 
 // 编辑组件校验
-const storeMainList = useMainListStore()
-const mainEditStatus = computed(() => storeMainList.update)
-watch(
-  mainEditStatus,
-  (newVal) => {
-    if (storeMainList.update == 0) {
-      return
-    } else if (newVal == 7) {
-      callValidateFields()
-    }
-  },
-  {
-    deep: true
-  }
-)
 const componentRefs = ref<any>()
 const setComponentRef = (el: any) => {
   if (el && el.nodeName !== '#comment') {
@@ -74,28 +59,33 @@ const setComponentRef = (el: any) => {
   }
 }
 
-const callValidateFields = () => {
-  componentRefs.value.$refs['FormRef']
-    .validateFields()
-    .then(() => {
-      storeMainList.setUpdate(8)
-    })
-    .catch(async (error: any) => {
-      if (activeKey.value != '2') {
+const callValidateFields = (index?: number, length?: number) => {
+  setTimeout(() => {
+    componentRefs.value.$refs['FormRef']
+      .validateFields()
+      .then(() => {
+        if ((index || index == 0) && length && index + 1 < length) {
+          emit('next-validate-fields', (index += 1))
+        }
+      })
+      .catch(async (error: any) => {
+        if (activeKey.value != '2') {
+          sendActiveKey('2')
+          await nextTick()
+          callValidateFields()
+        }
         sendActiveKey('2')
-        await nextTick()
-        callValidateFields()
-      }
-      sendActiveKey('2')
-      console.error('验证失败:', error)
-    })
+        console.error('验证失败:', error)
+      })
+  })
 }
 
-defineExpose({ editorPropsComPonent })
+defineExpose({ editorPropsComPonent, callValidateFields })
 </script>
 
 <template>
   <div class="w-80 min-w-80 h-full shadow-md p-2">
+    <!-- <a-button @click="callValidateFields"></a-button> -->
     <a-tabs v-model:activeKey="activeKey" class="pl-2 pb-2 dark:text-gray-400">
       <a-tab-pane :forceRender="true" key="1">
         <template #tab>

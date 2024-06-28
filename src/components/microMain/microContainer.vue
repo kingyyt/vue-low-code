@@ -1,8 +1,9 @@
 <script setup lang="ts">
-import { onMounted, ref, shallowRef, nextTick } from 'vue'
+import { onMounted, ref, shallowRef, nextTick, computed, watch } from 'vue'
 import type { DefineComponent } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import type { list } from '@/components/microMain/editorPropsInterface'
+import { useMainListStore } from '@/stores/modules/microPage'
 
 interface BaseComponent extends DefineComponent {
   name: string
@@ -22,14 +23,13 @@ const jsonToList = (e: any) => {
   if (!e.length) return
   onSort({ newIndex: 0 })
 }
-defineExpose({ jsonToList })
 
 // 处理后的json数据 发送到父组件
 const sendListToParent = (editorPropsData?: any) => {
   emit('send-list', list2.value, currentComponentId.value, editorPropsData)
 }
 
-const emit = defineEmits(['send-list'])
+const emit = defineEmits(['send-list', 'call-validate-fields'])
 
 // 获取所有组件
 const importComponents = async () => {
@@ -91,7 +91,36 @@ const getEditor = (component: string) => {
     list2.value.find((item) => item.id === component)?.comName?.dataComponents || null
   )
 }
-
+// 监听是否进行编辑组件校验
+// 编辑组件校验
+const storeMainList = useMainListStore()
+const mainEditStatus = computed(() => storeMainList.update)
+const isHideOverlay = ref(false) //  是否隐藏遮罩
+watch(
+  mainEditStatus,
+  async (newVal) => {
+    if (storeMainList.update == 0) {
+      return
+    } else if (newVal == 7) {
+      validateFields(0)
+    } else if (newVal == 4) {
+      isHideOverlay.value = true
+    } else if (newVal == 1) {
+      isHideOverlay.value = false
+    }
+  },
+  {
+    deep: true
+  }
+)
+// 触发校验
+const validateFields = (index: number) => {
+  getEditor(list2.value[index].id)
+  emit('call-validate-fields', index, list2.value.length)
+  if (index == list2.value.length - 1) {
+    storeMainList.update = 8
+  }
+}
 // 初始化
 const init = () => {
   importComponents()
@@ -99,6 +128,8 @@ const init = () => {
 onMounted(async () => {
   init()
 })
+
+defineExpose({ jsonToList, validateFields })
 </script>
 
 <template>
@@ -118,6 +149,7 @@ onMounted(async () => {
       >
         <div class="container" v-for="(component, path) in list2" :key="path">
           <div
+            v-if="!isHideOverlay"
             class="overlay"
             :class="currentComponentId === component.id ? 'active' : ''"
             @click="getEditor(component.id)"

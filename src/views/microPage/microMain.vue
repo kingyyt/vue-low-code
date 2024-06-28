@@ -1,12 +1,19 @@
 <template>
   <div class="flex justify-between dark:text-gray-100" style="height: calc(100vh - 3rem)">
+    <!-- <a-button @click="callValidateFields"></a-button> -->
     <microAside />
     <microContainer
       ref="microContainerRef"
       :mainList="mainList"
       @send-list="handleContainerListReceived"
+      @call-validate-fields="callValidateFields"
     />
-    <microEditor ref="microEditorRef" :mainList="mainList" @send-list="handleEditListReceived" />
+    <microEditor
+      ref="microEditorRef"
+      :mainList="mainList"
+      @send-list="handleEditListReceived"
+      @next-validate-fields="nextValidateFields"
+    />
   </div>
 </template>
 
@@ -68,7 +75,7 @@ const handleContainerListReceived = (
 ) => {
   mainList.value = list
   callEditChildMethod(currentComponentId, editorPropsData)
-  console.log('内容->主')
+  // console.log('内容->主')
   console.log(mainList.value)
 }
 // 调用编辑组件 传递json参数
@@ -82,8 +89,16 @@ const callEditChildMethod = (currentComponentId?: string, editorPropsData?: any)
 
 // 接受编辑组件参数
 const handleEditListReceived = (list: any) => {
-  console.log('编辑->主')
-  console.log(mainList.value)
+  // console.log('编辑->主')
+  // console.log(mainList.value)
   mainList.value = list
+}
+// 调用编辑组件校验方法
+const callValidateFields = (index: number, length: number) => {
+  microEditorRef.value?.callValidateFields(index, length)
+}
+// 若校验成功 回调下一个校验方法
+const nextValidateFields = (index: number) => {
+  microContainerRef.value?.validateFields(index)
 }
 </script>
