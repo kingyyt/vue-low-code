@@ -71,13 +71,13 @@ const mainStatus = computed(() => store.update)
 watch(
   mainStatus,
   async (newVal, oldVal) => {
-    console.log(newVal, oldVal)
+    // console.log(newVal, oldVal)
     if (store.update == 0) {
       return
     } else if (newVal == 5 && oldVal == 4) {
       // 页面设置校验通过
       store.setUpdate(7)
-    } else if (newVal == 8 && oldVal == 0) {
+    } else if (newVal == 8) {
       // 编辑组件校验通过
       savePage()
       isValiDate.value = true

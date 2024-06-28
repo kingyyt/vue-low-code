@@ -3,9 +3,10 @@ import { onMounted, ref, nextTick, shallowRef, watch, computed } from 'vue'
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import pageSetting from '@/components/microMain/child/pageSetting.vue'
-// import { useMainListStore } from '@/stores/modules/microPage'
+import { useMainListStore } from '@/stores/modules/microPage'
 
 const activeKey = ref('1')
+const storeMainList = useMainListStore()
 
 const sendActiveKey = (e: any) => {
   activeKey.value = e
@@ -66,6 +67,8 @@ const callValidateFields = (index?: number, length?: number) => {
       .then(() => {
         if ((index || index == 0) && length && index + 1 < length) {
           emit('next-validate-fields', (index += 1))
+        } else if (length && index == length - 1) {
+          storeMainList.update = 8
         }
       })
       .catch(async (error: any) => {

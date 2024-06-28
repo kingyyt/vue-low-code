@@ -5,7 +5,7 @@ import releaseNav from '@/components/releasePage/releaseNav.vue'
 import releaseFunction from '@/components/releasePage/releaseFunction.vue'
 
 const releaseNavData = ref(null)
-const previewPageRef = ref(null)
+const previewPageRef = ref<InstanceType<typeof previewPage> | null>(null)
 const receivedData = async (data: any) => {
   releaseNavData.value = data
   await nextTick()

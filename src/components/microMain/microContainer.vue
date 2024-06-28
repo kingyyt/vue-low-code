@@ -99,13 +99,12 @@ const isHideOverlay = ref(false) //  是否隐藏遮罩
 watch(
   mainEditStatus,
   async (newVal) => {
-    if (storeMainList.update == 0) {
-      return
-    } else if (newVal == 7) {
+    console.log(newVal)
+    if (newVal == 7) {
       validateFields(0)
-    } else if (newVal == 4) {
       isHideOverlay.value = true
-    } else if (newVal == 1) {
+    }
+    if (newVal == 8) {
       isHideOverlay.value = false
     }
   },
@@ -115,10 +114,14 @@ watch(
 )
 // 触发校验
 const validateFields = (index: number) => {
+  if (!list2.value.length) {
+    storeMainList.update = 8
+    return
+  }
   getEditor(list2.value[index].id)
   emit('call-validate-fields', index, list2.value.length)
   if (index == list2.value.length - 1) {
-    storeMainList.update = 8
+    isHideOverlay.value = false
   }
 }
 // 初始化

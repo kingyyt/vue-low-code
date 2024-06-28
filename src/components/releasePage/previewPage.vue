@@ -36,10 +36,14 @@ const jsonComponents = async () => {
         if (componentRef.value && !Object.prototype.hasOwnProperty.call(i, 'props')) {
           const prop = ref(componentRef.value[index].editorPropsData)
           i.props = prop.value
+          if (Object.prototype.hasOwnProperty.call(i, 'model') && i.props) {
+            i.props.formData.model = i.model
+          }
         }
       }
     })
   })
+  console.log(props.releaseNavData.currentPage.json)
 }
 
 const props = defineProps<{
@@ -72,7 +76,7 @@ onMounted(async () => {
         >
           <component
             :ref="setComponentRef(path)"
-            :props="component.props"
+            :props="component.props?.formData.model"
             :is="component.comName"
           />
         </div>
