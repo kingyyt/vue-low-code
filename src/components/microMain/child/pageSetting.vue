@@ -6,10 +6,12 @@ import { useLoginStore } from '@/stores/modules/user'
 // 表单
 interface FormState {
   pageName: string
+  isUseTabbar: false
 }
 
 const formState = reactive<FormState>({
-  pageName: ''
+  pageName: '',
+  isUseTabbar: false
 })
 const onFinish = (values: any) => {
   console.log('Success:', values)
@@ -97,10 +99,14 @@ onMounted(async () => {
           addonBefore="页面名称"
         />
       </a-form-item>
-
-      <!-- <a-form-item :wrapper-col="{ offset: 8, span: 16 }">
-        <a-button type="primary" html-type="submit">Submit</a-button>
-      </a-form-item> -->
+      <a-form-item
+        class="ant-form-item-label-dark"
+        name="isUseTabbar"
+        label="是否使用tabbar"
+        labelAlign="left"
+      >
+        <a-switch v-model:checked="formState.isUseTabbar" />
+      </a-form-item>
     </a-form>
   </div>
 </template>

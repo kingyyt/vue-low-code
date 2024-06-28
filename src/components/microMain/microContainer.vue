@@ -5,6 +5,26 @@ import { VueDraggable } from 'vue-draggable-plus'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import { useMainListStore } from '@/stores/modules/microPage'
 
+const tabbars = import.meta.glob(`@/packages/tabbar/index.vue`)
+// 获取tabbar组件
+const tabbarComponent = shallowRef<any>({})
+const tabbarList = ref<list>({ name: 'tabbar', id: 'tabbar' })
+const tabbarComponentRef = ref<any>()
+const setTabbarRef = (el: any) => {
+  tabbarComponentRef.value = el
+  tabbarList.value.props = tabbarComponentRef.value?.editorPropsData
+}
+const tabbarComponents = async () => {
+  const module = shallowRef()
+  for (const path in tabbars) {
+    module.value = await tabbars[path]()
+    tabbarComponent.value = module.value.default
+  }
+  if (tabbarComponent.value && !Object.prototype.hasOwnProperty.call(tabbarList.value, 'comName')) {
+    tabbarList.value.comName = shallowRef(tabbarComponent.value) || {}
+  }
+}
+
 interface BaseComponent extends DefineComponent {
   name: string
   id: string
@@ -127,6 +147,7 @@ const validateFields = (index: number) => {
 // 初始化
 const init = () => {
   importComponents()
+  tabbarComponents()
 }
 onMounted(async () => {
   init()
@@ -138,7 +159,7 @@ defineExpose({ jsonToList, validateFields })
 <template>
   <div class="h-full w-full min-w-96 checkered stripes flex justify-center items-center">
     <div
-      class="flex flex-col content-center bg-white dark:bg-slate-50 rounded"
+      class="flex flex-col content-center bg-white dark:bg-slate-50 rounded drop-shadow-lg"
       style="height: 700px"
     >
       <VueDraggable
@@ -165,6 +186,11 @@ defineExpose({ jsonToList, validateFields })
           />
         </div>
       </VueDraggable>
+      <component
+        :ref="setTabbarRef"
+        :is="tabbarList.comName"
+        :props="tabbarList.props ? tabbarList.props?.formData.model : {}"
+      ></component>
     </div>
   </div>
 </template>
@@ -207,5 +233,8 @@ defineExpose({ jsonToList, validateFields })
   .active {
     background-color: rgba(64, 158, 255, 0.5);
   }
+}
+.van-tabbar {
+  position: relative;
 }
 </style>

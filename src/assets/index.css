@@ -37,3 +37,13 @@ svg {
     }
   }
 }
+
+@layer components {
+  .dark .ant-form-item-label-dark {
+    .ant-form-item-label {
+      label {
+        color: #9ca3af;
+      }
+    }
+  }
+}

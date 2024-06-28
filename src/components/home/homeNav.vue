@@ -117,10 +117,10 @@ defineExpose({
 }
 ::-webkit-scrollbar-thumb {
   /*滚动条里面小方块*/
-  @apply rounded-xl bg-slate-700;
+  @apply rounded-xl bg-slate-600;
 }
 ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
-  @apply rounded-xl bg-gray-600;
+  @apply rounded-xl bg-gray-500;
 }
 </style>

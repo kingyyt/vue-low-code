@@ -8,23 +8,33 @@ function componentsProps() {
   return {
     formData: ref({
       model: {
-        btnText: '按钮',
-        color: 'red'
+        active: 0,
+        tabbars: [
+          {
+            icon: 'home-o',
+            name: '首页'
+          },
+          {
+            icon: 'search',
+            name: '标签'
+          },
+          {
+            icon: 'friends-o',
+            name: '标签'
+          },
+          {
+            icon: 'setting-o',
+            name: '个人'
+          }
+        ]
       },
       data: [
-        ref<inputComponentProps>({
-          addonBefore: '按钮文字',
-          placeholder: '请输入内容',
-          name: 'btnText',
-          rules: [{ required: true, message: '请输入按钮文字!' }]
-        }),
-        ref<inputComponentProps>({
-          addonBefore: '按钮颜色',
-          placeholder: '请输入颜色',
-          name: 'color',
-          rules: [{ required: true, message: '请输入按钮颜色' }],
-          color: '#333'
-        })
+        // ref<inputComponentProps>({
+        //   addonBefore: '按钮文字',
+        //   placeholder: '请输入内容',
+        //   name: 'btnText',
+        //   rules: [{ required: true, message: '请输入按钮文字!' }]
+        // }),
       ]
     })
   }
@@ -51,11 +61,6 @@ export default {
           h(createEditorInputProp(), {
             propsData: props.propsData.formData.data[0],
             modelName: Object.keys(props.propsData.formData.model)[0],
-            model: props.propsData.formData.model
-          }),
-          h(createEditorInputProp(), {
-            propsData: props.propsData.formData.data[1],
-            modelName: Object.keys(props.propsData.formData.model)[1],
             model: props.propsData.formData.model
           })
         ]
