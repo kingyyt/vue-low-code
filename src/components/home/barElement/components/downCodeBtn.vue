@@ -1,6 +1,7 @@
 <template>
   <div>
     <a-modal
+      class="ant-modal-content-dark"
       v-model:open="open"
       title="构建uniapp代码"
       :confirm-loading="confirmLoading"

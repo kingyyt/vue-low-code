@@ -46,4 +46,52 @@ svg {
       }
     }
   }
+  /* switch样式 */
+  .dark .ant-modal-content-dark {
+    .ant-modal-content {
+      background-color: rgb(55 65 81);
+      color: #9ca3af;
+    }
+    .ant-modal-title {
+      background-color: rgb(55 65 81);
+      color: #9ca3af;
+    }
+    label {
+      color: #9ca3af;
+    }
+    .ant-modal-close-x {
+      color: #9ca3af;
+    }
+    .ant-modal-footer {
+      .ant-btn-primary {
+        span {
+          color: #9ca3af;
+        }
+      }
+    }
+  }
+  /* button */
+  .dark .ant-form-item-control-input-content {
+    .ant-btn-dashed {
+      background-color: transparent;
+      color: #9ca3af;
+    }
+  }
+  /* select */
+  .dark .ant-select-selector-dark {
+    background-color: rgb(55 65 81);
+    .ant-select-selector {
+      background-color: rgb(55 65 81);
+      color: #9ca3af;
+    }
+    .ant-select-selection-item {
+      background-color: rgb(55 65 81);
+    }
+  }
+  .dark .ant-select-dropdown {
+    background-color: rgb(30 41 59);
+    .ant-select-item-option-content {
+      color: #9ca3af;
+    }
+  }
 }

@@ -20,6 +20,7 @@ import {
 import { message } from 'ant-design-vue'
 import { useMainListStore } from '@/stores/modules/microPage'
 import downCodeBtn from './components/downCodeBtn.vue'
+import type { JsonListData } from '@/api/microMain/model/microModel'
 
 // 初始化
 const init = () => {
@@ -31,12 +32,6 @@ onMounted(async () => {
 // 获取mainListStore
 const store = useMainListStore()
 // 获取json列表
-interface JsonListData {
-  id: number
-  json: any
-  name: string
-  user_id: number
-}
 let list: Ref<JsonListData[]> = ref([])
 const getJsonList = async () => {
   const res = await GetJsonList()
