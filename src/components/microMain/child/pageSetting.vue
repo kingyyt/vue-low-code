@@ -13,6 +13,7 @@ interface tabbarsList {
   name: string
   select: string
   selectList: JsonListData[]
+  pageName: string
 }
 // 表单
 interface FormState {
@@ -26,7 +27,8 @@ const modalFormState = ref<tabbarsList>({
   name: '',
   icon: '',
   select: '',
-  selectList: []
+  selectList: [],
+  pageName: ''
 })
 const formState = reactive<FormState>({
   pageName: '',
@@ -38,8 +40,6 @@ const getJsonList = async () => {
   const res = await GetJsonList()
   if (res && res.data) {
     modalFormState.value.selectList = res.data
-    console.log(modalFormState.value.selectList)
-    console.log(modalFormState.value.selectList)
   }
 }
 
@@ -111,10 +111,15 @@ const onOk = () => {
       name: '',
       icon: '',
       select: '',
-      selectList: modalFormState.value.selectList
+      selectList: modalFormState.value.selectList,
+      pageName: ''
     }
     visible.value = false
   })
+}
+const changeSelectPageName = (e: any) => {
+  modalFormState.value.pageName =
+    modalFormState.value.selectList.find((item: any) => item.id == e)?.name || ''
 }
 // watch(
 //   visible,
@@ -176,61 +181,6 @@ onMounted(async () => {
           >添加tabbar</a-button
         >
       </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
-      <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
-          >添加tabbar</a-button
-        >
-      </a-form-item>
       <a-form-item class="ant-form-item-label-dark" v-if="formState.tabbars.length" label="tabbar">
         <template v-if="formState.tabbars">
           <ul>
@@ -266,7 +216,11 @@ onMounted(async () => {
             has-feedback
             :rules="[{ required: true, message: 'Please select your country!' }]"
           >
-            <a-select v-model:value="modalFormState.select" placeholder="Please select a country">
+            <a-select
+              @select="changeSelectPageName"
+              v-model:value="modalFormState.select"
+              placeholder="Please select a country"
+            >
               <a-select-option
                 v-for="item in modalFormState.selectList"
                 :key="item.id"
