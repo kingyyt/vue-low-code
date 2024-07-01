@@ -119,7 +119,6 @@ const isHideOverlay = ref(false) //  是否隐藏遮罩
 watch(
   mainEditStatus,
   async (newVal) => {
-    console.log(newVal)
     if (newVal == 7) {
       validateFields(0)
       isHideOverlay.value = true

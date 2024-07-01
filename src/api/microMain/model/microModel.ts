@@ -17,3 +17,18 @@ export interface JsonListData {
   json: string
   user_id: number
 }
+
+// tabbar
+export interface tabbarsList {
+  icon: string
+  name: string
+  select: string
+  selectList: JsonListData[]
+  pageName: string
+}
+// tabbar
+export interface FormState {
+  pageName: string
+  isUseTabbar: false
+  tabbars: tabbarsList[]
+}

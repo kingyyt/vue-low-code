@@ -4,23 +4,11 @@ import { useMainListStore } from '@/stores/modules/microPage'
 import { useLoginStore } from '@/stores/modules/user'
 import type { FormInstance } from 'ant-design-vue'
 import { SmileOutlined } from '@ant-design/icons-vue'
-import type { JsonListData } from '@/api/microMain/model/microModel'
 import { GetJsonList } from '@/api/microMain/microMain'
 import iconList from './iconList.vue'
+import type { tabbarsList, FormState } from '@/api/microMain/model/microModel'
 
-interface tabbarsList {
-  icon: string
-  name: string
-  select: string
-  selectList: JsonListData[]
-  pageName: string
-}
 // 表单
-interface FormState {
-  pageName: string
-  isUseTabbar: false
-  tabbars: tabbarsList[]
-}
 const visible = ref(false)
 const modalFormRef = ref<FormInstance>()
 const modalFormState = ref<tabbarsList>({
@@ -61,19 +49,18 @@ const changeInputName = () => {
 const mainPageName = computed(() => storeMainList.name)
 watch(
   mainPageName,
-  (newVal, oldVal) => {
+  (newVal) => {
     formState.pageName = newVal
   },
   {
     deep: true
   }
 )
-//
 
 const mainStatus = computed(() => storeMainList.update)
 watch(
   mainStatus,
-  (newVal, oldVal) => {
+  (newVal) => {
     if (storeMainList.update == 0) {
       return
     } else if (newVal == 4) {
@@ -117,6 +104,7 @@ const onOk = () => {
     }
     visible.value = false
   })
+  emit('receive-page-setting-data', formState)
 }
 const changeSelectPageName = (e: any) => {
   modalFormState.value.pageName =
@@ -139,9 +127,9 @@ const changeSelectPageName = (e: any) => {
 const tabbarSwitch = () => {
   if (formState.isUseTabbar) {
     getJsonList()
+    emit('receive-page-setting-data', formState)
   }
 }
-const emit = defineEmits(['send-activeKey'])
 const openIconList = () => {
   iconListRef.value?.showModal()
 }
@@ -150,6 +138,7 @@ const receiveIcon = (icon: string) => {
   modalFormState.value.icon = icon
 }
 
+const emit = defineEmits(['send-activeKey', 'receive-page-setting-data'])
 // 初始化
 const init = () => {}
 

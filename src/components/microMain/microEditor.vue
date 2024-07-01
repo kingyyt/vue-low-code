@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import { onMounted, ref, nextTick, shallowRef, watch, computed } from 'vue'
+import { onMounted, ref, nextTick, shallowRef, watch } from 'vue'
 import { AppstoreOutlined, SettingOutlined } from '@ant-design/icons-vue'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import pageSetting from '@/components/microMain/child/pageSetting.vue'
 import { useMainListStore } from '@/stores/modules/microPage'
+import type { FormState } from '@/api/microMain/model/microModel'
 
 const activeKey = ref('1')
 const storeMainList = useMainListStore()
@@ -82,6 +83,13 @@ const callValidateFields = (index?: number, length?: number) => {
       })
   })
 }
+const pageSettingData = ref<FormState>()
+const receivePageSettingData = (data: FormState) => {
+  pageSettingData.value = data
+  console.log(pageSettingData.value)
+  console.log(pageSettingData.value)
+  console.log(pageSettingData.value)
+}
 
 defineExpose({ editorPropsComPonent, callValidateFields })
 </script>
@@ -97,7 +105,10 @@ defineExpose({ editorPropsComPonent, callValidateFields })
             页面设置
           </span>
         </template>
-        <pageSetting @send-activeKey="sendActiveKey" />
+        <pageSetting
+          @send-activeKey="sendActiveKey"
+          @receivePageSettingData="receivePageSettingData"
+        />
       </a-tab-pane>
       <a-tab-pane key="2" :forceRender="true">
         <template #tab>
