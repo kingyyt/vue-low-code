@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onMounted, watch, computed, reactive, ref } from 'vue'
-import type { Ref } from 'vue'
 import { useMainListStore } from '@/stores/modules/microPage'
 import { useLoginStore } from '@/stores/modules/user'
 import type { FormInstance } from 'ant-design-vue'
-import { SmileOutlined, UserOutlined } from '@ant-design/icons-vue'
+import { SmileOutlined } from '@ant-design/icons-vue'
 import type { JsonListData } from '@/api/microMain/model/microModel'
 import { GetJsonList } from '@/api/microMain/microMain'
+import iconList from './iconList.vue'
 
 interface tabbarsList {
   icon: string
@@ -35,6 +35,7 @@ const formState = reactive<FormState>({
   isUseTabbar: false,
   tabbars: []
 })
+const iconListRef = ref<InstanceType<typeof iconList> | null>(null)
 
 const getJsonList = async () => {
   const res = await GetJsonList()
@@ -141,6 +142,14 @@ const tabbarSwitch = () => {
   }
 }
 const emit = defineEmits(['send-activeKey'])
+const openIconList = () => {
+  iconListRef.value?.showModal()
+}
+// 接受图标名称
+const receiveIcon = (icon: string) => {
+  modalFormState.value.icon = icon
+}
+
 // 初始化
 const init = () => {}
 
@@ -187,9 +196,11 @@ onMounted(async () => {
             <template v-for="user in formState.tabbars" :key="user.key">
               <li class="user" style="margin: 4px">
                 <a-avatar>
-                  <template #icon><UserOutlined /></template>
+                  <template #icon
+                    ><span class="van-icon" :class="`van-icon-${user.icon}`"></span
+                  ></template>
                 </a-avatar>
-                {{ user.name }} - {{ user.icon }}
+                {{ user.name }} - {{ user.pageName }}
               </li>
             </template>
           </ul>
@@ -205,9 +216,6 @@ onMounted(async () => {
         <a-form ref="modalFormRef" :model="modalFormState" layout="vertical" name="userForm">
           <a-form-item name="name" label="名称" :rules="[{ required: true }]">
             <a-input v-model:value="modalFormState.name" />
-          </a-form-item>
-          <a-form-item name="icon" label="图标" :rules="[{ required: true }]">
-            <a-input v-model:value="modalFormState.icon" />
           </a-form-item>
           <a-form-item
             class="ant-select-selector-dark"
@@ -229,8 +237,17 @@ onMounted(async () => {
               >
             </a-select>
           </a-form-item>
+          <a-form-item name="icon" label="图标" :rules="[{ required: true }]">
+            <a-input disabled v-model:value="modalFormState.icon" />
+          </a-form-item>
+          <a-form-item>
+            <a-button type="dashed" block primary html-type="button" @click="openIconList"
+              >选择图标</a-button
+            >
+          </a-form-item>
         </a-form>
       </a-modal>
     </a-form>
+    <iconList ref="iconListRef" @receiveIcon="receiveIcon" />
   </div>
 </template>

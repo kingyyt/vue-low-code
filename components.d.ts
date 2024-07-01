@@ -12,6 +12,7 @@ declare module 'vue' {
     HomeBar: typeof import('./src/components/home/homeBar.vue')['default']
     HomeBreadCrumb: typeof import('./src/components/home/homeBreadCrumb.vue')['default']
     HomeNav: typeof import('./src/components/home/homeNav.vue')['default']
+    IconList: typeof import('./src/components/microMain/child/iconList.vue')['default']
     LoginFormLogin: typeof import('./src/components/login/loginFormLogin.vue')['default']
     LoginFormRegister: typeof import('./src/components/login/loginFormRegister.vue')['default']
     MicroAside: typeof import('./src/components/microMain/microAside.vue')['default']

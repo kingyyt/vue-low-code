@@ -10,6 +10,7 @@ import router from './router'
 import { setupRouterGuard } from '@/router/guard'
 import { setupStore } from '@/stores'
 import '@/assets/index.css'
+import '@/assets/icons/vantIcons.css'
 
 const app = createApp(App)
 
