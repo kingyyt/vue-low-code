@@ -5,7 +5,6 @@ export interface list {
   props?: Record<string, any>
   dataComponents?: Record<string, any>
   model?: any
-  tabbars?: Object
 }
 
 export interface inputComponentProps {

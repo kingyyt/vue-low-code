@@ -9,24 +9,7 @@ function componentsProps() {
     formData: ref({
       model: {
         active: 0,
-        tabbars: [
-          {
-            icon: 'home-o',
-            name: '首页'
-          },
-          {
-            icon: 'search',
-            name: '标签'
-          },
-          {
-            icon: 'friends-o',
-            name: '标签'
-          },
-          {
-            icon: 'setting-o',
-            name: '个人'
-          }
-        ]
+        tabbars: []
       },
       data: [
         // ref<inputComponentProps>({

@@ -21,7 +21,10 @@ const modalFormState = ref<tabbarsList>({
 const formState = reactive<FormState>({
   pageName: '',
   isUseTabbar: false,
-  tabbars: []
+  tabbars: {
+    active: 0,
+    tabbars: []
+  }
 })
 const iconListRef = ref<InstanceType<typeof iconList> | null>(null)
 
@@ -93,7 +96,7 @@ const sendActiveKey = () => {
 const onOk = () => {
   modalFormRef.value?.validateFields().then(() => {
     if (modalFormState.value) {
-      formState.tabbars.push(modalFormState.value)
+      formState.tabbars.tabbars.push(modalFormState.value)
     }
     modalFormState.value = {
       name: '',
@@ -137,8 +140,15 @@ const openIconList = () => {
 const receiveIcon = (icon: string) => {
   modalFormState.value.icon = icon
 }
+// 接收editor组件的页面设置数据
+const receivePageSettingData = (data: any) => {
+  formState.pageName = data.pageName
+  formState.isUseTabbar = data.isUseTabbar
+  formState.tabbars = data.tabbars
+}
 
 const emit = defineEmits(['send-activeKey', 'receive-page-setting-data'])
+defineExpose({ receivePageSettingData })
 // 初始化
 const init = () => {}
 
@@ -179,10 +189,14 @@ onMounted(async () => {
           >添加tabbar</a-button
         >
       </a-form-item>
-      <a-form-item class="ant-form-item-label-dark" v-if="formState.tabbars.length" label="tabbar">
-        <template v-if="formState.tabbars">
+      <a-form-item
+        class="ant-form-item-label-dark"
+        v-if="formState.tabbars.tabbars.length"
+        label="tabbar"
+      >
+        <template v-if="formState.tabbars.tabbars">
           <ul>
-            <template v-for="user in formState.tabbars" :key="user.key">
+            <template v-for="user in formState.tabbars.tabbars" :key="user.key">
               <li class="user" style="margin: 4px">
                 <a-avatar>
                   <template #icon

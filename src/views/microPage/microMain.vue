@@ -7,12 +7,14 @@
       :mainList="mainList"
       @send-list="handleContainerListReceived"
       @call-validate-fields="callValidateFields"
+      @receiveContentPageSettingData="receiveContentPageSettingData"
     />
     <microEditor
       ref="microEditorRef"
       :mainList="mainList"
       @send-list="handleEditListReceived"
       @next-validate-fields="nextValidateFields"
+      @send-page-setting-data="sendPageSettingData"
     />
   </div>
 </template>
@@ -23,6 +25,7 @@ import microAside from '@/components/microMain/microAside.vue'
 import microContainer from '@/components/microMain/microContainer.vue'
 import microEditor from '@/components/microMain/microEditor.vue'
 import { useMainListStore } from '@/stores/modules/microPage'
+import type { FormState } from '@/api/microMain/model/microModel'
 
 const store = useMainListStore()
 
@@ -100,5 +103,17 @@ const callValidateFields = (index: number, length: number) => {
 // 若校验成功 回调下一个校验方法
 const nextValidateFields = (index: number) => {
   microContainerRef.value?.validateFields(index)
+}
+// 编辑器页面设置
+const pageSettingData = ref<FormState>()
+// 获取页面设置数据
+const sendPageSettingData = (data: FormState) => {
+  pageSettingData.value = data
+  microContainerRef.value?.sendPageSettingData(data)
+}
+// 接收内容组件页面设置数据
+const receiveContentPageSettingData = (data: FormState) => {
+  pageSettingData.value = data
+  microEditorRef.value?.reactiveMainPageSettingData(pageSettingData.value)
 }
 </script>

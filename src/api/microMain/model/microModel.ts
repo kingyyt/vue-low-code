@@ -27,8 +27,13 @@ export interface tabbarsList {
   pageName: string
 }
 // tabbar
+export interface tabbarsComponent {
+  active: number
+  tabbars: tabbarsList[]
+}
+// tabbar
 export interface FormState {
   pageName: string
   isUseTabbar: false
-  tabbars: tabbarsList[]
+  tabbars: tabbarsComponent
 }

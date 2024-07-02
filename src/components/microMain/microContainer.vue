@@ -4,6 +4,7 @@ import type { DefineComponent } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import { useMainListStore } from '@/stores/modules/microPage'
+import type { FormState } from '@/api/microMain/model/microModel'
 
 const tabbars = import.meta.glob(`@/packages/tabbar/index.vue`)
 // 获取tabbar组件
@@ -49,7 +50,7 @@ const sendListToParent = (editorPropsData?: any) => {
   emit('send-list', list2.value, currentComponentId.value, editorPropsData)
 }
 
-const emit = defineEmits(['send-list', 'call-validate-fields'])
+const emit = defineEmits(['send-list', 'call-validate-fields', 'receive-content-page-setting-data'])
 
 // 获取所有组件
 const importComponents = async () => {
@@ -143,6 +144,18 @@ const validateFields = (index: number) => {
     isHideOverlay.value = false
   }
 }
+// 编辑器页面设置
+const pageSettingData = ref<FormState>()
+// 获取页面设置数据
+const sendPageSettingData = async (data: FormState) => {
+  pageSettingData.value = data
+  if (data.isUseTabbar) {
+    // tabbarList.props?.formData.model
+    await nextTick()
+    pageSettingData.value.tabbars = tabbarList.value.props?.formData.model
+    emit('receive-content-page-setting-data', pageSettingData.value)
+  }
+}
 // 初始化
 const init = () => {
   importComponents()
@@ -152,7 +165,7 @@ onMounted(async () => {
   init()
 })
 
-defineExpose({ jsonToList, validateFields })
+defineExpose({ jsonToList, validateFields, sendPageSettingData })
 </script>
 
 <template>
@@ -186,6 +199,7 @@ defineExpose({ jsonToList, validateFields })
         </div>
       </VueDraggable>
       <component
+        v-if="pageSettingData?.isUseTabbar"
         :ref="setTabbarRef"
         :is="tabbarList.comName"
         :props="tabbarList.props ? tabbarList.props?.formData.model : {}"

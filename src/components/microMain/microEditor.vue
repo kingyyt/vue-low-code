@@ -23,7 +23,7 @@ const currentEditComponent = ref<list | null>(null)
 let editorPropsDataComponent = shallowRef<any>(null)
 
 // 处理后的json数据 发送到父组件
-const emit = defineEmits(['send-list', 'next-validate-fields'])
+const emit = defineEmits(['send-list', 'next-validate-fields', 'send-page-setting-data'])
 const sendListToParent = () => {
   emit('send-list', list2.value)
 }
@@ -86,12 +86,16 @@ const callValidateFields = (index?: number, length?: number) => {
 const pageSettingData = ref<FormState>()
 const receivePageSettingData = (data: FormState) => {
   pageSettingData.value = data
-  console.log(pageSettingData.value)
-  console.log(pageSettingData.value)
-  console.log(pageSettingData.value)
+  emit('send-page-setting-data', data)
 }
 
-defineExpose({ editorPropsComPonent, callValidateFields })
+const pageSettingRef = ref<InstanceType<typeof pageSetting> | null>(null)
+const reactiveMainPageSettingData = (data: FormState) => {
+  pageSettingData.value = data
+  pageSettingRef.value?.receivePageSettingData(data)
+}
+
+defineExpose({ editorPropsComPonent, callValidateFields, reactiveMainPageSettingData })
 </script>
 
 <template>
@@ -106,6 +110,7 @@ defineExpose({ editorPropsComPonent, callValidateFields })
           </span>
         </template>
         <pageSetting
+          ref="pageSettingRef"
           @send-activeKey="sendActiveKey"
           @receivePageSettingData="receivePageSettingData"
         />
