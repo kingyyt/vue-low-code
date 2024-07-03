@@ -1,10 +1,12 @@
 export interface JsonList {
   name: string
   json: string
+  tabbars?: string
 }
 export interface editJsonList {
   name?: string
   json?: string
+  tabbars?: string
 }
 export interface JsonListReturn {
   code: number
@@ -23,7 +25,7 @@ export interface tabbarsList {
   icon: string
   name: string
   select: string
-  selectList: JsonListData[]
+  // selectList: JsonListData[]
   pageName: string
 }
 // tabbar

@@ -16,7 +16,13 @@ export default {
       active: 0
     }
   },
-  created() {}
+  created() {},
+  methods: {
+    clickItem(e: number) {
+      this.active = e
+      this.$emit('clickItem', e)
+    }
+  }
 }
 </script>
 <script setup lang="ts">
@@ -31,7 +37,12 @@ defineExpose({
 <template>
   <div>
     <van-tabbar v-model="active">
-      <van-tabbar-item v-for="(item, index) in props?.tabbars" :key="index" :icon="item.icon">
+      <van-tabbar-item
+        @click="clickItem(index)"
+        v-for="(item, index) in props?.tabbars"
+        :key="index"
+        :icon="item.icon"
+      >
         {{ item.name }}
       </van-tabbar-item>
     </van-tabbar>

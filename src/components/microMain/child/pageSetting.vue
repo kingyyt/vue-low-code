@@ -15,7 +15,7 @@ const modalFormState = ref<tabbarsList>({
   name: '',
   icon: '',
   select: '',
-  selectList: [],
+  // selectList: [],
   pageName: ''
 })
 const formState = reactive<FormState>({
@@ -28,10 +28,15 @@ const formState = reactive<FormState>({
 })
 const iconListRef = ref<InstanceType<typeof iconList> | null>(null)
 
+interface pageInterface {
+  id: number
+  name: string
+}
+const pageList = ref<pageInterface[]>([])
 const getJsonList = async () => {
   const res = await GetJsonList()
   if (res && res.data) {
-    modalFormState.value.selectList = res.data
+    pageList.value = res.data
   }
 }
 
@@ -102,7 +107,7 @@ const onOk = () => {
       name: '',
       icon: '',
       select: '',
-      selectList: modalFormState.value.selectList,
+      // selectList: modalFormState.value.selectList,
       pageName: ''
     }
     visible.value = false
@@ -110,8 +115,7 @@ const onOk = () => {
   emit('receive-page-setting-data', formState)
 }
 const changeSelectPageName = (e: any) => {
-  modalFormState.value.pageName =
-    modalFormState.value.selectList.find((item: any) => item.id == e)?.name || ''
+  modalFormState.value.pageName = pageList.value.find((item: any) => item.id == e)?.name || ''
 }
 // watch(
 //   visible,
@@ -129,7 +133,6 @@ const changeSelectPageName = (e: any) => {
 // 是否使用tabbar
 const tabbarSwitch = () => {
   if (formState.isUseTabbar) {
-    getJsonList()
     emit('receive-page-setting-data', formState)
   }
 }
@@ -150,7 +153,9 @@ const receivePageSettingData = (data: any) => {
 const emit = defineEmits(['send-activeKey', 'receive-page-setting-data'])
 defineExpose({ receivePageSettingData })
 // 初始化
-const init = () => {}
+const init = () => {
+  getJsonList()
+}
 
 onMounted(async () => {
   init()
@@ -232,12 +237,9 @@ onMounted(async () => {
               v-model:value="modalFormState.select"
               placeholder="Please select a country"
             >
-              <a-select-option
-                v-for="item in modalFormState.selectList"
-                :key="item.id"
-                :value="item.id"
-                >{{ item.name }}</a-select-option
-              >
+              <a-select-option v-for="item in pageList" :key="item.id" :value="item.id">{{
+                item.name
+              }}</a-select-option>
             </a-select>
           </a-form-item>
           <a-form-item name="icon" label="图标" :rules="[{ required: true }]">

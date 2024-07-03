@@ -55,9 +55,13 @@ const getJsonList = async () => {
 // 列表点击
 const currentPageList: Ref<JsonListData | null> = ref(null)
 const openChange = (item: any) => {
+  resetPage()
   currentPageList.value = item
   store.setMainList(item.json)
   store.setPageName(item.name)
+  if (item.tabbars) {
+    store.setPageSetting(JSON.parse(item.tabbars))
+  }
   store.setUpdate(1)
 }
 // 保存页面之前 进行form校验
@@ -103,7 +107,7 @@ const savePage = async () => {
   await nextTick
   if (currentPageList.value && currentPageList.value.id) {
     const res: any = await PatchJsonListDetail(
-      { json: listToJson(), name: store.name },
+      { json: listToJson(), name: store.name, tabbars: tabbarsListToJson(store.pageSetting) },
       currentPageList.value.id
     )
     if (!res) return
@@ -117,7 +121,8 @@ const savePage = async () => {
     await nextTick
     const res: any = await PostJsonList({
       json: listToJson(),
-      name: store.name
+      name: store.name,
+      tabbars: tabbarsListToJson(store.pageSetting)
     })
     if (!res.data) return
     message.success('保存成功')
@@ -149,12 +154,32 @@ const listToJson = () => {
   })
   return JSON.stringify(jsonData)
 }
+const tabbarsListToJson = (data: any) => {
+  const jsonData: any = {}
+  jsonData.isUseTabbar = data.isUseTabbar
+  jsonData.pageName = data.pageName
+  jsonData.tabbars = {
+    active: '',
+    tabbars: []
+  }
+  jsonData.tabbars.active = data.tabbars?.active
+  data.tabbars.tabbars.forEach((item: any) => {
+    jsonData.tabbars.tabbars.push({
+      icon: item.icon,
+      name: item.name,
+      pageName: item.pageName,
+      selected: item.selected
+    })
+  })
+  return JSON.stringify(jsonData)
+}
 
 // 重置页面
 
 const resetPage = () => {
   store.removeMainList()
   store.removeName()
+  store.removePageSetting()
   store.setUpdate(3)
 }
 
@@ -163,8 +188,6 @@ const downCodeBtnRef = ref<InstanceType<typeof downCodeBtn> | null>(null)
 const downCodeVaidate = async () => {
   savePageVaidate()
   setTimeout(async () => {
-    console.log(isValiDate.value)
-    console.log(isValiDate.value)
     if (isValiDate.value) {
       await downCode()
     }

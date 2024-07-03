@@ -49,6 +49,10 @@ watch(
     } else if (store.update == 1) {
       JSONS.value = store.mainList
       callContainerChildMethod()
+      sendPageSettingData(store.pageSetting as FormState)
+      receiveContentPageSettingData(store.pageSetting as FormState)
+      console.log(store.pageSetting)
+      // microContainerRef.value?.sendPageSettingData(store.pageSetting as FormState)
     } else if (store.update == 2) {
       store.setMainList(mainList.value)
     } else if (store.update == 3) {
@@ -56,6 +60,8 @@ watch(
       JSONS.value = []
       callEditChildMethod()
       callContainerChildMethod()
+      sendPageSettingData(store.pageSetting as FormState)
+      receiveContentPageSettingData(store.pageSetting as FormState)
     }
   },
   {
@@ -78,7 +84,6 @@ const handleContainerListReceived = (
 ) => {
   mainList.value = list
   callEditChildMethod(currentComponentId, editorPropsData)
-  // console.log('内容->主')
   console.log(mainList.value)
 }
 // 调用编辑组件 传递json参数
@@ -92,8 +97,6 @@ const callEditChildMethod = (currentComponentId?: string, editorPropsData?: any)
 
 // 接受编辑组件参数
 const handleEditListReceived = (list: any) => {
-  // console.log('编辑->主')
-  // console.log(mainList.value)
   mainList.value = list
 }
 // 调用编辑组件校验方法
@@ -108,12 +111,17 @@ const nextValidateFields = (index: number) => {
 const pageSettingData = ref<FormState>()
 // 获取页面设置数据
 const sendPageSettingData = (data: FormState) => {
+  console.log(data)
+  console.log(data)
+  console.log(data)
   pageSettingData.value = data
   microContainerRef.value?.sendPageSettingData(data)
+  store.setPageSetting(data)
 }
 // 接收内容组件页面设置数据
 const receiveContentPageSettingData = (data: FormState) => {
   pageSettingData.value = data
-  microEditorRef.value?.reactiveMainPageSettingData(pageSettingData.value)
+  microEditorRef.value?.reactiveMainPageSettingData(data)
+  // store.setPageSetting(data)
 }
 </script>

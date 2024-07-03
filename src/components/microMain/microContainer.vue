@@ -150,10 +150,19 @@ const pageSettingData = ref<FormState>()
 const sendPageSettingData = async (data: FormState) => {
   pageSettingData.value = data
   if (data.isUseTabbar) {
-    // tabbarList.props?.formData.model
     await nextTick()
-    pageSettingData.value.tabbars = tabbarList.value.props?.formData.model
+    if (tabbarList.value.props) {
+      tabbarList.value.props.formData.model = data.tabbars
+    }
+    // pageSettingData.value.tabbars = tabbarList.value.props?.formData.model
     emit('receive-content-page-setting-data', pageSettingData.value)
+  }
+}
+//
+const switchTabbar = (e: number) => {
+  if (pageSettingData.value) {
+    pageSettingData.value.tabbars.active = e
+    sendPageSettingData(pageSettingData.value)
   }
 }
 // 初始化
@@ -165,7 +174,7 @@ onMounted(async () => {
   init()
 })
 
-defineExpose({ jsonToList, validateFields, sendPageSettingData })
+defineExpose({ jsonToList, validateFields, sendPageSettingData, switchTabbar })
 </script>
 
 <template>
@@ -203,6 +212,7 @@ defineExpose({ jsonToList, validateFields, sendPageSettingData })
         :ref="setTabbarRef"
         :is="tabbarList.comName"
         :props="tabbarList.props ? tabbarList.props?.formData.model : {}"
+        @clickItem="switchTabbar"
       ></component>
     </div>
   </div>
