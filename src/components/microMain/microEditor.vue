@@ -60,8 +60,11 @@ const setComponentRef = (el: any) => {
     componentRefs.value = el
   }
 }
-
-const callValidateFields = (index?: number, length?: number) => {
+const currentActive = ref(0)
+const callValidateFields = (index?: number, length?: number, active?: number) => {
+  if (active) {
+    currentActive.value = active
+  }
   setTimeout(() => {
     componentRefs.value.$refs['FormRef']
       .validateFields()
@@ -69,10 +72,20 @@ const callValidateFields = (index?: number, length?: number) => {
         if ((index || index == 0) && length && index + 1 < length) {
           emit('next-validate-fields', (index += 1))
         } else if (length && index == length - 1) {
-          storeMainList.update = 8
+          if (pageSettingData.value && (currentActive.value || currentActive.value == 0)) {
+            pageSettingData.value.tabbars.active = currentActive.value
+            console.log(pageSettingData.value.tabbars.active)
+            emit('send-page-setting-data', pageSettingData.value)
+            storeMainList.setTabbarActive(currentActive.value)
+            storeMainList.update = 8
+          }
         }
       })
       .catch(async (error: any) => {
+        if (pageSettingData.value) {
+          pageSettingData.value.tabbars.active = storeMainList.tabbarActive
+          emit('send-page-setting-data', pageSettingData.value)
+        }
         if (activeKey.value != '2') {
           sendActiveKey('2')
           await nextTick()

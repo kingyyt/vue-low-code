@@ -15,7 +15,6 @@ const modalFormState = ref<tabbarsList>({
   name: '',
   icon: '',
   select: '',
-  // selectList: [],
   pageName: ''
 })
 const formState = reactive<FormState>({
@@ -107,7 +106,6 @@ const onOk = () => {
       name: '',
       icon: '',
       select: '',
-      // selectList: modalFormState.value.selectList,
       pageName: ''
     }
     visible.value = false
@@ -132,9 +130,7 @@ const changeSelectPageName = (e: any) => {
 
 // 是否使用tabbar
 const tabbarSwitch = () => {
-  if (formState.isUseTabbar) {
-    emit('receive-page-setting-data', formState)
-  }
+  emit('receive-page-setting-data', formState)
 }
 const openIconList = () => {
   iconListRef.value?.showModal()
@@ -151,7 +147,7 @@ const receivePageSettingData = (data: any) => {
 }
 
 const emit = defineEmits(['send-activeKey', 'receive-page-setting-data'])
-defineExpose({ receivePageSettingData })
+defineExpose({ receivePageSettingData, validateFields })
 // 初始化
 const init = () => {
   getJsonList()
@@ -184,7 +180,7 @@ onMounted(async () => {
       <a-form-item
         class="ant-form-item-label-dark"
         name="isUseTabbar"
-        label="是否使用tabbar"
+        label="是否显示tabbar"
         labelAlign="left"
       >
         <a-switch @change="tabbarSwitch" v-model:checked="formState.isUseTabbar" />
@@ -196,7 +192,7 @@ onMounted(async () => {
       </a-form-item>
       <a-form-item
         class="ant-form-item-label-dark"
-        v-if="formState.tabbars.tabbars.length"
+        v-if="formState.tabbars.tabbars.length && formState.isUseTabbar"
         label="tabbar"
       >
         <template v-if="formState.tabbars.tabbars">
@@ -208,7 +204,7 @@ onMounted(async () => {
                     ><span class="van-icon" :class="`van-icon-${user.icon}`"></span
                   ></template>
                 </a-avatar>
-                {{ user.name }} - {{ user.pageName }}
+                <span class="dark:text-gray-400">{{ user.name }} - {{ user.pageName }}</span>
               </li>
             </template>
           </ul>

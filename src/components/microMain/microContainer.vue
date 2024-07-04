@@ -5,7 +5,7 @@ import { VueDraggable } from 'vue-draggable-plus'
 import type { list } from '@/components/microMain/editorPropsInterface'
 import { useMainListStore } from '@/stores/modules/microPage'
 import type { FormState } from '@/api/microMain/model/microModel'
-
+// import { PatchJsonListDetail } from '@/api/microMain/microMain'
 const tabbars = import.meta.glob(`@/packages/tabbar/index.vue`)
 // 获取tabbar组件
 const tabbarComponent = shallowRef<any>({})
@@ -133,13 +133,13 @@ watch(
   }
 )
 // 触发校验
-const validateFields = (index: number) => {
+const validateFields = (index: number, active?: number) => {
   if (!list2.value.length) {
     storeMainList.update = 8
     return
   }
   getEditor(list2.value[index].id)
-  emit('call-validate-fields', index, list2.value.length)
+  emit('call-validate-fields', index, list2.value.length, active)
   if (index == list2.value.length - 1) {
     isHideOverlay.value = false
   }
@@ -154,17 +154,14 @@ const sendPageSettingData = async (data: FormState) => {
     if (tabbarList.value.props) {
       tabbarList.value.props.formData.model = data.tabbars
     }
-    // pageSettingData.value.tabbars = tabbarList.value.props?.formData.model
     emit('receive-content-page-setting-data', pageSettingData.value)
   }
 }
-//
 const switchTabbar = (e: number) => {
-  if (pageSettingData.value) {
-    pageSettingData.value.tabbars.active = e
-    sendPageSettingData(pageSettingData.value)
-  }
+  // validateFields(0, e)
+  storeMainList.setUpdate(4)
 }
+
 // 初始化
 const init = () => {
   importComponents()

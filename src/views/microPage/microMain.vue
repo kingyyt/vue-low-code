@@ -51,7 +51,6 @@ watch(
       callContainerChildMethod()
       sendPageSettingData(store.pageSetting as FormState)
       receiveContentPageSettingData(store.pageSetting as FormState)
-      console.log(store.pageSetting)
       // microContainerRef.value?.sendPageSettingData(store.pageSetting as FormState)
     } else if (store.update == 2) {
       store.setMainList(mainList.value)
@@ -84,7 +83,7 @@ const handleContainerListReceived = (
 ) => {
   mainList.value = list
   callEditChildMethod(currentComponentId, editorPropsData)
-  console.log(mainList.value)
+  // console.log(mainList.value)
 }
 // 调用编辑组件 传递json参数
 const microEditorRef = ref<InstanceType<typeof microEditor> | null>(null)
@@ -100,8 +99,8 @@ const handleEditListReceived = (list: any) => {
   mainList.value = list
 }
 // 调用编辑组件校验方法
-const callValidateFields = (index: number, length: number) => {
-  microEditorRef.value?.callValidateFields(index, length)
+const callValidateFields = (index: number, length: number, active?: number) => {
+  microEditorRef.value?.callValidateFields(index, length, active)
 }
 // 若校验成功 回调下一个校验方法
 const nextValidateFields = (index: number) => {
@@ -111,9 +110,6 @@ const nextValidateFields = (index: number) => {
 const pageSettingData = ref<FormState>()
 // 获取页面设置数据
 const sendPageSettingData = (data: FormState) => {
-  console.log(data)
-  console.log(data)
-  console.log(data)
   pageSettingData.value = data
   microContainerRef.value?.sendPageSettingData(data)
   store.setPageSetting(data)
@@ -122,6 +118,5 @@ const sendPageSettingData = (data: FormState) => {
 const receiveContentPageSettingData = (data: FormState) => {
   pageSettingData.value = data
   microEditorRef.value?.reactiveMainPageSettingData(data)
-  // store.setPageSetting(data)
 }
 </script>

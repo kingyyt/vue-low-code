@@ -16,10 +16,17 @@ export default {
       active: 0
     }
   },
-  created() {},
+  // watch: {
+  //   props: {
+  //     handler(newVal: any) {
+  //       this.active = this.props.active
+  //     },
+  //     deep: true
+  //   }
+  // },
   methods: {
     clickItem(e: number) {
-      this.active = e
+      this.active = this.props.active
       this.$emit('clickItem', e)
     }
   }
