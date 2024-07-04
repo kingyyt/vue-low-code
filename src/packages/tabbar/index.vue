@@ -16,14 +16,14 @@ export default {
       active: 0
     }
   },
-  // watch: {
-  //   props: {
-  //     handler(newVal: any) {
-  //       this.active = this.props.active
-  //     },
-  //     deep: true
-  //   }
-  // },
+  watch: {
+    props: {
+      handler(newVal: any) {
+        this.active = this.props.active
+      },
+      deep: true
+    }
+  },
   methods: {
     clickItem(e: number) {
       this.active = this.props.active

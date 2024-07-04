@@ -116,6 +116,7 @@ const savePage = async () => {
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
     }
+    // pageSettingData.value.tabbars.active = storeMainList.switchAcitve
   } else {
     store.setUpdate(2)
     await nextTick
@@ -180,6 +181,7 @@ const resetPage = () => {
   store.removeMainList()
   store.removeName()
   store.removePageSetting()
+  store.removeTabbars()
   store.setUpdate(3)
 }
 

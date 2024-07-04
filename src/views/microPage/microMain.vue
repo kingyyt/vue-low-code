@@ -83,7 +83,6 @@ const handleContainerListReceived = (
 ) => {
   mainList.value = list
   callEditChildMethod(currentComponentId, editorPropsData)
-  // console.log(mainList.value)
 }
 // 调用编辑组件 传递json参数
 const microEditorRef = ref<InstanceType<typeof microEditor> | null>(null)
@@ -99,8 +98,8 @@ const handleEditListReceived = (list: any) => {
   mainList.value = list
 }
 // 调用编辑组件校验方法
-const callValidateFields = (index: number, length: number, active?: number) => {
-  microEditorRef.value?.callValidateFields(index, length, active)
+const callValidateFields = (index: number, length: number) => {
+  microEditorRef.value?.callValidateFields(index, length)
 }
 // 若校验成功 回调下一个校验方法
 const nextValidateFields = (index: number) => {

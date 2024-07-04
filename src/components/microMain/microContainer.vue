@@ -116,16 +116,16 @@ const getEditor = (component: string) => {
 // 编辑组件校验
 const storeMainList = useMainListStore()
 const mainEditStatus = computed(() => storeMainList.update)
-const isHideOverlay = ref(false) //  是否隐藏遮罩
+// const isHideOverlay = ref(false) //  是否隐藏遮罩
 watch(
   mainEditStatus,
   async (newVal) => {
     if (newVal == 7) {
       validateFields(0)
-      isHideOverlay.value = true
+      // isHideOverlay.value = true
     }
     if (newVal == 8) {
-      isHideOverlay.value = false
+      // isHideOverlay.value = false
     }
   },
   {
@@ -140,9 +140,9 @@ const validateFields = (index: number, active?: number) => {
   }
   getEditor(list2.value[index].id)
   emit('call-validate-fields', index, list2.value.length, active)
-  if (index == list2.value.length - 1) {
-    isHideOverlay.value = false
-  }
+  // if (index == list2.value.length - 1) {
+  //   isHideOverlay.value = false
+  // }
 }
 // 编辑器页面设置
 const pageSettingData = ref<FormState>()
@@ -158,7 +158,8 @@ const sendPageSettingData = async (data: FormState) => {
   }
 }
 const switchTabbar = (e: number) => {
-  // validateFields(0, e)
+  if (pageSettingData.value && e == pageSettingData.value.tabbars.active) return
+  storeMainList.switchAcitve = e
   storeMainList.setUpdate(4)
 }
 
@@ -191,7 +192,6 @@ defineExpose({ jsonToList, validateFields, sendPageSettingData, switchTabbar })
       >
         <div class="container" v-for="(component, path) in list2" :key="path">
           <div
-            v-if="!isHideOverlay"
             class="overlay"
             :class="currentComponentId === component.id ? 'active' : ''"
             @click="getEditor(component.id)"

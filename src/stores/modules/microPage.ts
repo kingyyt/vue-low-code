@@ -11,7 +11,9 @@ export const useMainListStore = defineStore('mainList', {
       // 7:是否进行编辑组件校验 8:是否通过编辑页面校验
       update: 0,
       pageSetting: {},
-      tabbarActive: 0
+      /// tabbar
+      tabbarActive: 0, // 需要保存
+      switchAcitve: 0 // 临时切换
     }
   },
   actions: {
@@ -33,6 +35,13 @@ export const useMainListStore = defineStore('mainList', {
     },
     setTabbarActive(active: number) {
       this.tabbarActive = active
+    },
+    setSwitchAcitve(active: number) {
+      this.switchAcitve = active
+    },
+    removeTabbars() {
+      this.tabbarActive = 0
+      this.switchAcitve = 0
     },
     removeMainList() {
       this.mainList = []
