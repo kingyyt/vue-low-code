@@ -7,6 +7,7 @@ import { SmileOutlined } from '@ant-design/icons-vue'
 import { GetJsonList } from '@/api/microMain/microMain'
 import iconList from './iconList.vue'
 import type { tabbarsList, FormState } from '@/api/microMain/model/microModel'
+import { message } from 'ant-design-vue'
 
 // 表单
 const visible = ref(false)
@@ -56,8 +57,8 @@ const changeInputName = () => {
 const mainPageName = computed(() => storeMainList.name)
 watch(
   mainPageName,
-  (newVal) => {
-    formState.pageName = newVal
+  () => {
+    formState.pageName = storeMainList.name
   },
   {
     deep: true
@@ -114,6 +115,7 @@ const onOk = () => {
 }
 const changeSelectPageName = (e: any) => {
   modalFormState.value.pageName = pageList.value.find((item: any) => item.id == e)?.name || ''
+  // modalFormState.value.select = e
 }
 // watch(
 //   visible,
@@ -130,7 +132,27 @@ const changeSelectPageName = (e: any) => {
 
 // 是否使用tabbar
 const tabbarSwitch = () => {
-  emit('receive-page-setting-data', formState)
+  if (storeMainList.currentPageId) {
+    if (formState.tabbars.tabbars.length) {
+      emit('receive-page-setting-data', formState)
+    } else {
+      formState.tabbars = {
+        active: 0,
+        tabbars: [
+          {
+            name: '首页',
+            icon: 'wap-home',
+            select: storeMainList.currentPageId,
+            pageName: storeMainList.name
+          }
+        ]
+      }
+      emit('receive-page-setting-data', formState)
+    }
+  } else {
+    message.info('请先保存该页面')
+    formState.isUseTabbar = false
+  }
 }
 const openIconList = () => {
   iconListRef.value?.showModal()
@@ -198,13 +220,18 @@ onMounted(async () => {
         <template v-if="formState.tabbars.tabbars">
           <ul>
             <template v-for="user in formState.tabbars.tabbars" :key="user.key">
-              <li class="user" style="margin: 4px">
-                <a-avatar>
-                  <template #icon
-                    ><span class="van-icon" :class="`van-icon-${user.icon}`"></span
-                  ></template>
-                </a-avatar>
-                <span class="dark:text-gray-400">{{ user.name }} - {{ user.pageName }}</span>
+              <li class="user flex justify-between items-center" style="margin: 4px">
+                <div>
+                  <a-avatar>
+                    <template #icon
+                      ><span class="van-icon" :class="`van-icon-${user.icon}`"></span
+                    ></template>
+                  </a-avatar>
+                  <span class="dark:text-gray-400">{{ user.name }} - {{ user.pageName }}</span>
+                </div>
+                <div>
+                  <span class="text-blue-300 mr-2">编辑</span><span class="text-red-500">删除</span>
+                </div>
               </li>
             </template>
           </ul>

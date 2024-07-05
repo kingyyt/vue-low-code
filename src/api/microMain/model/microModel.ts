@@ -24,7 +24,7 @@ export interface JsonListData {
 export interface tabbarsList {
   icon: string
   name: string
-  select: string
+  select: string | number
   // selectList: JsonListData[]
   pageName: string
 }

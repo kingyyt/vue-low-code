@@ -71,8 +71,8 @@ const callValidateFields = (index?: number, length?: number) => {
           if (pageSettingData.value) {
             pageSettingData.value.tabbars.active = storeMainList.switchAcitve
             emit('send-page-setting-data', pageSettingData.value)
-            storeMainList.update = 8
           }
+          storeMainList.update = 8
         }
       })
       .catch(async (error: any) => {

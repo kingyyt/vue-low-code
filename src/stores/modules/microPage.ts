@@ -13,7 +13,8 @@ export const useMainListStore = defineStore('mainList', {
       pageSetting: {},
       /// tabbar
       tabbarActive: 0, // 需要保存
-      switchAcitve: 0 // 临时切换
+      switchAcitve: 0, // 临时切换
+      currentPageId: 0 // 当前页面id
     }
   },
   actions: {
@@ -39,9 +40,13 @@ export const useMainListStore = defineStore('mainList', {
     setSwitchAcitve(active: number) {
       this.switchAcitve = active
     },
+    setCurrentPageId(currentPageId: number) {
+      this.currentPageId = currentPageId
+    },
     removeTabbars() {
       this.tabbarActive = 0
       this.switchAcitve = 0
+      // this.currentPageId = 0
     },
     removeMainList() {
       this.mainList = []

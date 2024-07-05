@@ -22,15 +22,21 @@ import { useMainListStore } from '@/stores/modules/microPage'
 import downCodeBtn from './components/downCodeBtn.vue'
 import type { JsonListData } from '@/api/microMain/model/microModel'
 
+// 获取mainListStore
+const store = useMainListStore()
 // 初始化
 const init = () => {
+  store.name = ''
+  store.update = 0
+  store.pageSetting = {}
+  store.tabbarActive = 0
+  store.switchAcitve = 0
+  store.currentPageId = 0
   getJsonList()
 }
 onMounted(async () => {
   init()
 })
-// 获取mainListStore
-const store = useMainListStore()
 // 获取json列表
 let list: Ref<JsonListData[]> = ref([])
 const getJsonList = async () => {
@@ -57,8 +63,11 @@ const currentPageList: Ref<JsonListData | null> = ref(null)
 const openChange = (item: any) => {
   resetPage()
   currentPageList.value = item
+  if (currentPageList.value) {
+    store.setCurrentPageId(currentPageList.value.id)
+  }
   store.setMainList(item.json)
-  store.setPageName(item.name)
+  store.name = item.name
   if (item.tabbars) {
     store.setPageSetting(JSON.parse(item.tabbars))
   }
@@ -70,7 +79,6 @@ const mainStatus = computed(() => store.update)
 watch(
   mainStatus,
   async (newVal, oldVal) => {
-    // console.log(newVal, oldVal)
     if (store.update == 0) {
       return
     } else if (newVal == 5 && oldVal == 4) {
@@ -116,7 +124,6 @@ const savePage = async () => {
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
     }
-    // pageSettingData.value.tabbars.active = storeMainList.switchAcitve
   } else {
     store.setUpdate(2)
     await nextTick
@@ -132,13 +139,14 @@ const savePage = async () => {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
     }
   }
+  await init()
   openChange(currentPageList.value)
-  init()
 }
 
 // 新建页面
 const newPage = async () => {
   currentPageList.value = null
+  init()
   resetPage()
 }
 
@@ -156,6 +164,7 @@ const listToJson = () => {
   return JSON.stringify(jsonData)
 }
 const tabbarsListToJson = (data: any) => {
+  if (!data.isUseTabbar) return ''
   const jsonData: any = {}
   jsonData.isUseTabbar = data.isUseTabbar
   jsonData.pageName = data.pageName
@@ -169,7 +178,7 @@ const tabbarsListToJson = (data: any) => {
       icon: item.icon,
       name: item.name,
       pageName: item.pageName,
-      selected: item.selected
+      select: item.select
     })
   })
   return JSON.stringify(jsonData)
@@ -179,7 +188,6 @@ const tabbarsListToJson = (data: any) => {
 
 const resetPage = () => {
   store.removeMainList()
-  store.removeName()
   store.removePageSetting()
   store.removeTabbars()
   store.setUpdate(3)
