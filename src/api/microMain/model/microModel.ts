@@ -1,3 +1,5 @@
+import type { StrikethroughOutlinedIconType } from '@ant-design/icons-vue/lib/icons/StrikethroughOutlined'
+
 export interface JsonList {
   name: string
   json: string
@@ -18,6 +20,7 @@ export interface JsonListData {
   name: string
   json: string
   user_id: number
+  tabbars?: any
 }
 
 // tabbar
@@ -36,6 +39,6 @@ export interface tabbarsComponent {
 // tabbar
 export interface FormState {
   pageName: string
-  isUseTabbar: false
+  isUseTabbar: boolean
   tabbars: tabbarsComponent
 }

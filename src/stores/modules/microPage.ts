@@ -8,9 +8,9 @@ export const useMainListStore = defineStore('mainList', {
       name: '',
       // 0:新建页面 1:编辑已创建页面 2:保存新页面 3:重置页面
       // 4:是否进行页面设置校验 5:页面设置是否通过校验 6:是否弹出下载代码窗口
-      // 7:是否进行编辑组件校验 8:是否通过编辑页面校验
+      // 7:是否进行编辑组件校验 8:是否通过编辑页面校验 9:切换tabbar
       update: 0,
-      pageSetting: {},
+      pageSetting: {} as FormState,
       /// tabbar
       tabbarActive: 0, // 需要保存
       switchAcitve: 0, // 临时切换
@@ -56,7 +56,7 @@ export const useMainListStore = defineStore('mainList', {
     },
     removePageSetting() {
       this.pageSetting = {
-        isUserTabbar: false,
+        isUseTabbar: false,
         pageName: '',
         tabbars: {
           active: 0,

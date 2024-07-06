@@ -59,6 +59,7 @@ watch(
   mainPageName,
   () => {
     formState.pageName = storeMainList.name
+    console.log(formState.pageName, 'formState.pageName')
   },
   {
     deep: true
@@ -101,7 +102,11 @@ const sendActiveKey = () => {
 const onOk = () => {
   modalFormRef.value?.validateFields().then(() => {
     if (modalFormState.value) {
-      formState.tabbars.tabbars.push(modalFormState.value)
+      if (isAddTabbar.value) {
+        formState.tabbars.tabbars.push(modalFormState.value)
+      } else {
+        formState.tabbars.tabbars[isFirstPage.value] = modalFormState.value
+      }
     }
     modalFormState.value = {
       name: '',
@@ -161,6 +166,33 @@ const openIconList = () => {
 const receiveIcon = (icon: string) => {
   modalFormState.value.icon = icon
 }
+// 添加tabbar
+const isAddTabbar = ref(false)
+const addTabbar = () => {
+  getJsonList()
+  isAddTabbar.value = true
+  isFirstPage.value = formState.tabbars.tabbars.length
+  modalFormState.value = {
+    name: '',
+    icon: '',
+    select: '',
+    pageName: ''
+  }
+  visible.value = true
+}
+// 编辑tabbar
+const isFirstPage = ref(0)
+const editTabbar = (item: tabbarsList, index: number) => {
+  getJsonList()
+  isAddTabbar.value = false
+  isFirstPage.value = index
+  modalFormState.value = item
+  visible.value = true
+}
+// 删除tabbar
+const deleteTabbar = (index: number) => {
+  formState.tabbars.tabbars.splice(index, 1)
+}
 // 接收editor组件的页面设置数据
 const receivePageSettingData = (data: any) => {
   formState.pageName = data.pageName
@@ -208,7 +240,7 @@ onMounted(async () => {
         <a-switch @change="tabbarSwitch" v-model:checked="formState.isUseTabbar" />
       </a-form-item>
       <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="visible = true"
+        <a-button type="dashed" block primary html-type="button" @click="addTabbar"
           >添加tabbar</a-button
         >
       </a-form-item>
@@ -219,7 +251,7 @@ onMounted(async () => {
       >
         <template v-if="formState.tabbars.tabbars">
           <ul>
-            <template v-for="user in formState.tabbars.tabbars" :key="user.key">
+            <template v-for="(user, index) in formState.tabbars.tabbars" :key="user.key">
               <li class="user flex justify-between items-center" style="margin: 4px">
                 <div>
                   <a-avatar>
@@ -230,7 +262,15 @@ onMounted(async () => {
                   <span class="dark:text-gray-400">{{ user.name }} - {{ user.pageName }}</span>
                 </div>
                 <div>
-                  <span class="text-blue-300 mr-2">编辑</span><span class="text-red-500">删除</span>
+                  <span @click="editTabbar(user, index)" class="text-blue-300 cursor-pointer"
+                    >编辑</span
+                  >
+                  <span
+                    v-if="index != 0"
+                    @click="deleteTabbar(index)"
+                    class="text-red-500 ml-2 cursor-pointer"
+                    >删除</span
+                  >
                 </div>
               </li>
             </template>
@@ -259,6 +299,7 @@ onMounted(async () => {
               @select="changeSelectPageName"
               v-model:value="modalFormState.select"
               placeholder="Please select a country"
+              :disabled="!isFirstPage"
             >
               <a-select-option v-for="item in pageList" :key="item.id" :value="item.id">{{
                 item.name

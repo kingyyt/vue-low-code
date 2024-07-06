@@ -61,6 +61,8 @@ watch(
       callContainerChildMethod()
       sendPageSettingData(store.pageSetting as FormState)
       receiveContentPageSettingData(store.pageSetting as FormState)
+    } else if (store.update == 9) {
+      JSONS.value = store.mainList
     }
   },
   {
@@ -96,6 +98,8 @@ const callEditChildMethod = (currentComponentId?: string, editorPropsData?: any)
 // 接受编辑组件参数
 const handleEditListReceived = (list: any) => {
   mainList.value = list
+  // console.log(mainList.value, 'mainList.value')
+  // console.log(pageSettingData.value, 'pageSettingData.value')
 }
 // 调用编辑组件校验方法
 const callValidateFields = (index: number, length: number) => {

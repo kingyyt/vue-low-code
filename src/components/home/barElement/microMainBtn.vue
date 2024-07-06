@@ -21,6 +21,7 @@ import { message } from 'ant-design-vue'
 import { useMainListStore } from '@/stores/modules/microPage'
 import downCodeBtn from './components/downCodeBtn.vue'
 import type { JsonListData } from '@/api/microMain/model/microModel'
+import type { FormState } from '@/api/microMain/model/microModel'
 
 // 获取mainListStore
 const store = useMainListStore()
@@ -28,7 +29,7 @@ const store = useMainListStore()
 const init = () => {
   store.name = ''
   store.update = 0
-  store.pageSetting = {}
+  store.pageSetting = {} as FormState
   store.tabbarActive = 0
   store.switchAcitve = 0
   store.currentPageId = 0
@@ -71,6 +72,21 @@ const openChange = (item: any) => {
   if (item.tabbars) {
     store.setPageSetting(JSON.parse(item.tabbars))
   }
+  store.setUpdate(1)
+}
+
+const swicthChange = () => {
+  let mainListData = {} as any
+  mainListData = list.value.find(
+    (i) => i.id == store.pageSetting.tabbars.tabbars[store.switchAcitve].select
+  )
+  if (currentPageList.value) {
+    currentPageList.value.json = mainListData.json
+    store.setCurrentPageId(currentPageList.value.id)
+  }
+  store.setMainList(mainListData.json)
+  store.name = mainListData.name
+
   store.setUpdate(1)
 }
 // 保存页面之前 进行form校验
@@ -123,6 +139,7 @@ const savePage = async () => {
     currentPageList.value = res
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
+      currentPageList.value.tabbars = JSON.parse(currentPageList.value.tabbars)
     }
   } else {
     store.setUpdate(2)
@@ -137,12 +154,19 @@ const savePage = async () => {
     currentPageList.value = res.data
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
+      currentPageList.value.tabbars = JSON.parse(currentPageList.value.tabbars)
     }
   }
-  await init()
-  openChange(currentPageList.value)
+  console.log(currentPageList.value, 'ccc')
+  // 若为tabbar切换时
+  if (currentPageList.value?.tabbars.isUseTabbar) {
+    swicthChange()
+  } else {
+    await init()
+    openChange(currentPageList.value)
+  }
 }
-
+// 切换tabbar
 // 新建页面
 const newPage = async () => {
   currentPageList.value = null
@@ -173,6 +197,8 @@ const tabbarsListToJson = (data: any) => {
     tabbars: []
   }
   jsonData.tabbars.active = data.tabbars?.active
+  // if (store.tabbarActive == 0) {
+  // jsonData.tabbars.active = 0
   data.tabbars.tabbars.forEach((item: any) => {
     jsonData.tabbars.tabbars.push({
       icon: item.icon,
@@ -181,6 +207,7 @@ const tabbarsListToJson = (data: any) => {
       select: item.select
     })
   })
+  // }
   return JSON.stringify(jsonData)
 }
 
@@ -189,7 +216,7 @@ const tabbarsListToJson = (data: any) => {
 const resetPage = () => {
   store.removeMainList()
   store.removePageSetting()
-  store.removeTabbars()
+  // store.removeTabbars()
   store.setUpdate(3)
 }
 

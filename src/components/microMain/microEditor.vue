@@ -70,6 +70,7 @@ const callValidateFields = (index?: number, length?: number) => {
         } else if (length && index == length - 1) {
           if (pageSettingData.value) {
             pageSettingData.value.tabbars.active = storeMainList.switchAcitve
+            // storeMainList.setTabbarActive(storeMainList.switchAcitve)
             emit('send-page-setting-data', pageSettingData.value)
           }
           storeMainList.update = 8
