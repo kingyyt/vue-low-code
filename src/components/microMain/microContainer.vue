@@ -159,6 +159,7 @@ const sendPageSettingData = async (data: FormState) => {
 }
 const switchTabbar = (e: number) => {
   if (pageSettingData.value && e == pageSettingData.value.tabbars.active) return
+  console.log(e)
   storeMainList.setSwitchAcitve(e)
   storeMainList.setUpdate(4)
 }

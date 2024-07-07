@@ -76,16 +76,18 @@ const openChange = (item: any) => {
 }
 
 const swicthChange = () => {
+  getJsonList()
   let mainListData = {} as any
   mainListData = list.value.find(
     (i) => i.id == store.pageSetting.tabbars.tabbars[store.switchAcitve].select
   )
   if (currentPageList.value) {
     currentPageList.value.json = mainListData.json
+    currentPageList.value.name = mainListData.name
     store.setCurrentPageId(currentPageList.value.id)
   }
   store.setMainList(mainListData.json)
-  store.name = mainListData.name
+  store.setPageName(mainListData.name)
 
   store.setUpdate(1)
 }
