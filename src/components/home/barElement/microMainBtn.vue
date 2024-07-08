@@ -82,6 +82,7 @@ const swicthChange = () => {
     (i) => i.id == store.pageSetting.tabbars.tabbars[store.switchAcitve].select
   )
   if (currentPageList.value) {
+    currentPageList.value.id = mainListData.id
     currentPageList.value.json = mainListData.json
     currentPageList.value.name = mainListData.name
     store.setCurrentPageId(currentPageList.value.id)
@@ -141,6 +142,9 @@ const savePage = async () => {
     currentPageList.value = res
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
+    }
+    if (currentPageList.value && currentPageList.value.tabbars) {
+      console.log(currentPageList.value.tabbars, 'currentPageList.value.tabbars')
       currentPageList.value.tabbars = JSON.parse(currentPageList.value.tabbars)
     }
   } else {
@@ -159,7 +163,6 @@ const savePage = async () => {
       currentPageList.value.tabbars = JSON.parse(currentPageList.value.tabbars)
     }
   }
-  console.log(currentPageList.value, 'ccc')
   // 若为tabbar切换时
   if (currentPageList.value?.tabbars.isUseTabbar) {
     swicthChange()
@@ -191,6 +194,9 @@ const listToJson = () => {
 }
 const tabbarsListToJson = (data: any) => {
   if (!data.isUseTabbar) return ''
+  if (currentPageList.value && data.tabbars.tabbars[0].select !== currentPageList.value.id) {
+    return ''
+  }
   const jsonData: any = {}
   jsonData.isUseTabbar = data.isUseTabbar
   jsonData.pageName = data.pageName
