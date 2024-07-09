@@ -75,8 +75,9 @@ const openChange = (item: any) => {
   store.setUpdate(1)
 }
 
-const swicthChange = () => {
-  getJsonList()
+const swicthChange = async () => {
+  store.setPageName('')
+  await getJsonList()
   let mainListData = {} as any
   mainListData = list.value.find(
     (i) => i.id == store.pageSetting.tabbars.tabbars[store.switchAcitve].select
@@ -137,7 +138,8 @@ const savePage = async () => {
       currentPageList.value.id
     )
     if (!res) return
-    message.success(`编辑${store.name}成功`)
+    message.success(`编辑 「${store.name}」 成功`)
+    await nextTick
     currentPageList.value = res
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
@@ -161,6 +163,8 @@ const savePage = async () => {
     currentPageList.value = res.data
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
+    }
+    if (currentPageList.value && currentPageList.value.tabbars) {
       currentPageList.value.tabbars = JSON.parse(currentPageList.value.tabbars)
     }
   }

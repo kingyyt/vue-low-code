@@ -55,6 +55,16 @@ const changeInputName = () => {
   storeMainList.setPageName(formState.pageName)
 }
 const mainPageName = computed(() => storeMainList.name)
+const isFirstTabbar = computed(() => {
+  if (
+    storeMainList.pageSetting.isUseTabbar &&
+    storeMainList.currentPageId == storeMainList.pageSetting.tabbars.tabbars[0].select
+  ) {
+    return true
+  } else {
+    return false
+  }
+})
 watch(
   mainPageName,
   () => {
@@ -241,7 +251,13 @@ onMounted(async () => {
         <a-switch @change="tabbarSwitch" v-model:checked="formState.isUseTabbar" />
       </a-form-item>
       <a-form-item v-if="formState.isUseTabbar" class="">
-        <a-button type="dashed" block primary html-type="button" @click="addTabbar"
+        <a-button
+          type="dashed"
+          :disabled="!isFirstTabbar"
+          block
+          primary
+          html-type="button"
+          @click="addTabbar"
           >添加tabbar</a-button
         >
       </a-form-item>
@@ -262,7 +278,7 @@ onMounted(async () => {
                   </a-avatar>
                   <span class="dark:text-gray-400">{{ user.name }} - {{ user.pageName }}</span>
                 </div>
-                <div>
+                <div v-if="isFirstTabbar">
                   <span @click="editTabbar(user, index)" class="text-blue-300 cursor-pointer"
                     >编辑</span
                   >
