@@ -58,8 +58,9 @@ const mainPageName = computed(() => storeMainList.name)
 watch(
   mainPageName,
   () => {
-    formState.pageName = storeMainList.name
-    // console.log(formState.pageName, 'formState.pageName')
+    setTimeout(() => {
+      formState.pageName = storeMainList.name
+    })
   },
   {
     deep: true

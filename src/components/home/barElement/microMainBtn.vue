@@ -89,7 +89,6 @@ const swicthChange = () => {
   }
   store.setMainList(mainListData.json)
   store.setPageName(mainListData.name)
-
   store.setUpdate(1)
 }
 // 保存页面之前 进行form校验
@@ -138,14 +137,16 @@ const savePage = async () => {
       currentPageList.value.id
     )
     if (!res) return
-    message.success('编辑成功')
+    message.success(`编辑${store.name}成功`)
     currentPageList.value = res
     if (currentPageList.value && currentPageList.value.json) {
       currentPageList.value.json = JSON.parse(currentPageList.value?.json)
     }
     if (currentPageList.value && currentPageList.value.tabbars) {
-      console.log(currentPageList.value.tabbars, 'currentPageList.value.tabbars')
       currentPageList.value.tabbars = JSON.parse(currentPageList.value.tabbars)
+    }
+    if (store.pageSetting && currentPageList.value) {
+      currentPageList.value.tabbars = store.pageSetting
     }
   } else {
     store.setUpdate(2)
@@ -201,10 +202,10 @@ const tabbarsListToJson = (data: any) => {
   jsonData.isUseTabbar = data.isUseTabbar
   jsonData.pageName = data.pageName
   jsonData.tabbars = {
-    active: '',
+    active: 0,
     tabbars: []
   }
-  jsonData.tabbars.active = data.tabbars?.active
+  jsonData.tabbars.active = 0
   // if (store.tabbarActive == 0) {
   // jsonData.tabbars.active = 0
   data.tabbars.tabbars.forEach((item: any) => {
