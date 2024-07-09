@@ -25,13 +25,13 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
 import type { Ref } from 'vue'
-import io from 'socket.io-client'
+// import io from 'socket.io-client'
 import type { JsonListData } from '@/api/microMain/model/microModel'
 import { buildCodeApi, downbuildCodeApi } from '@/api/buildCode/buildCode'
 import { DownloadBlob } from '@/utils/public/downDocument'
 
 // a-modal
-const modalText = ref<string>('Content of the modal')
+// const modalText = ref<string>('Content of the modal')
 const open = ref<boolean>(false)
 const confirmLoading = ref<boolean>(false)
 const buildList: Ref<JsonListData | null> = ref(null)

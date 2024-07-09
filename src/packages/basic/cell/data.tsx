@@ -16,6 +16,6 @@ export const editorPropsData = () => componentsProps
 
 export default {
   setup() {
-    return () => [h('div', [h('div', createEditorInputProp(editorProps.value.inputValue))])]
+    return () => [h('div', [h('div', createEditorInputProp())])]
   }
 }
