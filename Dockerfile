@@ -19,6 +19,9 @@ RUN npm run build
 # 使用nginx镜像作为基础镜像来运行Vue应用
 FROM nginx:stable-alpine
 
+# 复制自定义的Nginx配置文件到容器中
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # 将构建好的Vue应用的静态文件复制到nginx容器中
 COPY --from=0 /app/dist /usr/share/nginx/html
 
