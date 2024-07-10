@@ -5,7 +5,7 @@ import router from '@/router/index'
 
 const service = axios.create({
   // baseURL: 'http://192.168.100.238:8000',
-  baseURL: 'http://localhost:8000',
+  baseURL: import.meta.env.VITE_API_BASE_URL,
   timeout: 5000
 })
 
