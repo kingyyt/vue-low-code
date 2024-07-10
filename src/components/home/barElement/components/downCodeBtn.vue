@@ -38,7 +38,7 @@ const buildList: Ref<JsonListData | null> = ref(null)
 const filename = ref<string>('')
 
 const progress = ref(0)
-const socket = new WebSocket('ws://localhost:8000/ws/build_uniapp_file/')
+const socket = new WebSocket(`ws://${import.meta.env.VITE_APP_API_BASE_URL}/ws/build_uniapp_file/`)
 socket.onmessage = (event) => {
   progress.value = JSON.parse(event.data).progress
 }
