@@ -1,14 +1,7 @@
 version: '3'
 
 services:
-  frontend:
-    build: ./frontend
+  web:
+    build: . # 使用当前目录下的 Dockerfile 构建镜像
     ports:
       - '80:80'
-    environment:
-      - API_URL=http://backend:8000
-
-  backend:
-    build: ./backend
-    ports:
-      - '8000:8000'
