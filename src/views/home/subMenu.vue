@@ -10,7 +10,7 @@ const blockContent = `圣诞节随叫随到。`
 </script>
 
 <template>
-  <div class="p-4 sub-menu-page flex">
+  <div class="p-4 sub-menu-page sm:flex items-center pb-32 sm:pb-0" style="min-width: 100%">
     <div>
       <a-typography>
         <a-typography-title :level="2">介绍</a-typography-title>
@@ -40,31 +40,29 @@ const blockContent = `圣诞节随叫随到。`
       </a-typography-paragraph> -->
       </a-typography>
     </div>
-    <div
-      class="rounded-lg border border-gray-300 p-6 shadow-lg flex-col items-center justify-center ml-4"
-    >
-      <!-- <a-badge class="mt-4 mb-4" >
-        <a-avatar dot :size="64" src="http://localhost:8080/src/assets/images/avatar.jpeg">
-        </a-avatar>
-      </a-badge> -->
-      <a-qrcode
-        bgColor="#fff"
-        error-level="H"
-        value="https://github.com/kingyyt"
-        icon="http://localhost:8080/src/assets/images/avatar.jpeg"
-      />
+    <div class="flex items-center">
+      <div
+        class="mt-4 sm:mt-0 rounded-lg border border-gray-300 p-6 shadow-lg sm:flex-col sm:items-center sm:justify-center sm:ml-4"
+      >
+        <a-qrcode
+          bgColor="#fff"
+          error-level="H"
+          value="https://github.com/kingyyt"
+          icon="http://localhost:8080/src/assets/images/avatar.jpeg"
+        />
 
-      <a-typography-paragraph class="mt-2">
-        <ul>
-          <li>
-            <a-typography-link href="https://github.com/kingyyt">
-              <span class="dark:text-blue-500">github地址</span>
-            </a-typography-link>
-          </li>
-          <li>欢迎加入</li>
-          <li>yeyiteng@163.com</li>
-        </ul>
-      </a-typography-paragraph>
+        <a-typography-paragraph class="mt-2">
+          <ul class="">
+            <li>
+              <a-typography-link href="https://github.com/kingyyt">
+                <span class="dark:text-blue-500">github地址</span>
+              </a-typography-link>
+            </li>
+            <li>欢迎加入</li>
+            <li>yeyiteng@163.com</li>
+          </ul>
+        </a-typography-paragraph>
+      </div>
     </div>
   </div>
 </template>

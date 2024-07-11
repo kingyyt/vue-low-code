@@ -1,23 +1,30 @@
 <template>
-  <div class="contents">
-    <a-menu
-      class="text-gray-400 bg-slate-800 h-screen overflow-x-auto"
-      :class="!state.collapsed ? 'w-48 min-w-48' : 'max-w-12'"
-      v-model:openKeys="state.openKeys"
-      v-model:selectedKeys="state.selectedKeys"
-      mode="inline"
-      :inline-collapsed="state.collapsed"
-      :items="items"
-      @click="toPage($event)"
-    ></a-menu>
+  <div>
+    <div v-if="!state.collapsed" @click="toggleCollapsed" class="mask sm:mask-pc"></div>
+    <div class="ms:home-nav">
+      <a-menu
+        class="text-gray-400 bg-slate-800 h-screen overflow-x-auto"
+        :class="!state.collapsed ? 'w-48 min-w-72  sm:min-w-48' : 'w-0 sm:max-w-12'"
+        v-model:openKeys="state.openKeys"
+        v-model:selectedKeys="state.selectedKeys"
+        mode="inline"
+        :inline-collapsed="state.collapsed"
+        :items="items"
+        @click="toPage($event)"
+      ></a-menu>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
-import { reactive, watch, h, onMounted } from 'vue'
+import { reactive, watch, h, onMounted, computed } from 'vue'
 import { MailOutlined, DesktopOutlined } from '@ant-design/icons-vue'
 import { useRouter, useRoute } from 'vue-router'
 const router = useRouter()
 const route = useRoute()
+
+const screenWidth = computed(() => {
+  return window.innerWidth
+})
 
 const state = reactive({
   collapsed: false,
@@ -60,6 +67,9 @@ watch(
 )
 // 初始化路由
 const init = () => {
+  if (screenWidth.value < 500) {
+    state.collapsed = true
+  }
   state.selectedKeys = [route.path.slice(1)]
   const openKeys = items.find(
     (item) => item.children && item.children.some((child) => child.key === state.selectedKeys[0])
@@ -75,18 +85,15 @@ onMounted(async () => {
   init()
 })
 
-// watch(
-//   () => route.path,
-//   (newPath, oldPath) => {
-//     state.selectedKeys = [newPath.slice(1)]
-//   }
-// )
 const toggleCollapsed = () => {
   state.collapsed = !state.collapsed
   state.openKeys = state.collapsed ? [] : state.preOpenKeys
 }
 
 const toPage = (e: any) => {
+  if (screenWidth.value < 500) {
+    state.collapsed = true
+  }
   router.push(e.key)
 }
 
@@ -122,5 +129,14 @@ defineExpose({
 ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
   @apply rounded-xl bg-gray-500;
+}
+.mask {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.3);
+  z-index: 10;
 }
 </style>

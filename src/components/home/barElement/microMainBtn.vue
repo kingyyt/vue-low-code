@@ -38,6 +38,13 @@ const init = () => {
 onMounted(async () => {
   init()
 })
+const screenWidth = computed(() => {
+  const screenwid = window.innerWidth
+  if (screenwid < 500) {
+    return true
+  }
+  return false
+})
 // 获取json列表
 let list: Ref<JsonListData[]> = ref([])
 const getJsonList = async () => {
@@ -250,15 +257,15 @@ const downCode = async () => {
 </script>
 
 <template>
-  <div class="dark:text-white">
+  <div class="dark:text-white flex">
     <downCodeBtn ref="downCodeBtnRef" />
-    <a-popover>
+    <a-popover v-if="!screenWidth">
       <template #content>
         <p>预览</p>
       </template>
       <PlayCircleOutlined class="mr-4" />
     </a-popover>
-    <a-popover>
+    <a-popover v-if="!screenWidth">
       <template #content>
         <p>下载源码</p>
       </template>
@@ -296,7 +303,7 @@ const downCode = async () => {
         </a-menu>
       </template>
     </a-dropdown>
-    <span class="ml-4 text-sm"
+    <span v-if="!screenWidth" class="ml-4 text-sm"
       ><span class="text-yellow-400"><InfoCircleOutlined /></span>
       {{
         currentPageList && currentPageList.id

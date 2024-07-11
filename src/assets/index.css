@@ -8,9 +8,9 @@ svg {
 }
 @layer components {
   .dark .sub-menu-page {
-    :where(.css-dev-only-do-not-override-16pw25h).ant-typography {
-      color: #a5a5a5 !important;
-    }
+  }
+  .dark .ant-typography {
+    color: #9ca3af;
   }
 }
 
@@ -39,59 +39,67 @@ svg {
 }
 
 @layer components {
-  .dark .ant-form-item-label-dark {
-    .ant-form-item-label {
-      label {
-        color: #9ca3af;
-      }
-    }
+  .dark .ant-form-item-label > label {
+    color: #9ca3af;
   }
   /* switch样式 */
-  .dark .ant-modal-content-dark {
-    .ant-modal-content {
-      background-color: rgb(55 65 81);
-      color: #9ca3af;
-    }
-    .ant-modal-title {
-      background-color: rgb(55 65 81);
-      color: #9ca3af;
-    }
-    label {
-      color: #9ca3af;
-    }
-    .ant-modal-close-x {
-      color: #9ca3af;
-    }
-    .ant-modal-footer {
-      .ant-btn-primary {
-        span {
-          color: #9ca3af;
-        }
-      }
-    }
+  .dark .ant-modal-content {
+    background-color: rgb(55 65 81);
+    color: #9ca3af;
+  }
+  .dark .ant-modal-title {
+    background-color: rgb(55 65 81);
+    color: #9ca3af;
+  }
+  .dark .ant-modal-title > label {
+    color: #9ca3af;
+  }
+  .dark .ant-modal-close-x {
+    color: #9ca3af;
+  }
+  .dark .ant-btn-primary > span {
+    color: white;
   }
   /* button */
-  .dark .ant-form-item-control-input-content {
-    .ant-btn-dashed {
-      background-color: transparent;
-      color: #9ca3af;
-    }
+  .dark .ant-btn-dashed {
+    background-color: transparent;
+    color: #9ca3af;
   }
   /* select */
-  .dark .ant-select-selector-dark {
+  .dark .ant-select {
     background-color: rgb(55 65 81);
+  }
+  .dark
+    :where(.css-dev-only-do-not-override-16pw25h).ant-select:not(.ant-select-customize-input)
     .ant-select-selector {
-      background-color: rgb(55 65 81);
-      color: #9ca3af;
-    }
-    .ant-select-selection-item {
-      background-color: rgb(55 65 81);
-    }
+    background-color: rgb(55 65 81);
+  }
+  .dark .ant-select-selector {
+    background-color: rgb(55 65 81);
+    color: #9ca3af;
+  }
+  .dark .ant-select-selection-item {
+    background-color: rgb(55 65 81);
   }
   .dark .ant-select-dropdown {
     background-color: rgb(30 41 59);
-    .ant-select-item-option-content {
-      color: #9ca3af;
-    }
+  }
+  .dark .ant-select-item-option-content {
+    color: #9ca3af;
+  }
+}
+@media (max-width: 500px) {
+  /* Tailwind 默认的 sm 断点 */
+  .ms\:home-nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+  }
+}
+@media (min-width: 500px) {
+  /* Tailwind 默认的 sm 断点 */
+  .sm\:mask-pc {
+    display: none;
   }
 }

@@ -1,6 +1,8 @@
 <template>
-  <div class="flex justify-between dark:text-gray-100" style="height: calc(100vh - 3rem)">
-    <!-- <a-button @click="callValidateFields"></a-button> -->
+  <div
+    class="flex justify-between dark:text-gray-100 w-screen overflow-hidden overflow-x-auto overflow-y-auto"
+    style="height: calc(100vh - 3rem)"
+  >
     <microAside />
     <microContainer
       ref="microContainerRef"

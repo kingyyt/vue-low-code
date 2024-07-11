@@ -3,14 +3,9 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-  <!-- <header>
-    <div class="wrapper">
-      <nav>
-        <RouterLink to="/">Home</RouterLink>
-      </nav>
-    </div>
-  </header> -->
-  <RouterView />
+  <div class="app-container">
+    <RouterView />
+  </div>
 </template>
 
 <style lang="less">
@@ -33,5 +28,10 @@ import { RouterLink, RouterView } from 'vue-router'
 .dark ::-webkit-scrollbar-track {
   /*滚动条里面轨道*/
   @apply rounded-xl bg-gray-400;
+}
+.app-container {
+  /* 启用滚动条，当内容超出容器宽度时，用户可以滚动查看 */
+  // width: 100%;
+  // overflow-x: auto;
 }
 </style>

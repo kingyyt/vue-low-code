@@ -178,8 +178,8 @@ defineExpose({ jsonToList, validateFields, sendPageSettingData, switchTabbar })
 <template>
   <div class="h-full w-full min-w-96 checkered stripes flex justify-center items-center">
     <div
-      class="flex flex-col content-center bg-white dark:bg-slate-50 rounded drop-shadow-lg"
-      style="height: 700px"
+      class="flex flex-col content-center bg-white dark:bg-slate-50 rounded drop-shadow-lg relative"
+      style="height: 700px; transform: translate3d(0, 0, 0)"
     >
       <VueDraggable
         @sort="onSort"
@@ -253,8 +253,5 @@ defineExpose({ jsonToList, validateFields, sendPageSettingData, switchTabbar })
   .active {
     background-color: rgba(64, 158, 255, 0.5);
   }
-}
-.van-tabbar {
-  position: relative;
 }
 </style>
