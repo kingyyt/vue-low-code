@@ -1,6 +1,6 @@
 <template>
   <div
-    class="flex justify-between dark:text-gray-100 w-screen overflow-hidden overflow-x-auto overflow-y-auto"
+    class="flex justify-between dark:text-gray-100 lg:w-full w-screen overflow-hidden overflow-x-auto overflow-y-auto"
     style="height: calc(100vh - 3rem)"
   >
     <microAside />
