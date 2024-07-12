@@ -163,6 +163,13 @@ const switchTabbar = (e: number) => {
   storeMainList.setUpdate(4)
 }
 
+const screenWidth = computed(() => {
+  const screenwid = window.innerWidth
+  if (screenwid < 500) {
+    return true
+  }
+  return false
+})
 // 初始化
 const init = () => {
   importComponents()
@@ -179,7 +186,8 @@ defineExpose({ jsonToList, validateFields, sendPageSettingData, switchTabbar })
   <div class="h-full w-full min-w-96 checkered stripes flex justify-center items-center">
     <div
       class="flex flex-col content-center bg-white dark:bg-slate-50 rounded drop-shadow-lg relative"
-      style="height: 700px; transform: translate3d(0, 0, 0)"
+      :style="{ height: screenWidth ? '600px' : '700px' }"
+      style="transform: translate3d(0, 0, 0)"
     >
       <VueDraggable
         @sort="onSort"

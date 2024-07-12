@@ -1,8 +1,8 @@
 <script lang="ts">
 export default {
   name: 'tabbar',
-  id: 'tabbar',
   // IF EDITOR
+  id: 'tabbar',
   dataComponents: dataComponents,
   // END EDITOR
   props: {

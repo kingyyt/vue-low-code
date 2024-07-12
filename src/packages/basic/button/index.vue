@@ -1,8 +1,8 @@
 <script lang="ts">
 export default {
   name: '按钮',
-  id: 'button',
   // IF EDITOR
+  id: 'button',
   dataComponents: dataComponents,
   // END EDITOR
   props: {
@@ -23,6 +23,11 @@ defineExpose({
 
 <template>
   <div>
-    <van-button :color="props?.color">{{ props?.btnText }}</van-button>
+    <van-button
+      :custom-style="`background-color: ${props?.color}; color: ${props?.textColor};`"
+      :color="props?.color"
+      :style="{ color: props?.textColor }"
+      >{{ props?.btnText }}</van-button
+    >
   </div>
 </template>

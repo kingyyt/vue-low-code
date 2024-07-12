@@ -9,7 +9,8 @@ function componentsProps() {
     formData: ref({
       model: {
         btnText: '按钮',
-        color: 'red'
+        color: 'red',
+        textColor: 'white'
       },
       data: [
         ref<inputComponentProps>({
@@ -24,6 +25,13 @@ function componentsProps() {
           name: 'color',
           rules: [{ required: true, message: '请输入按钮颜色' }],
           color: '#333'
+        }),
+        ref<inputComponentProps>({
+          addonBefore: '文字颜色',
+          placeholder: '请输入颜色',
+          name: 'textColor',
+          rules: [{ required: true, message: '请输入文字颜色' }],
+          color: 'white'
         })
       ]
     })
@@ -56,6 +64,11 @@ export default {
           h(createEditorInputProp(), {
             propsData: props.propsData.formData.data[1],
             modelName: Object.keys(props.propsData.formData.model)[1],
+            model: props.propsData.formData.model
+          }),
+          h(createEditorInputProp(), {
+            propsData: props.propsData.formData.data[2],
+            modelName: Object.keys(props.propsData.formData.model)[2],
             model: props.propsData.formData.model
           })
         ]

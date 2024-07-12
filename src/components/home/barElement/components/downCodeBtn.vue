@@ -42,8 +42,15 @@ const socket = new WebSocket(`ws://${import.meta.env.VITE_APP_API_WS_URL}/ws/bui
 socket.onmessage = (event) => {
   progress.value = JSON.parse(event.data).progress
 }
+const currentPageId = ref()
 
 const showModal = (currentPageList: JsonListData | null) => {
+  if (currentPageList?.tabbars.isUseTabbar) {
+    console.log(currentPageList, 'currentPageList.tabbars.isUseTabbar')
+    currentPageId.value = currentPageList?.tabbars.tabbars.tabbars[0].select
+  } else {
+    currentPageId.value = currentPageList?.id
+  }
   buildList.value = currentPageList
   open.value = true
   socket.addEventListener('open', (event) => {
@@ -71,15 +78,24 @@ const radioStyle = reactive({
 })
 
 const startBuild = async () => {
+  console.log(buildList.value, 'buildListbuildList')
   try {
     const response = await buildCodeApi(
-      { json: JSON.stringify(buildList.value?.json) },
+      { id: currentPageId.value },
       {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       }
     )
+    // const response = await buildCodeApi(
+    //   { json: JSON.stringify(buildList.value?.json) },
+    //   {
+    //     headers: {
+    //       'Content-Type': 'multipart/form-data'
+    //     }
+    //   }
+    // )
     // 处理响应，例如获取工作ID
     filename.value = response.name.id
     // 可以通过workId来标识特定的构建过程

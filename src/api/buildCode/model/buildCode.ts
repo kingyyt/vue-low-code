@@ -1,5 +1,6 @@
 export interface buildCode {
-  json: string
+  json?: string
+  id: number
 }
 export interface downBuildCode {
   filename: string
