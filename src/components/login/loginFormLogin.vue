@@ -16,8 +16,8 @@ interface FormState {
   remember: boolean
 }
 const formState = reactive<FormState>({
-  username: '',
-  password: '',
+  username: 'admin',
+  password: '123123',
   remember: true
 })
 const onFinishFailed = (errorInfo: any) => {
