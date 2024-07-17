@@ -81,7 +81,7 @@ const startBuild = async () => {
   console.log(buildList.value, 'buildListbuildList')
   try {
     const response = await buildCodeApi(
-      { id: currentPageId.value },
+      { id: currentPageId.value, type: 0 },
       {
         headers: {
           'Content-Type': 'multipart/form-data'
