@@ -78,8 +78,12 @@ const jsonComponents = async (id: string) => {
             // 若存在model 说明已经设置过属性 直接赋值 否则创建新的数据
             const prop = ref(componentRef.value[index].editorPropsData)
             i.props = prop.value
+            console.log(i.props?.formData.model, i.model)
             if (Object.prototype.hasOwnProperty.call(i, 'model') && i.props) {
-              i.props.formData.model = i.model
+              // 兼容新增的默认属性
+              for (const key in i.model) {
+                i.props.formData.model[key] = i.model[key]
+              }
             }
           }
         }

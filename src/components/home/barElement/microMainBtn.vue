@@ -76,7 +76,7 @@ const openChange = (item: any) => {
   }
   store.setMainList(item.json)
   store.name = item.name
-  if (item.tabbars) {
+  if (item.tabbars && typeof item.tabbars == 'string') {
     store.setPageSetting(JSON.parse(item.tabbars))
   }
   store.setUpdate(1)
