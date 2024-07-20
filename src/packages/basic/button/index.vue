@@ -1,7 +1,7 @@
 <script lang="ts">
 export default {
-  name: '按钮',
   // IF EDITOR
+  name: '按钮',
   id: 'button',
   dataComponents: dataComponents,
   // END EDITOR

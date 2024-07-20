@@ -1,19 +1,33 @@
 <script lang="ts">
 export default {
+  // IF EDITOR
   name: '单元格',
-  id: 'cell'
+  id: 'cell',
+  dataComponents: dataComponents,
+  // END EDITOR
+  props: {
+    props: {
+      type: Object
+    }
+  }
 }
 </script>
 <script setup lang="ts">
 // IF EDITOR
-import { editorPropsData } from './data'
-
+import dataComponents, { editorPropsData } from './data'
 defineExpose({
-  editorPropsData: editorPropsData().value
+  editorPropsData: editorPropsData()
 })
 // END EDITOR
 </script>
 
 <template>
-  <div><van-button type="success">单元格</van-button></div>
+  <div>
+    <van-button
+      :custom-style="`background-color: ${props?.color}; color: ${props?.textColor};`"
+      :color="props?.color"
+      :style="{ color: props?.textColor }"
+      >{{ props?.btnText }}----</van-button
+    >
+  </div>
 </template>
