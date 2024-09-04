@@ -106,7 +106,7 @@ importers:
         specifier: ^0.27.0
         version: 0.27.0(@babel/parser@7.24.6)(rollup@4.13.2)(vue@3.4.21(typescript@5.4.3))
       vite:
-        specifier: ^5.1.6
+        specifier: ^5.0.0
         version: 5.2.7(@types/node@20.11.30)(less@4.2.0)
       vue-tsc:
         specifier: ^2.0.6
