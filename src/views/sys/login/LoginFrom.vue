@@ -55,8 +55,6 @@ onMounted(async () => {
       </div>
     </div>
 
-    <!-- <a-button class="text-slate-50 max-sm:text-red-600">手机</a-button> -->
-
     <div class="m-4 text-center">
       <ul class="">
         <li>

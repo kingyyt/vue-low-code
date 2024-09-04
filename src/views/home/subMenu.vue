@@ -6,7 +6,6 @@ const init = () => {}
 onMounted(async () => {
   init()
 })
-const blockContent = `圣诞节随叫随到。`
 </script>
 
 <template>
