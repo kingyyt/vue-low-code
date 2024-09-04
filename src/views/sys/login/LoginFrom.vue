@@ -56,6 +56,16 @@ onMounted(async () => {
     </div>
 
     <!-- <a-button class="text-slate-50 max-sm:text-red-600">手机</a-button> -->
+
+    <div class="m-4 text-center">
+      <ul class="">
+        <li>
+          <a-typography-link href="https://beian.miit.gov.cn/">
+            备案号：<span class="dark:text-gray-400">粤ICP备2024267556号-2</span>
+          </a-typography-link>
+        </li>
+      </ul>
+    </div>
   </div>
 </template>
 
