@@ -7,6 +7,9 @@ WORKDIR /app
 # 将package.json和pnpm-lock.yaml复制到容器中
 COPY package*.json ./
 
+# 使用国内镜像源（可选）
+RUN npm config set registry https://registry.npm.taobao.org
+
 # 安装依赖，并缓存依赖内容
 RUN npm install --no-warnings
 
