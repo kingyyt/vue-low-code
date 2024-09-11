@@ -55,7 +55,7 @@ onMounted(async () => {
       </div>
     </div>
 
-    <!-- <div class="m-4 text-center">
+    <div class="m-4 text-center">
       <ul class="">
         <li>
           <a-typography-link href="https://beian.miit.gov.cn/">
@@ -63,7 +63,7 @@ onMounted(async () => {
           </a-typography-link>
         </li>
       </ul>
-    </div> -->
+    </div>
   </div>
 </template>
 
