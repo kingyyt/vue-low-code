@@ -66,11 +66,7 @@ onMounted(async () => {
       </div>
     </div>
     <div class="text-right m-4">
-      <a-typography-paragraph class="mt-2">
-        <a-typography-link href="https://beian.miit.gov.cn/">
-          备案号：<span class="dark:text-gray-400">粤ICP备2024267556号-2</span>
-        </a-typography-link>
-      </a-typography-paragraph>
+      <span class="dark:text-gray-400">备案号：粤ICP备2024267556号-2</span>
     </div>
   </div>
 </template>
