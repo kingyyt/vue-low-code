@@ -11,7 +11,7 @@ COPY package*.json ./
 RUN npm config set registry https://registry.npm.taobao.org
 
 # 安装依赖，并缓存依赖内容
-RUN npm install --no-warnings
+RUN npm install
 
 # 复制项目文件到工作目录
 COPY . .
