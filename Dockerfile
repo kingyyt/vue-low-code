@@ -8,7 +8,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # 使用国内镜像源（可选）
-RUN npm config set registry https://registry.npm.taobao.org
+RUN npm config set registry https://registry.npmmirror.com/
 
 # 安装依赖，并缓存依赖内容
 RUN npm install
